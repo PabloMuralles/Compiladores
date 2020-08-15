@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MiniCompilador
+namespace MiniCompilador.GUI
 {
-    public partial class Form1 : Form
+    public partial class Cargar_Archivo : Form
     {
-        public Form1()
+        public Cargar_Archivo()
         {
             InitializeComponent();
         }
+
+         
     }
 }
