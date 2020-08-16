@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textomostrar = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_Analizar = new System.Windows.Forms.Button();
             this.path = new System.Windows.Forms.TextBox();
+            this.button_Cargar = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -41,7 +45,7 @@
             this.label2.Location = new System.Drawing.Point(13, 101);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 21);
+            this.label2.Size = new System.Drawing.Size(72, 17);
             this.label2.TabIndex = 11;
             this.label2.Text = "Contenido";
             // 
@@ -66,15 +70,16 @@
             this.textomostrar.Size = new System.Drawing.Size(599, 350);
             this.textomostrar.TabIndex = 9;
             // 
-            // button1
+            // button_Analizar
             // 
-            this.button1.Location = new System.Drawing.Point(332, 484);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 35);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Analizar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button_Analizar.Location = new System.Drawing.Point(382, 483);
+            this.button_Analizar.Margin = new System.Windows.Forms.Padding(4);
+            this.button_Analizar.Name = "button_Analizar";
+            this.button_Analizar.Size = new System.Drawing.Size(125, 35);
+            this.button_Analizar.TabIndex = 8;
+            this.button_Analizar.Text = "Analizar";
+            this.button_Analizar.UseVisualStyleBackColor = true;
+            this.button_Analizar.Click += new System.EventHandler(this.button_Analizar_Click);
             // 
             // path
             // 
@@ -88,17 +93,34 @@
             this.path.TabIndex = 7;
             this.path.WordWrap = false;
             // 
+            // button_Cargar
+            // 
+            this.button_Cargar.Location = new System.Drawing.Point(113, 484);
+            this.button_Cargar.Margin = new System.Windows.Forms.Padding(4);
+            this.button_Cargar.Name = "button_Cargar";
+            this.button_Cargar.Size = new System.Drawing.Size(125, 34);
+            this.button_Cargar.TabIndex = 12;
+            this.button_Cargar.Text = "Cargar";
+            this.button_Cargar.UseVisualStyleBackColor = true;
+            this.button_Cargar.Click += new System.EventHandler(this.button_Cargar_Click);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // Cargar_Archivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 532);
+            this.ClientSize = new System.Drawing.Size(634, 540);
+            this.Controls.Add(this.button_Cargar);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textomostrar);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_Analizar);
             this.Controls.Add(this.path);
             this.Name = "Cargar_Archivo";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,7 +131,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textomostrar;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_Analizar;
         private System.Windows.Forms.TextBox path;
+        private System.Windows.Forms.Button button_Cargar;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
