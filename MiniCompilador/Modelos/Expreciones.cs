@@ -31,9 +31,11 @@ namespace MiniCompilador.Modelos
         
         public Expreciones()
         {
-            palabrasReservadas = new Regex(@"^(TOKEN)(\t |\s)*[0 - 9] + (\t |\s)*= (\t |\s)*(\s |\*|\+|\?|\(|\)|\|| '.' |[A - Z] +|{|})+(\t |\s)*$");
+            palabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
 
+            identificador = new Regex(@"^([A-Z]|[a-z])+((_|[0-9])*(_|[0-9])*)*$");
 
+             
 
         }
         
