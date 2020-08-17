@@ -52,6 +52,7 @@
     <Compile Include="GUI\Cargar Archivo.Designer.cs">
       <DependentUpon>Cargar Archivo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modelos\Expreciones.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\Cargar Archivo.resx">
