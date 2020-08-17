@@ -12,26 +12,26 @@ namespace MiniCompilador.Modelos
         /// <summary>
         /// Varibalbes globales de las expresiones regulares
         /// </summary>
-        private readonly Expreciones palabrasReservadas;
-        private readonly Expreciones identificador;
-        private readonly Expreciones digitos;
-        private readonly Expreciones caracteres;
-        private readonly Expreciones comentariosLinea;
-        private readonly Expreciones comentariosMultiples;
+        private readonly Regex palabrasReservadas;
+        private readonly Regex identificador;
+        private readonly Regex digitos;
+        private readonly Regex caracteres;
+        private readonly Regex comentariosLinea;
+        private readonly Regex comentariosMultiples;
 
         /// <summary>
         /// Propiedades para que se pueda acesar a las expresiones regulares desde otras clases sin que puedan modificarlas
         /// </summary>
-        public Expreciones palabrasReservadas_ { get => palabrasReservadas; }
-        public Expreciones identificador_ { get => identificador; }
-        public Expreciones digitos_ { get => digitos; }
-        public Expreciones caracteres_ { get => caracteres; }
-        public Expreciones comentariosLinea_ { get => comentariosLinea; }
-        public Expreciones comentariosMultiples_ { get => comentariosMultiples; }
+        public Regex palabrasReservadas_ { get => palabrasReservadas; }
+        public Regex identificador_ { get => identificador; }
+        public Regex digitos_ { get => digitos; }
+        public Regex caracteres_ { get => caracteres; }
+        public Regex comentariosLinea_ { get => comentariosLinea; }
+        public Regex comentariosMultiples_ { get => comentariosMultiples; }
         
         public Expreciones()
         {
-            palabrasReservadas = @"^(TOKEN)(\t |\s)*[0 - 9] + (\t |\s)*= (\t |\s)*(\s |\*|\+|\?|\(|\)|\|| '.' |[A - Z] +|{|})+(\t |\s)*$";
+            palabrasReservadas = new Regex(@"^(TOKEN)(\t |\s)*[0 - 9] + (\t |\s)*= (\t |\s)*(\s |\*|\+|\?|\(|\)|\|| '.' |[A - Z] +|{|})+(\t |\s)*$");
 
 
 
