@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace MiniCompilador.Modelos
+namespace MiniCompilador.Análisis_Léxico
 {
     class Expreciones
-    {
+    {      
         /// <summary>
         /// Varibalbes globales de las expresiones regulares
         /// </summary>
