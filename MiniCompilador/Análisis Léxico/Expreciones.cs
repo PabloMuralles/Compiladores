@@ -36,31 +36,32 @@ namespace MiniCompilador.Modelos
         public Regex caracteres_ { get => caracteres; }
         //public Regex comentariosLinea_ { get => comentariosLinea; }
         //public Regex comentariosMultiples_ { get => comentariosMultiples; }
-        
+
         public Expreciones()
         {
             palabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
 
             booleanas = new Regex("true|false");
 
-            identificador = new Regex(@"^([A-Za-z])+([A-Za-z_]*)*$");
+            identificador = new Regex(@"^([A-Za-z][A-Za-z_]*)*$");
 
             entero = new Regex(@"^([0-9]+)*$");
 
-            hexadecimal = new Regex(@"^(0x|0X)([0-9A-Fa-f]+)$");
+            hexadecimal = new Regex(@"^0(x|X)[0-9A-Fa-f]+$");
 
             doubles = new Regex(@"^(([0-9]+.[0-9]+|.[0-9]+)|([0-9]+.(E|e)(-|\+)?[0-9]+))$");
 
-            cadena= new Regex(@"^ $");
+            cadena= new Regex("\"[^\"\n]\"*");
 
             caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
-             
+
             //comentariosLinea = new Regex(@"^ $");
-           //comentariosMultiples = new Regex(@"^ $");
-             
+            //comentariosMultiples = new Regex(@"^/\*[^\*/]\*/$");
+
+            
         }
-        
-        
+
+
     }
 
 }
