@@ -20,8 +20,8 @@ namespace MiniCompilador.Modelos
         private readonly Regex doubles;
         private readonly Regex cadena;
         private readonly Regex caracteres;
-        private readonly Regex comentariosLinea;
-        private readonly Regex comentariosMultiples;
+        //private readonly Regex comentariosLinea;
+        //private readonly Regex comentariosMultiples;
 
         /// <summary>
         /// Propiedades para que se pueda acesar a las expresiones regulares desde otras clases sin que puedan modificarlas
@@ -56,7 +56,6 @@ namespace MiniCompilador.Modelos
             caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
              
             //comentariosLinea = new Regex(@"^ $");
-
            //comentariosMultiples = new Regex(@"^ $");
              
         }
