@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+
+namespace MiniCompilador.Modelos
+{
+    class Expreciones
+    {
+        /// <summary>
+        /// Varibalbes globales de las expresiones regulares
+        /// </summary>
+        private readonly Regex palabrasReservadas;
+        private readonly Regex identificador;
+        private readonly Regex booleanas;
+        private readonly Regex entero;
+        private readonly Regex hexadecimal;
+        private readonly Regex doubles;
+        private readonly Regex cadena;
+        private readonly Regex caracteres;
+        private readonly Regex comentariosLinea;
+        private readonly Regex comentariosMultiples;
+
+        /// <summary>
+        /// Propiedades para que se pueda acesar a las expresiones regulares desde otras clases sin que puedan modificarlas
+        /// </summary>
+        public Regex palabrasReservadas_ { get => palabrasReservadas; }
+        public Regex identificador_ { get => identificador; }
+        public Regex booleanas_ { get => booleanas; }
+        public Regex entero_ { get => entero; }
+        public Regex doubles_ { get => doubles; }
+        public Regex hexadecimal_ { get => hexadecimal; }
+        public Regex cadena_ { get => cadena; }
+        public Regex caracteres_ { get => caracteres; }
+        //public Regex comentariosLinea_ { get => comentariosLinea; }
+        //public Regex comentariosMultiples_ { get => comentariosMultiples; }
+        
+        public Expreciones()
+        {
+            palabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
+
+            booleanas = new Regex("true|false");
+
+            identificador = new Regex(@"^([A-Za-z])+([A-Za-z_]*)*$");
+
+            entero = new Regex(@"^([0-9]+)*$");
+
+            hexadecimal = new Regex(@"^(0x|0X)([0-9A-Fa-f]+)$");
+
+            doubles = new Regex(@"^(([0-9]+.[0-9]+|.[0-9]+)|([0-9]+.(E|e)(-|\+)?[0-9]+))$");
+
+            cadena= new Regex(@"^ $");
+
+            caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
+             
+            //comentariosLinea = new Regex(@"^ $");
+
+           //comentariosMultiples = new Regex(@"^ $");
+             
+        }
+        
+        
+    }
+
+}
+
