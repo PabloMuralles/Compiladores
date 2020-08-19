@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{51D267D2-D448-414D-ACDF-2CB29492BE20}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MiniCompilador</RootNamespace>
-    <AssemblyName>MiniCompilador</AssemblyName>
+    <RootNamespace>Minic</RootNamespace>
+    <AssemblyName>Minic</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -66,6 +66,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
