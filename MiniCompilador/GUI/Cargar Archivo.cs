@@ -77,7 +77,8 @@ namespace MiniCompilador.GUI
                 if (!string.IsNullOrEmpty(path.Text))
                 {
                     errorProvider1.Clear();
-
+                    Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
+                    analisis.Analizador(path.Text);
                 }
                 else
                 {
