@@ -13,6 +13,11 @@ namespace MiniCompilador.Análisis_Léxico
         {
             var archivo = new StreamReader(path);
             var linea = archivo.ReadLine();
+            while (linea != null)
+            {
+                linea = linea.Trim().ToLower();
+
+            }
         }
         
     }

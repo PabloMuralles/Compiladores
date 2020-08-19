@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Análisis Léxico\Analisis.cs" />
     <Compile Include="GUI\Cargar Archivo.cs">
       <SubType>Form</SubType>
     </Compile>
