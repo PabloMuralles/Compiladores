@@ -78,7 +78,7 @@ namespace MiniCompilador.GUI
                 {
                     errorProvider1.Clear();
                     Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
-                    analisis.Analizador(path.Text);
+                    analisis.LecturaArchivo(path.Text);
                 }
                 else
                 {
