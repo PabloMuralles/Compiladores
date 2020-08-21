@@ -50,7 +50,8 @@ namespace MiniCompilador.Análisis_Léxico
                     dato += listaCaracteres[i].ToString();
                     if (i+1 < listaCaracteres.Count())
                     {
-                        if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i+1].ToString())|| listaCaracteres[i+1].ToString() == " ")
+                        if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i+1].ToString())|| listaCaracteres[i+1].ToString() == " " || 
+                            objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()))
                         {
                             lexemas_.Add(dato, $"{linea_}");
                             dato = string.Empty;
