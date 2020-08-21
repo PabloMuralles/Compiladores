@@ -61,14 +61,9 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         lexemas_.Add(dato, $"{linea_}");
                         dato = string.Empty;
-                    }
-                    
-
-                }
-                
-            }
-            
-             
+                    }                   
+                }                
+            }                         
         }
 
 
