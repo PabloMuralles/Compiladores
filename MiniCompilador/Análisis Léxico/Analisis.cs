@@ -15,7 +15,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">direccion del archivo</param>
         public void LecturaArchivo(string path)
         {
             var lexemas = new Dictionary<string, string>();
@@ -33,9 +33,9 @@ namespace MiniCompilador.Análisis_Léxico
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
         /// </summary>
-        /// <param name="Cadena"></param>
-        /// <param name="linea_"></param>
-        /// <param name="lexemas_"></param>
+        /// <param name="Cadena">Linea que se va analizar</param>
+        /// <param name="linea_">numero de linea que se esta analizando</param>
+        /// <param name="lexemas_">diccionario donde se encontraran los lexemas con el numero de linea y columan</param>
         private void IdentificadorLexemas(string Cadena,int linea_, Dictionary<string, string> lexemas_)
         {
             
