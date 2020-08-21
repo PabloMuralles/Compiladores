@@ -42,6 +42,8 @@ namespace MiniCompilador.Análisis_Léxico
             string dato = string.Empty;
             var listaCaracteres = Cadena.ToList();
             var objExpreciones = new Expreciones();
+            var contadorColumana = 1;
+            var contadorAux = 1;
 
             for (int i = 0; i < listaCaracteres.Count(); i++)
             {
@@ -50,21 +52,38 @@ namespace MiniCompilador.Análisis_Léxico
                     dato += listaCaracteres[i].ToString();
                     if (i+1 < listaCaracteres.Count())
                     {
+
                         if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i+1].ToString())|| listaCaracteres[i+1].ToString() == " " || 
                             objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()))
                         {
-                            lexemas_.Add(dato, $"{linea_}");
+                            lexemas_.Add(dato, $"{linea_},{contadorAux}-{contadorColumana}");
                             dato = string.Empty;
+                            contadorAux = contadorColumana;
                         }
+                       
                     }
                     else
                     {
                         lexemas_.Add(dato, $"{linea_}");
                         dato = string.Empty;
+                        contadorAux = contadorColumana;
+                    }
+
+                    contadorColumana++;
+                }
+                else
+                {
+                    contadorAux = contadorColumana + 1;
+                    contadorColumana++;
+                }
+                
+            }
+              
+
                     }                   
                 }                
             }                         
-        }
+
 
 
         /// <summary>
