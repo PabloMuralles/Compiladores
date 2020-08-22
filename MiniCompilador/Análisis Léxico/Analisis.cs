@@ -25,7 +25,7 @@ namespace MiniCompilador.Análisis_Léxico
             while (linea != null)
             {
                 //linea = linea.Trim();
-                IdentificadorLexemas(linea,contadorLinea,lexemas);
+                IdentificadorLexemas(linea, contadorLinea, lexemas);
                 contadorLinea++;
                 linea = archivo.ReadLine();
             }
@@ -36,9 +36,9 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="Cadena">Linea que se va analizar</param>
         /// <param name="linea_">numero de linea que se esta analizando</param>
         /// <param name="lexemas_">diccionario donde se encontraran los lexemas con el numero de linea y columan</param>
-        private void IdentificadorLexemas(string Cadena,int linea_, Dictionary<string, string> lexemas_)
+        private void IdentificadorLexemas(string Cadena, int linea_, Dictionary<string, string> lexemas_)
         {
-            
+
             string dato = string.Empty;
             var listaCaracteres = Cadena.ToList();
             var objExpreciones = new Expreciones();
@@ -50,17 +50,20 @@ namespace MiniCompilador.Análisis_Léxico
                 if (listaCaracteres[i].ToString() != " ")
                 {
                     dato += listaCaracteres[i].ToString();
-                    if (i+1 < listaCaracteres.Count())
+                    if (i + 1 < listaCaracteres.Count())
                     {
 
-                        if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i+1].ToString())|| listaCaracteres[i+1].ToString() == " " || 
+                        if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i + 1].ToString()) || listaCaracteres[i + 1].ToString() == " " ||
                             objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()))
                         {
+                            // Utilizar el metodo validar y modificarlo para que devuelva
+                            // un string
+
                             lexemas_.Add(dato, $"{linea_},{contadorAux}-{contadorColumana}");
                             dato = string.Empty;
                             contadorAux = contadorColumana;
                         }
-                       
+
                     }
                     else
                     {
@@ -76,14 +79,11 @@ namespace MiniCompilador.Análisis_Léxico
                     contadorAux = contadorColumana + 1;
                     contadorColumana++;
                 }
-                
+
             }
-              
 
-                    }                   
-                }                
-            }                         
-
+        }
+    
 
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="cadena">caracter o cadena a evaluar</param>
         /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
         /// <returns>verdadero si caso con alguna y un int que seria el identificador con cual caso</returns>
-        private (bool,int) Validar(string cadena, Expreciones objExpreciones_)
+        public (bool,int) Validar(string cadena, Expreciones objExpreciones_)
         {
             
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
