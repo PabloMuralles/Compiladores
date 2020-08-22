@@ -18,7 +18,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="path">direccion del archivo</param>
         public void LecturaArchivo(string path)
         {
-            var lexemas = new Dictionary<string, string>();
+            var lexemas = new List<Tuple<string,string>>();
             int contadorLinea = 1;
             var archivo = new StreamReader(path);
             var linea = archivo.ReadLine();
@@ -36,7 +36,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="Cadena">Linea que se va analizar</param>
         /// <param name="linea_">numero de linea que se esta analizando</param>
         /// <param name="lexemas_">diccionario donde se encontraran los lexemas con el numero de linea y columan</param>
-        private void IdentificadorLexemas(string Cadena,int linea_, Dictionary<string, string> lexemas_)
+        private void IdentificadorLexemas(string Cadena,int linea_, List<Tuple<string, string>> lexemas_)
         {
             
             string dato = string.Empty;
@@ -54,8 +54,9 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i+1].ToString())|| listaCaracteres[i+1].ToString() == " " ||
                             objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()))
-                        {
-                            lexemas_.Add(dato, $"{linea_},{contadorAux}-{contadorColumana}");
+                        { 
+                            
+                            lexemas_.Add(new Tuple<string,string>(dato, $"{linea_},{contadorAux}-{contadorColumana}"));
                             dato = string.Empty;
                             contadorAux = contadorColumana;
                         }
@@ -63,7 +64,7 @@ namespace MiniCompilador.Análisis_Léxico
                     }
                     else
                     {
-                        lexemas_.Add(dato, $"{linea_}");
+                        lexemas_.Add(new Tuple<string, string>(dato, $"{linea_},{contadorAux}-{contadorColumana}"));
                         dato = string.Empty;
                         contadorAux = contadorColumana;
                     }
