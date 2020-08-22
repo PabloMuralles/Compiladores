@@ -59,6 +59,7 @@ namespace MiniCompilador.Análisis_Léxico
                             lexemas_.Add(new Tuple<string,string>(dato, $"{linea_},{contadorAux}-{contadorColumana}"));
                             dato = string.Empty;
                             contadorAux = contadorColumana;
+                             
                         }
                        
                     }
