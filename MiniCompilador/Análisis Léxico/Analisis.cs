@@ -29,6 +29,7 @@ namespace MiniCompilador.Análisis_Léxico
                 contadorLinea++;
                 linea = archivo.ReadLine();
             }
+            Categorizacion(lexemas);
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -83,6 +84,28 @@ namespace MiniCompilador.Análisis_Léxico
             }
 
         }
+
+        public void Categorizacion(Dictionary<string,string> Lexema_)
+        {
+            var objExpreciones = new Expreciones();
+            string Salida= Environment.CurrentDirectory;
+            if (!Directory.Exists(Path.Combine(Salida, "Salida")))
+            {
+                Directory.CreateDirectory(Path.Combine(Salida, "Salida"));
+            }
+            using (var writeStream = new FileStream(Path.Combine(Salida, "Salida.txt"), FileMode.OpenOrCreate))
+            {
+                using (var write = new StreamWriter(writeStream))
+                {
+                    foreach (KeyValuePair<string, string> pair in Lexema_)
+                    {
+                        string Categoria = Validar(pair.Key, objExpreciones);
+                        write.Write("{0}  Línea y columna {1}  {2} \n", pair.Key, pair.Value, Categoria);
+                    }
+
+                }
+            }
+        }
     
 
 
@@ -93,40 +116,44 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="cadena">caracter o cadena a evaluar</param>
         /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
         /// <returns>verdadero si caso con alguna y un int que seria el identificador con cual caso</returns>
-        public (bool,int) Validar(string cadena, Expreciones objExpreciones_)
+        public string Validar(string cadena, Expreciones objExpreciones_)
         {
-            
+
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
             {
-                return (true,1);
+                return ("Palabra_Reservada");
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
-                return (true, 3);
+                return ("booleanas");
             }
             else if (objExpreciones_.identificador_.IsMatch(cadena))
             {
-                return (true, 2);
+                return ("identificador");
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return (true, 4);
+                return ("Entero");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
-                return (true, 5);
+                return ("Hexadecimal");
             }
             else if (objExpreciones_.doubles_.IsMatch(cadena))
             {
-                return (true, 6);
+                return ("Doubles");
             }
             else if (objExpreciones_.cadena_.IsMatch(cadena))
             {
-                return (true, 7);
+                return ("cadena");
+            }
+            else if (objExpreciones_.caracteres_.IsMatch(cadena))
+            {
+                return ("Caracter");
             }
             else
             {
-                return (true, 0);
+                return ("Token no encontrado");
             }
         }
     }
