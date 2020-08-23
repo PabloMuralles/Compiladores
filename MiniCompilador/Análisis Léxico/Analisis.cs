@@ -18,7 +18,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="path">direccion del archivo</param>
         public void LecturaArchivo(string path)
         {
-            var lexemas = new Dictionary<string, string>();
+            var lexemas = new List<Tuple<string, string>>();
             int contadorLinea = 1;
             var archivo = new StreamReader(path);
             var linea = archivo.ReadLine();
@@ -37,7 +37,8 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="Cadena">Linea que se va analizar</param>
         /// <param name="linea_">numero de linea que se esta analizando</param>
         /// <param name="lexemas_">diccionario donde se encontraran los lexemas con el numero de linea y columan</param>
-        private void IdentificadorLexemas(string Cadena, int linea_, Dictionary<string, string> lexemas_)
+
+        private void IdentificadorLexemas(string Cadena, int linea_, List<Tuple<string, string>> lexemas_)
         {
 
             string dato = string.Empty;
@@ -57,18 +58,19 @@ namespace MiniCompilador.Análisis_Léxico
                         if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i + 1].ToString()) || listaCaracteres[i + 1].ToString() == " " ||
                             objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()))
                         {
-                            // Utilizar el metodo validar y modificarlo para que devuelva
-                            // un string
 
-                            lexemas_.Add(dato, $"{linea_},{contadorAux}-{contadorColumana}");
+
+                            lexemas_.Add(new Tuple<string, string>(dato, $"{linea_},{contadorAux}-{contadorColumana}"));
+
                             dato = string.Empty;
                             contadorAux = contadorColumana;
+
                         }
 
                     }
                     else
                     {
-                        lexemas_.Add(dato, $"{linea_}");
+                        lexemas_.Add(new Tuple<string, string>(dato, $"{linea_},{contadorAux}-{contadorColumana}"));
                         dato = string.Empty;
                         contadorAux = contadorColumana;
                     }
@@ -83,7 +85,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             }
 
-        }
+
 
         public void Categorizacion(Dictionary<string,string> Lexema_)
         {
@@ -103,6 +105,11 @@ namespace MiniCompilador.Análisis_Léxico
                         write.Write("{0}  Línea y columna {1}  {2} \n", pair.Key, pair.Value, Categoria);
                     }
 
+
+        }
+
+
+
                 }
             }
         }
@@ -118,10 +125,13 @@ namespace MiniCompilador.Análisis_Léxico
         /// <returns>verdadero si caso con alguna y un int que seria el identificador con cual caso</returns>
         public string Validar(string cadena, Expreciones objExpreciones_)
         {
-
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
             {
+
                 return ("Palabra_Reservada");
+
+               
+
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
