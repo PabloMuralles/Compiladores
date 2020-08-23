@@ -102,8 +102,9 @@ namespace MiniCompilador.Análisis_Léxico
                                                         
                     foreach ( var item  in Lexema_)
                     {
+                        var LC = item.Item2.Split(',');
                         string Categoria = Validar(item.Item1, objExpreciones);
-                        write.Write("{0}  Línea y columna {1}  {2} \n", item.Item1,item.Item2, Categoria);
+                        write.Write("...{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
                     }
                 }
             }
