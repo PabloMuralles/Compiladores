@@ -53,8 +53,7 @@ namespace MiniCompilador.Análisis_Léxico
                 {
                     dato += listaCaracteres[i].ToString();
                     if (i + 1 < listaCaracteres.Count())
-                    {
-
+                    {                       
                         if (objExpreciones.caracteres_.IsMatch(listaCaracteres[i + 1].ToString()) || listaCaracteres[i + 1].ToString() == " " ||
                             objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()))
                         {
@@ -68,6 +67,7 @@ namespace MiniCompilador.Análisis_Léxico
                         }
 
                     }
+                   
                     else
                     {
                         lexemas_.Add(new Tuple<string, string>(dato, $"{linea_},{contadorAux}-{contadorColumana}"));
@@ -91,21 +91,23 @@ namespace MiniCompilador.Análisis_Léxico
         {
             var objExpreciones = new Expreciones();
             string Salida = Environment.CurrentDirectory;
-            if (!Directory.Exists(Path.Combine(Salida, "Salida")))
+            if (Directory.Exists(Path.Combine(Salida, "Salida")))
             {
                 Directory.CreateDirectory(Path.Combine(Salida, "Salida"));
             }
             using (var writeStream = new FileStream(Path.Combine(Salida, "Salida.txt"), FileMode.OpenOrCreate))
-            {
+            {          
+                
                 using (var write = new StreamWriter(writeStream))
                 {
-                                                        
+                                                         
                     foreach ( var item  in Lexema_)
                     {
                         var LC = item.Item2.Split(',');
                         string Categoria = Validar(item.Item1, objExpreciones);
                         write.Write("...{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
                     }
+                    write.Close();
                 }
             }
         }

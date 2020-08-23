@@ -52,7 +52,7 @@ namespace MiniCompilador.Análisis_Léxico
             doubles = new Regex(@"^(([0-9]+.[0-9]+|.[0-9]+)|([0-9]+.(E|e)(-|\+)?[0-9]+))$");
 
             cadena= new Regex("\"[^\"\n]\"*");
-
+            
             caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
 
             //comentariosLinea = new Regex(@"^ $");
