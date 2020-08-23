@@ -188,9 +188,9 @@ namespace MiniCompilador.Análisis_Léxico
                                     {
                                         break;
                                     }
-                                   
+
                                 }
-                                else if(listaCaracteres[i + 1] == '*')
+                                else if (listaCaracteres[i + 1] == '*')
                                 {
                                     dato = dato.Remove(dato.Length - 1, 1);
                                     if (dato.Length != 0)
@@ -201,7 +201,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     comentarioMultiple = true;
                                     i++;
-                                
+
                                 }
                                 else
                                 {
@@ -218,7 +218,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 contadorAux = contadorColumana + 1;
                                 contadorColumana++;
                             }
-          
+
                         }
                         else if (listaCaracteres[i] == '*' && comentarioMultiple == true)
                         {
@@ -230,7 +230,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     dato = string.Empty;
                                     i++;
                                 }
-                                
+
                             }
                         }
                         else
@@ -241,25 +241,25 @@ namespace MiniCompilador.Análisis_Léxico
                             contadorColumana++;
                         }
                     }
-                    else  
+                    else
                     {
                         if (i + 1 < listaCaracteres.Count())
                         {
-                           
-                            if ((objExpreciones.caracteresDobles_.IsMatch(listaCaracteres[i + 1].ToString()) || listaCaracteres[i + 1].ToString()== " " || 
+
+                            if ((objExpreciones.caracteresDobles_.IsMatch(listaCaracteres[i + 1].ToString()) || listaCaracteres[i + 1].ToString() == " " ||
                                 listaCaracteres[i + 1].ToString() == "\t" || (objExpreciones.llavesSimples_.IsMatch(listaCaracteres[i + 1].ToString())))
                             && stringEncontrado == false && comentarioMultiple == false)
                             {
-                               
-                                
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"ok"));
-                                    dato = string.Empty;
-                                    contadorAux = contadorColumana + 1;
-                                    contadorColumana++;
+
+
+                                lexemas_.Add(new Tuple<string, string>(dato, $"ok"));
+                                dato = string.Empty;
+                                contadorAux = contadorColumana + 1;
+                                contadorColumana++;
 
 
                             }
-                          
+
                         }
                         else
                         {
