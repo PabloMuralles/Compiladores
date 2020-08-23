@@ -60,7 +60,7 @@ namespace MiniCompilador.Análisis_Léxico
                 if (stringEncontrado == true)
                 {
                     stringEncontrado = false;
-                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana},error"));
+                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana},Error la cadena no se cerro"));
                     dato = string.Empty;
                     contadorAux = contadorColumana + 1;
                      
@@ -118,6 +118,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         dato += listaCaracteres[i + 1].ToString();
                                         contadorColumana++;
                                         lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        // verificar este +++
                                         i++;
                                         contadorAux = contadorColumana + 1;
                                         
@@ -140,7 +141,7 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else
                             {
-                                lexemas_.Add(new Tuple<string, string>(dato, $"ok"));
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
                                
@@ -160,6 +161,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         contadorColumana++;
                                         lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
+                                        //verificar este ++
                                         i++;
                                         contadorAux = contadorColumana + 1;
                                          
