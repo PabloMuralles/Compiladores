@@ -85,12 +85,12 @@ namespace MiniCompilador.Análisis_Léxico
 
             }
 
+        }
 
-
-        public void Categorizacion(Dictionary<string,string> Lexema_)
+        public void Categorizacion(List<Tuple<string, string>> Lexema_)
         {
             var objExpreciones = new Expreciones();
-            string Salida= Environment.CurrentDirectory;
+            string Salida = Environment.CurrentDirectory;
             if (!Directory.Exists(Path.Combine(Salida, "Salida")))
             {
                 Directory.CreateDirectory(Path.Combine(Salida, "Salida"));
@@ -99,20 +99,19 @@ namespace MiniCompilador.Análisis_Léxico
             {
                 using (var write = new StreamWriter(writeStream))
                 {
-                    foreach (KeyValuePair<string, string> pair in Lexema_)
+                                                        
+                    foreach ( var item  in Lexema_)
                     {
-                        string Categoria = Validar(pair.Key, objExpreciones);
-                        write.Write("{0}  Línea y columna {1}  {2} \n", pair.Key, pair.Value, Categoria);
+                        string Categoria = Validar(item.Item1, objExpreciones);
+                        write.Write("{0}  Línea y columna {1}  {2} \n", item.Item1,item.Item2, Categoria);
                     }
-
-
-        }
-
-
-
                 }
             }
         }
+
+
+        
+        
     
 
 
@@ -128,10 +127,7 @@ namespace MiniCompilador.Análisis_Léxico
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
             {
 
-                return ("Palabra_Reservada");
-
-               
-
+                return ("Palabra_Reservada");              
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
@@ -168,3 +164,5 @@ namespace MiniCompilador.Análisis_Léxico
         }
     }
 }
+
+
