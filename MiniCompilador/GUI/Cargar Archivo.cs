@@ -91,7 +91,7 @@ namespace MiniCompilador.GUI
                 errorProvider1.Clear();
                 errorProvider1.SetError(path, p.Message);
             }
-            
+
         }
     }
 }

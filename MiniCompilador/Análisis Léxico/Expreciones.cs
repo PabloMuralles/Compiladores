@@ -19,7 +19,12 @@ namespace MiniCompilador.Análisis_Léxico
         private readonly Regex hexadecimal;
         private readonly Regex doubles;
         private readonly Regex cadena;
-        private readonly Regex caracteres;
+        private readonly Regex caracteresSimples;
+        private readonly Regex caracteresDobles;
+        private readonly Regex signosPuntuacion;
+        private readonly Regex llavesSimples;
+        private readonly Regex llavesDobles;
+        private readonly Regex espacioBlanco;
         //private readonly Regex comentariosLinea;
         //private readonly Regex comentariosMultiples;
 
@@ -33,7 +38,12 @@ namespace MiniCompilador.Análisis_Léxico
         public Regex doubles_ { get => doubles; }
         public Regex hexadecimal_ { get => hexadecimal; }
         public Regex cadena_ { get => cadena; }
-        public Regex caracteres_ { get => caracteres; }
+        public Regex caracteresSimples_ { get => caracteresSimples; }
+        public Regex caracteresDobles_ { get => caracteresDobles; }
+        public Regex signosPuntuacion_ { get => signosPuntuacion; }
+        public Regex llavesSimples_ { get => llavesSimples; }
+        public Regex llavesDobles_ { get => llavesDobles; }
+        public Regex espacioBlanco_ { get => espacioBlanco; }
         //public Regex comentariosLinea_ { get => comentariosLinea; }
         //public Regex comentariosMultiples_ { get => comentariosMultiples; }
 
@@ -53,7 +63,17 @@ namespace MiniCompilador.Análisis_Léxico
 
             cadena= new Regex("\"[^\"\n]\"*");
 
-            caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
+            caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=)$");
+
+            caracteresDobles = new Regex(@"^(<=|>=|==|!=|&&|\|\|)$");
+
+            signosPuntuacion = new Regex(@"^(!|;|,|\.)$");
+
+            llavesSimples = new Regex(@"^(\[|\]|\(|\)|{|})$");
+
+            llavesDobles = new Regex(@"^(\[\]|\(\)|{})$");
+
+            espacioBlanco = new Regex("\" \"");
 
             //comentariosLinea = new Regex(@"^ $");
             //comentariosMultiples = new Regex(@"^/\*[^\*/]\*/$");
