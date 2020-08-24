@@ -5,7 +5,6 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 ## Tabla de Contenido 🚀
 
 -[Fase 1](#Fase-1-Analizador-léxico)
-
     -[Requerimientos](#Requerimientos)
 
 
