@@ -4,8 +4,8 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 
 ## Tabla de Contenido 🚀
 
-*[Fase 1](#Fase-1-(Analizador-léxico))
-    *[Requerimientos](#Requerimientos)
+-[Fase 1](#Fase-1-(Analizador-léxico))
+    -[Requerimientos](#Requerimientos)
 
 
 ### Fase 1 (Analizador léxico) 📋
@@ -73,8 +73,6 @@ _Menciona las herramientas que utilizaste para crear tu proyecto_
 
 
 ## Autores ✒️
-
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
 
 * **Pablo Muralles**   
 * **Santiago Bocel** 
