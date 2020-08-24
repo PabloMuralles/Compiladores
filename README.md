@@ -92,7 +92,7 @@ que no es ni una palabra ni un identificador.
      ```
 -Doubles: Es una secuencia de digitos, un punto, segudio de una secuencia de digitos o nada. Tambien después del puntos puede venir un numero o nada seguido de una notación científica que puede o no tener el signo del exponente si no lo tiene se asume que es un ``+``
 
-``
+```
 Correcto:
 58.5
 13.
@@ -105,7 +105,7 @@ Incorrecto:
 .78
 .44E15
 45.3.15
-``
+```
 
 -Strings: Es una secuencia de caracterres dentro de commillas dobles ``""``. Estas no pueden contener ``"`` , una linea nueva, o un caracter nulo. Deben de comenzar y terminar en la misma linea no se permite que comiense en una y termine en otra.
 
