@@ -7,6 +7,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 - [Fase 1](#Fase-1)
      - [Requerimientos](#Requerimientos-📋)
           - [Objetivo](#Ojetivo)
+          - [Estructura Lexicográfica](#Estructura-Lexicográfica)
 
 
 ## Fase 1 
@@ -21,6 +22,8 @@ de programación asignado. El escáner irá reconociendo los tokens en el orden 
 leen, hasta el final del archivo. Para cada lenguaje, el escáner determinará sus atributos
 adecuadamente (estos eventualmente serán utilizados por otros componentes de su
 compilador) para que la información sobre cada símbolo deba estar correctamente impresa. 
+
+#### Estructura Lexicográfica
 
 ### Instalación 🔧
 
