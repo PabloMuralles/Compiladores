@@ -25,6 +25,7 @@ namespace MiniCompilador.Análisis_Léxico
         private readonly Regex llavesSimples;
         private readonly Regex llavesDobles;
         private readonly Regex espacioBlanco;
+        private readonly Regex letras;
         //private readonly Regex comentariosLinea;
         //private readonly Regex comentariosMultiples;
 
@@ -44,6 +45,9 @@ namespace MiniCompilador.Análisis_Léxico
         public Regex llavesSimples_ { get => llavesSimples; }
         public Regex llavesDobles_ { get => llavesDobles; }
         public Regex espacioBlanco_ { get => espacioBlanco; }
+        public Regex letras_ { get => letras; }
+
+
         //public Regex comentariosLinea_ { get => comentariosLinea; }
         //public Regex comentariosMultiples_ { get => comentariosMultiples; }
 
@@ -75,10 +79,14 @@ namespace MiniCompilador.Análisis_Léxico
 
             espacioBlanco = new Regex("\" \"");
 
+            letras = new Regex(@"^([a-z]|[A-Z])$");
+
+
+
             //comentariosLinea = new Regex(@"^ $");
             //comentariosMultiples = new Regex(@"^/\*[^\*/]\*/$");
 
-            
+
         }
 
 

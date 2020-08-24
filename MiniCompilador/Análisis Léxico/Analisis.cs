@@ -439,15 +439,17 @@ namespace MiniCompilador.Análisis_Léxico
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
                                 }
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false)
+                                {
+                                    var cadenaAux = dato.Remove(0, dato.Length - 1);
+                                    dato = dato.Remove(dato.Length - 1, 1);
+                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorAux}-{contadorColumana}"));
+                                    contadorAux = contadorColumana + 1;
+                                    
+                                }
 
                             }
-                            else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)
-                            {
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
-                                dato = string.Empty;
-                                contadorAux = contadorColumana + 1;
-
-                            }
+                             
 
                         }
                     }
@@ -492,48 +494,7 @@ namespace MiniCompilador.Análisis_Léxico
 
 
 
-        /// <summary>
-        /// Metodo que valida con las expresiones regulares para ve en cual casa
-        /// 1 = palabrasReservadas,2=identificador,3=booleana,4=entero,5=hexadecimal,6=double,7=cadena
-        /// </summary>
-        /// <param name="cadena">caracter o cadena a evaluar</param>
-        /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
-        /// <returns>verdadero si caso con alguna y un int que seria el identificador con cual caso</returns>
-        private (bool, int) Validar(string cadena, Expreciones objExpreciones_)
-        {
-
-            if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
-            {
-                return (true, 1);
-            }
-            else if (objExpreciones_.booleanas_.IsMatch(cadena))
-            {
-                return (true, 3);
-            }
-            else if (objExpreciones_.identificador_.IsMatch(cadena))
-            {
-                return (true, 2);
-            }
-            else if (objExpreciones_.entero_.IsMatch(cadena))
-            {
-                return (true, 4);
-            }
-            else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
-            {
-                return (true, 5);
-            }
-            else if (objExpreciones_.doubles_.IsMatch(cadena))
-            {
-                return (true, 6);
-            }
-            else if (objExpreciones_.cadena_.IsMatch(cadena))
-            {
-                return (true, 7);
-            }
-            else
-            {
-                return (true, 0);
-            }
-        }
+         
+         
     }
 }
