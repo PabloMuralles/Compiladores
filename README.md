@@ -25,17 +25,17 @@ compilador) para que la información sobre cada símbolo deba estar correctament
 
 #### Estructura Lexicográfica
 
-##### Palabras clave (reservadas)
+##### - Palabras clave (reservadas)
 
-void int double bool string class const interface null this for while foreach if else
-return break New NewArray Console WriteLine 
+     - void int double bool string class const interface null this for while foreach if else
+       return break New NewArray Console WriteLine 
 
-##### Identificadores
+##### - Identificadores
 
-Un identificador es una secuencia de letras, dígitos y guiones bajos siempre comenzando
-con una letra.
+     - Un identificador es una secuencia de letras, dígitos y guiones bajos siempre comenzando
+       con una letra.
 
-#####  ● Case Sensitive
+#####  - Case Sensitive
 
 - if es una palabra clave pero IF es un identificador
 
