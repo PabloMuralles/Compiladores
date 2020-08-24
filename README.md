@@ -4,8 +4,8 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 
 ## Tabla de Contenido 🚀
 
-- [Fase 1](#Fase-1)
-     - [Requerimientos](#Requerimientos-📋)
+- [Fase 1](#Fase-1).
+     - [Requerimientos](#Requerimientos-📋).
           - [Objetivo](#Objetivo-)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
 - [Construido con](#Construido-con-🛠️)
