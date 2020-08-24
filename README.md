@@ -121,6 +121,11 @@ esto es otra parte de la cadena
 esta bueno jejeje"
 ```
 
+##### ● Operadores y caracteres de puntuación
+
+```
++ - * / % < <= > >= = == != && || ! ; , . [ ] ( ) { } [] () {}
+```
 
 ### Instalación 🔧
 
