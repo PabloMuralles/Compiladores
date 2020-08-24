@@ -6,7 +6,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 
 - [Fase 1](#Fase-1)
      - [Requerimientos](#Requerimientos-📋)
-          - [Objetivo](#Ojetivo)
+          - [Objetivo](#ojetivo)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
 - [Construido con](#Construido-con-🛠️)
 - [Autores](#Autores)
