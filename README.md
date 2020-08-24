@@ -8,7 +8,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
     -[Requerimientos](#Requerimientos)
 
 
-### Fase 1 (Analizador léxico) 📋
+## Fase 1 (Analizador léxico) 📋
 
 ### Requerimientos 📋
 
