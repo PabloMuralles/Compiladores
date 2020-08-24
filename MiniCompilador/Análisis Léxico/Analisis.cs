@@ -294,7 +294,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
 
                             }
-                            else if (listaCaracteres[i] == '*')
+                            else if (listaCaracteres[i] == '*' && comentarioMultiple == true)
                             {
                                 if (i + 1 < listaCaracteres.Count())
                                 {
@@ -319,12 +319,7 @@ namespace MiniCompilador.Análisis_Léxico
 
                                         }
                                     }
-                                    else
-                                    {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
-                                        dato = string.Empty;
-                                        contadorAux = contadorColumana + 1;
-                                    }
+                                     
 
                                 }
 
