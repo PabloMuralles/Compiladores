@@ -82,7 +82,7 @@ namespace MiniCompilador.GUI
                 }
                 else
                 {
-                   throw new Exception("No se a cargado archivo");
+                    throw new Exception("No se a cargado archivo");
                 }
 
             //}
