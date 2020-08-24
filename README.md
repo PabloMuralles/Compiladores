@@ -75,7 +75,8 @@ que no es ni una palabra ni un identificador.
 
 -Entero: Puede expresarse en base 10 o base 16 
      -Los de base 10 deben ser una secuencia de digitos de 0-9
-     -Los de base 16 deben de empezar con ```0``` seguido de ```x``` o ```X``
+     -Los de base 16 deben de empezar con ```0``` seguido de ```x``` o ```X ```    
+
      ```
      Correcto:
      4
@@ -89,6 +90,37 @@ que no es ni una palabra ni un identificador.
      5.2
      .5
      ```
+-Doubles: Es una secuencia de digitos, un punto, segudio de una secuencia de digitos o nada. Tambien después del puntos puede venir un numero o nada seguido de una notación científica que puede o no tener el signo del exponente si no lo tiene se asume que es un ``+``
+
+``
+Correcto:
+58.5
+13.
+0.15
+0.2E2
+28.2e-2
+48.4e+2
+
+Incorrecto:
+.78
+.44E15
+45.3.15
+``
+
+-Strings: Es una secuencia de caracterres dentro de commillas dobles ``""``. Estas no pueden contener ``"`` , una linea nueva, o un caracter nulo. Deben de comenzar y terminar en la misma linea no se permite que comiense en una y termine en otra.
+
+```
+Correcto: 
+"esto cadena es un string correcta"
+
+Incorrecto:
+"esta es una parte de la cadena
+esto es otra parte de la cadena
+
+"será que esto
+esta bueno jejeje"
+```
+
 
 ### Instalación 🔧
 
