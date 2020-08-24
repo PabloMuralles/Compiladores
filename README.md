@@ -154,7 +154,7 @@ _Explica como ejecutar las pruebas automatizadas para este sistema_
 _Explica que verifican estas pruebas y por qué_
 
 ```
-Da un ejemplo
+ 
 ```
 
 ### Y las pruebas de estilo de codificación ⌨️
@@ -162,20 +162,11 @@ Da un ejemplo
 _Explica que verifican estas pruebas y por qué_
 
 ```
-Da un ejemplo
+ 
 ```
 
  📦
 
-
-
-## Construido con 🛠️
-
-_Menciona las herramientas que utilizaste para crear tu proyecto_
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - El framework web usado
-* [Maven](https://maven.apache.org/) - Manejador de dependencias
-* [ROME](https://rometools.github.io/rome/) - Usado para generar RSS
 
   🖇️
 
@@ -184,6 +175,11 @@ _Menciona las herramientas que utilizaste para crear tu proyecto_
 
  
  📌
+
+## Construido con 🛠️
+
+* [.NET](.NETFramework,Version=v4.7.2) - El framework usado
+ 
 
 
 ## Autores ✒️
@@ -195,6 +191,7 @@ _Menciona las herramientas que utilizaste para crear tu proyecto_
 
 ## Licencia 📄
 
-Este proyecto está bajo la Licencia (Tu Licencia) - mira el archivo [LICENSE.md](LICENSE.md) para detalles
+A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code. 
+see more in [LICENSE](https://github.com/PabloMuralles/Compiladores/blob/master/LICENSE) for more details.
 
  
