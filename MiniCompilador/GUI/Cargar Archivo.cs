@@ -36,9 +36,7 @@ namespace MiniCompilador.GUI
                  * guardarlo y sino es un txt se muestra un messaje*/
 
                 try
-                {
-                    if (Extencion == ".txt")
-                    {
+                {                   
                         errorProvider1.Clear();
                         var ArchivoEnseñar = new StreamReader(Direccion);
                         if (ArchivoEnseñar.BaseStream.Length != 0)
@@ -53,13 +51,7 @@ namespace MiniCompilador.GUI
                         }
 
 
-                    }
-                    else
-                    {
-                        //ExtencionValidar = false;
-
-                        throw new Exception("El documento ingesado no es un txt");
-                    }
+              
 
                 }
                 catch (Exception p)
