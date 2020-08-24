@@ -471,8 +471,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else
             {
-                Directory.Delete(Path.Combine(CarpetaOut, "Salida"),true);
-                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
+                File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Salida.out"), string.Empty);              
             }
             using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida","Salida.out"), FileMode.OpenOrCreate))
             {
@@ -484,6 +483,7 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         var LC = item.Item2.Split(',');
                         string Categoria = Validar(item.Item1, objExpreciones);
+                        write.Write(" \n ");
                         write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
                     }
                     write.Close();
@@ -509,7 +509,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
             {
-                return ("Palabra_Reservada");             
+                return ("Palabra_Reservada ->"+ "\"" + cadena + "\"");
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
@@ -537,14 +537,22 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.caracteresDobles_.IsMatch(cadena))
             {
-                return ("Caracter Doble");
+                return ("\"" + cadena + "\"");
             }
             else if (objExpreciones_.caracteresSimples_.IsMatch(cadena))
             {
-                return ("cadena Simple");
+                return ("\"" + cadena + "\"");
+            }
+            else if (objExpreciones_.llavesSimples_.IsMatch(cadena))
+            {
+                return ("\""+cadena+"\"");
+            }
+            else if (objExpreciones_.llavesDobles_.IsMatch(cadena))
+            {
+                return ("\"" + cadena + "\"");
             }
             else
-            {
+            {                
                 return ("Token no encontrado");
             }
         }
