@@ -25,6 +25,29 @@ compilador) para que la información sobre cada símbolo deba estar correctament
 
 #### Estructura Lexicográfica
 
+##### Palabras clave (reservadas)
+
+void int double bool string class const interface null this for while foreach if else
+return break New NewArray Console WriteLine 
+
+##### Identificadores
+
+Un identificador es una secuencia de letras, dígitos y guiones bajos siempre comenzando
+con una letra.
+
+#####  Case Sensitive
+
+● if es una palabra clave pero IF es un identificador
+● binky y Binky son dos identificadores distintos. 
+
+#####  Espacios en blanco
+
+El espacio en blanco (es decir, espacios, tabuladores y saltos de línea) sirve para
+separar tokens, pero por lo demás debe ser ignorado. Palabras clave y los
+identificadores deben estar separados por espacios en blanco, o por una señal de
+que no es ni una palabra ni un identificador.
+● if ( 23 this se escanea como cuatro tokens, al igual que if(23this
+
 ### Instalación 🔧
 
 _Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
