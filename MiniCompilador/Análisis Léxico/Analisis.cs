@@ -63,7 +63,7 @@ namespace MiniCompilador.Análisis_Léxico
                 if (stringEncontrado == true)
                 {
                     stringEncontrado = false;
-                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana},Error la cadena no se cerro"));
+                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana},Error la cadena no se cerro"));
                     dato = string.Empty;
                     contadorAux = contadorColumana + 1;
                 }
@@ -95,7 +95,7 @@ namespace MiniCompilador.Análisis_Léxico
                             else if (stringEncontrado == true)
                             {
                                 stringEncontrado = false;
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
 
@@ -133,7 +133,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         contadorAux = contadorColumana + 1;
 
@@ -141,7 +141,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 else
                                 {
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
 
@@ -149,7 +149,7 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else
                             {
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
 
@@ -167,7 +167,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     {
                                         dato += listaCaracteres[i + 1].ToString();
                                         contadorColumana++;
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         //verificar este ++
                                         i++;
@@ -176,7 +176,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         contadorAux = contadorColumana + 1;
 
@@ -184,7 +184,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 else
                                 {
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
 
@@ -193,7 +193,7 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else
                             {
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
 
@@ -212,7 +212,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         dato = dato.Remove(dato.Length - 1, 1);
                                         if (dato.Length != 0)
                                         {
-                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             contadorAux = contadorColumana + 1;
                                             dato = string.Empty;
 
@@ -228,7 +228,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         dato = dato.Remove(dato.Length - 1, 1);
                                         if (dato.Length != 0)
                                         {
-                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             contadorAux = contadorColumana + 1;
                                             dato = string.Empty;
 
@@ -240,7 +240,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         contadorAux = contadorColumana + 1;
 
@@ -248,7 +248,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 else
                                 {
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
 
@@ -274,7 +274,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         }
                                         else
                                         {
-                                            lexemas_.Add(new Tuple<string, string>("Ç", $"{contadorAux}-{contadorColumana},Comentario sin emparejar"));
+                                            lexemas_.Add(new Tuple<string, string>("Ç", $"{contadorLinea},{contadorAux}-{contadorColumana},Comentario sin emparejar"));
                                             dato = string.Empty;
                                             contadorAux = contadorColumana + 1;
 
@@ -282,7 +282,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         contadorAux = contadorColumana + 1;
                                     }
@@ -295,7 +295,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 if (comentarioMultiple == false && comentarioLinea == false)
                                 {
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
 
@@ -331,7 +331,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         }
                                         else
                                         {
-                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             dato = string.Empty;
                                             contadorAux = contadorColumana + 1;
                                             validarDoubles = false;
@@ -340,7 +340,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         contadorAux = contadorColumana + 1;
                                         validarDoubles = false;
@@ -364,7 +364,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         }
                                         else
                                         {
-                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             dato = string.Empty;
                                             contadorAux = contadorColumana + 1;
                                             validarDoubles = false;
@@ -373,7 +373,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                         dato = string.Empty;
                                         contadorAux = contadorColumana + 1;
                                         validarDoubles = false;
@@ -383,7 +383,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     var cadenaAux = dato.Remove(dato.Length - 1, 1);
                                     dato = dato.Remove(0, dato.Length - 1);
-                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     contadorAux = contadorColumana + 1;
                                     validarDoubles = false;
 
@@ -401,7 +401,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
 
 
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
 
@@ -412,7 +412,7 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)
                             {
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
 
@@ -431,7 +431,7 @@ namespace MiniCompilador.Análisis_Léxico
                 {
                     if (dato.Length != 0)
                     {
-                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                        lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                         dato = string.Empty;
 
                     }
@@ -464,14 +464,21 @@ namespace MiniCompilador.Análisis_Léxico
         public void Categorizacion(List<Tuple<string, string>> Lexema_)
         {
             var objExpreciones = new Expreciones();
-            string Salida = Environment.CurrentDirectory;
-            if (Directory.Exists(Path.Combine(Salida, "Salida")))
-
-            using (var writeStream = new FileStream(Path.Combine(Salida, "Salida.txt"), FileMode.OpenOrCreate))
-            {          
-                
+            string CarpetaOut = Environment.CurrentDirectory;
+            if (!Directory.Exists(Path.Combine(CarpetaOut, "Salida")))
+            {
+                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
+            }
+            else
+            {
+                Directory.Delete(Path.Combine(CarpetaOut, "Salida"));
+                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
+            }
+            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida","Salida.out"), FileMode.OpenOrCreate))
+            {
                 using (var write = new StreamWriter(writeStream))
                 {
+                   
                                                          
                     foreach ( var item  in Lexema_)
                     {
