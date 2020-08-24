@@ -35,10 +35,11 @@ return break New NewArray Console WriteLine
 Un identificador es una secuencia de letras, dígitos y guiones bajos siempre comenzando
 con una letra.
 
-#####  Case Sensitive
+#####  ● Case Sensitive
 
-● if es una palabra clave pero IF es un identificador
-● binky y Binky son dos identificadores distintos. 
+- if es una palabra clave pero IF es un identificador
+
+- binky y Binky son dos identificadores distintos. 
 
 #####  Espacios en blanco
 
@@ -46,7 +47,21 @@ El espacio en blanco (es decir, espacios, tabuladores y saltos de línea) sirve 
 separar tokens, pero por lo demás debe ser ignorado. Palabras clave y los
 identificadores deben estar separados por espacios en blanco, o por una señal de
 que no es ni una palabra ni un identificador.
-● if ( 23 this se escanea como cuatro tokens, al igual que if(23this
+
+- if ( 23 this se escanea como cuatro tokens, al igual que if(23this
+
+#####  Comentarios
+
+- De una lines: inicio con // y todo lo que siga hasta el final de la linea sera un comentario se permite cualquier simbolo dentro de estos.
+
+- De varias lineas: inicia con /* y termina con */ cualquier simbolo se acepta en un comentario sin tomar en cuenta */ ya que pone fin al comentario, estos comentarios no se anidan.
+
+#####  Constantes
+
+- Booleanas: Estas pueden ser true o false.
+
+- Entera: 
+
 
 ### Instalación 🔧
 
