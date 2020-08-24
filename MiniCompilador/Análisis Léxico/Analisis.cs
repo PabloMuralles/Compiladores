@@ -471,7 +471,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else
             {
-                Directory.Delete(Path.Combine(CarpetaOut, "Salida"));
+                Directory.Delete(Path.Combine(CarpetaOut, "Salida"),true);
                 Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
             }
             using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida","Salida.out"), FileMode.OpenOrCreate))
@@ -484,7 +484,7 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         var LC = item.Item2.Split(',');
                         string Categoria = Validar(item.Item1, objExpreciones);
-                        write.Write("...{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
+                        write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
                     }
                     write.Close();
                 }
