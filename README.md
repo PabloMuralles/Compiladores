@@ -9,7 +9,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
           - [Objetivo](#Ojetivo)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
 - [Construido con](#Construido-con-🛠️)
-- [Autores](#Autores-✒️)
+- [Autores](#Autores)
 - [Licencia](#Licencia-📄)
 
 
