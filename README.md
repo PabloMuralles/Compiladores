@@ -4,15 +4,18 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 
 ## Tabla de Contenido 🚀
 
--[Fase 1](#Fase-1-(Análisis-Léxico)-📋)
+-[Fase 1 (Análisis Léxico)](#Fase-1)
      -[Requerimientos](#Requerimientos)
+          -[Objetivo](#Ojetivo)
 
 
-## Fase 1 (Análisis Léxico) 📋
+## Fase 1 
 
 ### Requerimientos 📋
 
-Objetivo: En el primer proyecto de programación, ustedes iniciarán su compilador con la aplicación
+#### Objetivo 
+
+En el primer proyecto de programación, ustedes iniciarán su compilador con la aplicación
 del análisis léxico. Para la primera tarea del front-end, crearán un escáner para el lenguaje
 de programación asignado. El escáner irá reconociendo los tokens en el orden en que se
 leen, hasta el final del archivo. Para cada lenguaje, el escáner determinará sus atributos
