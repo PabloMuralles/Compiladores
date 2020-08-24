@@ -439,7 +439,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
                                 }
-                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false)
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]))
                                 {
                                     var cadenaAux = dato.Remove(0, dato.Length - 1);
                                     dato = dato.Remove(dato.Length - 1, 1);
