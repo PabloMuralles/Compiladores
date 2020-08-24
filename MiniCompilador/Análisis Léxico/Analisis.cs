@@ -481,10 +481,18 @@ namespace MiniCompilador.Análisis_Léxico
                                                          
                     foreach ( var item  in Lexema_)
                     {
+                        if (item.Item1 == "Ç")
+                        {
+                            write.Write(" \n ");
+                            write.Write($"{item.Item2}");
+                        }
+                        else
+                        {
                         var LC = item.Item2.Split(',');
                         string Categoria = Validar(item.Item1, objExpreciones);
                         write.Write(" \n ");
                         write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
+                        }
                     }
                     write.Close();
                 }
@@ -509,7 +517,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
             {
-                return ("Palabra_Reservada ->"+ "\"" + cadena + "\"");
+                return ("Palabra_Reservada ->" + "\"" + cadena + "\"");
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
@@ -545,14 +553,18 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.llavesSimples_.IsMatch(cadena))
             {
-                return ("\""+cadena+"\"");
+                return ("\"" + cadena + "\"");
             }
             else if (objExpreciones_.llavesDobles_.IsMatch(cadena))
             {
                 return ("\"" + cadena + "\"");
             }
+            else if (objExpreciones_.signosPuntuacion_.IsMatch(cadena))
+            {
+                return ("\"" + cadena + "\"");
+            }
             else
-            {                
+            {
                 return ("Token no encontrado");
             }
         }
