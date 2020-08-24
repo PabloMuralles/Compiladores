@@ -5,19 +5,21 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 ## Tabla de Contenido 🚀
 
 - [Fase 1](#Fase-1).
-     - [Requerimientos](#Requerimientos)
-          - [Objetivo](#Objetivo)
+     - [Requerimientos](#Requerimientos-)
+          - [Objetivo](#objetivo)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
-- [Construido con](#Construido-con-🛠️)
-- [Autores](#Autores)
-- [Licencia](#Licencia-📄)
+- [Construido con](#construido-con-%EF%B8%8F)
+- [Autores](#autores-%EF%B8%8F)
+- [Licencia](#licencia-)
+ 
+ 
 
 
 ## Fase 1 
 
 ### Requerimientos 📋
 
-#### Objetivo 
+#### Objetivo
 
 En el primer proyecto de programación, ustedes iniciarán su compilador con la aplicación
 del análisis léxico. Para la primera tarea del front-end, crearán un escáner para el lenguaje
