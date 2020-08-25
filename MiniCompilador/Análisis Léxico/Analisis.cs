@@ -12,6 +12,7 @@ namespace MiniCompilador.Análisis_Léxico
 {
     class Analisis
     {
+        GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
         /// </summary>
@@ -487,14 +488,14 @@ namespace MiniCompilador.Análisis_Léxico
             if (stringEncontrado == true)
 
             {
-                lexemas_.Add(new Tuple<string, string>(dato, $"EOF Cadena"));
+                lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},EOF Cadena"));
                 dato = string.Empty;
                 contadorAux = contadorColumana + 1;
                 contadorColumana++;
             }
             if (comentarioMultiple == true)
             {
-                lexemas_.Add(new Tuple<string, string>("Ç", $"EOF Comentario"));
+                lexemas_.Add(new Tuple<string, string>("Ç", $"{contadorLinea},EOF Comentario"));
                 dato = string.Empty;
                 contadorAux = contadorColumana + 1;
                 contadorColumana++;
@@ -517,23 +518,38 @@ namespace MiniCompilador.Análisis_Léxico
             {
                 using (var write = new StreamWriter(writeStream))
                 {
-                   
-                                                         
+                    List<string> Errores = new List<string>();                                                        
                     foreach ( var item  in Lexema_)
                     {
                         if (item.Item1 == "Ç")
                         {
                             write.Write(" \n ");
-                            write.Write($"{item.Item2}");
+                            var LC = item.Item2.Split(',');
+                            write.Write($"{LC[1]}");
+                            Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[0]}");
                         }
                         else
                         {
                         var LC = item.Item2.Split(',');
                         string Categoria = Validar(item.Item1, objExpreciones);
+                            if (Categoria == "Token no encontrado")
+                            {
+                                Errores.Add($"Error encontrado en linea {LC[0]}");
+                            }
                         write.Write(" \n ");
                         write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
                         }
                     }
+                    if (!Errores.Any())
+                    {
+                        Errores.Add("0 Errores detectados");
+                        Mandar_mensaje(Errores);
+                    }
+                    else
+                    {
+                        Mandar_mensaje(Errores);
+                    }
+                   
                     write.Close();
                 }
             }
@@ -600,6 +616,18 @@ namespace MiniCompilador.Análisis_Léxico
             {
                 return ("Token no encontrado");
             }
+        }
+
+        public void Mandar_mensaje(List<string> mensaje)
+        {
+            
+
+            string M_mostrar = string.Empty;
+            foreach (var item in mensaje)
+            {            
+              M_mostrar += item + " \n ";
+            }
+            cargar_Archivo.Mostrar_mensaje(M_mostrar);
         }
     }
 

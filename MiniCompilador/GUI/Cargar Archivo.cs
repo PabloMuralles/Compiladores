@@ -85,5 +85,10 @@ namespace MiniCompilador.GUI
             //}
 
         }
+        public void Mostrar_mensaje(string mensaje)
+        {
+        
+            MessageBox.Show(mensaje + "Mas informacion en Salida.out");
+        }
     }
 }
