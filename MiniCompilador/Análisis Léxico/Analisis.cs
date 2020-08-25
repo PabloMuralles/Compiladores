@@ -187,8 +187,8 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else
                             {
-                                var cadenaAux = dato.Remove(0, dato.Length - 1);
-                                dato = dato.Remove(dato.Length - 1, 1);
+                                var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                dato = dato.Remove(0, dato.Length - 1);
                                 lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorAux}-{contadorColumana}"));
                                 contadorAux = contadorColumana + 1;
                                 validarDoubles = false;
@@ -439,7 +439,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
                                 }
-                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]))
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
                                 {
                                     var cadenaAux = dato.Remove(0, dato.Length - 1);
                                     dato = dato.Remove(dato.Length - 1, 1);
@@ -449,8 +449,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
 
                             }
-                             
-
+                            
                         }
                     }
                     contadorColumana++;
