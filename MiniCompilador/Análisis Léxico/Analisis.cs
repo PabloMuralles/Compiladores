@@ -24,10 +24,10 @@ namespace MiniCompilador.Análisis_Léxico
             var archivo = new StreamReader(path);
 
             IdentificadorLexemas(lexemas, archivo);
-       
+
             Categorizacion(lexemas);
-    
-             
+
+
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -72,7 +72,7 @@ namespace MiniCompilador.Análisis_Léxico
                         }
                         contadorAux = contadorColumana + 1;
                     }
-                   
+
                     else
                     {
                         // esto es para no separar los strings
@@ -103,7 +103,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 if (i + 1 < listaCaracteres.Count())
                                 {
-                                    if (i!=0 && dato.Length>2)
+                                    if (i != 0 && dato.Length > 2)
                                     {
                                         var datoAnterior = Convert.ToChar(dato.Substring(dato.Length - 2, 1));
                                         if (char.IsDigit(listaCaracteres[i + 1]) && char.IsDigit(datoAnterior) && validarDoubles == false)
@@ -121,7 +121,7 @@ namespace MiniCompilador.Análisis_Léxico
                                             i++;
                                             //contadorAux = contadorColumana + 1;
                                         }
-                                        else if ((listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e') )
+                                        else if ((listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e'))
                                         {
                                             dato += listaCaracteres[i + 1].ToString();
                                             validarDoubles = true;
@@ -134,9 +134,9 @@ namespace MiniCompilador.Análisis_Léxico
                                         }
                                         else if (notacionCientifica == true)
                                         {
-                                             
+
                                             var datoAux = dato.Remove(dato.Length - 1, 1);
-                                            dato= dato.Remove(0,dato.Length - 1);
+                                            dato = dato.Remove(0, dato.Length - 1);
                                             lexemas_.Add(new Tuple<string, string>(datoAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             contadorAux = contadorColumana + 1;
 
@@ -191,7 +191,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
-                         
+
                             }
 
                         }
@@ -320,7 +320,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         }
                                     }
 
-                                    
+
 
                                 }
 
@@ -352,9 +352,9 @@ namespace MiniCompilador.Análisis_Léxico
                                     if (i + 1 < listaCaracteres.Count())
                                     {
                                         if (char.IsDigit(listaCaracteres[i + 1]))
-                                        {    
+                                        {
                                             contadorColumana++;
-                                             
+
                                         }
                                         else if (listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e')
                                         {
@@ -440,13 +440,13 @@ namespace MiniCompilador.Análisis_Léxico
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
                                 }
-                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
                                 {
                                     var cadenaAux = dato.Remove(0, dato.Length - 1);
                                     dato = dato.Remove(dato.Length - 1, 1);
                                     lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     contadorAux = contadorColumana + 1;
-                                    
+
                                 }
 
                             }
@@ -499,14 +499,14 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else
             {
-                File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Salida.out"), string.Empty);              
+                File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Salida.out"), string.Empty);
             }
-            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida","Salida.out"), FileMode.OpenOrCreate))
+            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", "Salida.out"), FileMode.OpenOrCreate))
             {
                 using (var write = new StreamWriter(writeStream))
                 {
-                    List<string> Errores = new List<string>();                                                        
-                    foreach ( var item  in Lexema_)
+                    List<string> Errores = new List<string>();
+                    foreach (var item in Lexema_)
                     {
                         if (item.Item1 == "Ç")
                         {
@@ -517,14 +517,30 @@ namespace MiniCompilador.Análisis_Léxico
                         }
                         else
                         {
-                        var LC = item.Item2.Split(',');
-                        string Categoria = Validar(item.Item1, objExpreciones);
-                            if (Categoria == "Token no encontrado")
+                            var LC = item.Item2.Split(',');
+                            string Categoria = Validar(item.Item1, objExpreciones);
+                            ///
+                            if (Categoria == "Token unido")
+                            {
+                                var dato_separado = Separar_caracter(item.Item1,objExpreciones);
+                                string Ncategiria = Validar(dato_separado[0], objExpreciones);
+                                string Scategiria = Validar(dato_separado[1], objExpreciones);
+                                write.Write(" \n ");
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n",dato_separado[0],LC[0],LC[1],Ncategiria);
+                                write.Write(" \n ");
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[1], LC[0], LC[1], Scategiria);
+                            }
+                            else if (Categoria == "Token no encontrado")
                             {
                                 Errores.Add($"Error encontrado en linea {LC[0]}");
+                                write.Write(" \n ");
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[0], LC[1], Categoria);
                             }
-                        write.Write(" \n ");
-                        write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1,LC[0],LC[1], Categoria);
+                            else
+                            { 
+                            write.Write(" \n ");
+                            write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[0], LC[1], Categoria);
+                            }
                         }
                     }
                     if (!Errores.Any())
@@ -536,7 +552,7 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         Mandar_mensaje(Errores);
                     }
-                   
+
                     write.Close();
                 }
             }
@@ -601,10 +617,50 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else
             {
-                return ("Token no encontrado");
+                return (Caracter_unidos(cadena, objExpreciones_));
             }
         }
+        public string Caracter_unidos(string caracter, Expreciones objExpreciones_)
+        {
+            string Numero = string.Empty;
+            string Letra = string.Empty;
+            foreach (var item in caracter)
+            {
+                if (objExpreciones_.entero_.IsMatch(Convert.ToString(item)))
+                {
+                    Numero += item;
+                }
+                else if (objExpreciones_.identificador_.IsMatch(Convert.ToString(item)))
+                {
+                    Letra += item;
+                }
+                else
+                {
+                    return ("Token no encontrado");
+                }
+            }
+            return ("Token unido");
 
+        }
+        public string[] Separar_caracter(string caracter, Expreciones objExpreciones_) 
+        {
+            string Numero = string.Empty;
+            string Letra = string.Empty;
+            foreach (var item in caracter)
+            {
+                if (objExpreciones_.entero_.IsMatch(Convert.ToString(item)))
+                {
+                    Numero += item;
+                }
+                else if (objExpreciones_.identificador_.IsMatch(Convert.ToString(item)))
+                {
+                    Letra += item;
+                }
+            }
+            string dato = Numero + "," + Letra;
+            var dato_separado = dato.Split(',');
+            return (dato_separado);
+        }
         public void Mandar_mensaje(List<string> mensaje)
         {
             
