@@ -24,16 +24,7 @@ namespace MiniCompilador.Análisis_Léxico
             var archivo = new StreamReader(path);
 
             IdentificadorLexemas(lexemas, archivo);
-
-            //var linea = archivo.ReadLine();
-            //while (linea != null)
-            //{
-            //    //linea = linea.Trim();
-            //    IdentificadorLexemas(linea, contadorLinea, lexemas);
-            //    contadorLinea++;
-            //    linea = archivo.ReadLine();
-            //}
-            // 
+       
             Categorizacion(lexemas);
     
              
@@ -196,7 +187,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 var cadenaAux = dato.Remove(dato.Length - 1, 1);
                                 dato = dato.Remove(0, dato.Length - 1);
-                                lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorAux}-{contadorColumana}"));
+                                lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                 dato = string.Empty;
                                 contadorAux = contadorColumana + 1;
@@ -574,7 +565,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return ($"entero + (Valor ={cadena})");
+                return ($"entero (Valor ={cadena})");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
