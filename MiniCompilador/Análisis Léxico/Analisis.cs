@@ -146,14 +146,14 @@ namespace MiniCompilador.Análisis_Léxico
                                              
                                             var datoAux = dato.Remove(dato.Length - 1, 1);
                                             dato= dato.Remove(0,dato.Length - 1);
-                                            lexemas_.Add(new Tuple<string, string>(datoAux, $"{contadorAux}-{contadorColumana}"));
+                                            lexemas_.Add(new Tuple<string, string>(datoAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             contadorAux = contadorColumana + 1;
 
                                         }
                                         else
                                         {
 
-                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                             dato = string.Empty;
                                             contadorAux = contadorColumana + 1;
 
@@ -197,7 +197,7 @@ namespace MiniCompilador.Análisis_Léxico
 
                                 var cadenaAux = dato.Remove(0, dato.Length - 1);
                                 dato = dato.Remove(dato.Length - 1, 1);
-                                lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorAux}-{contadorColumana}"));
+                                lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
 
                                 contadorAux = contadorColumana + 1;
                                 validarDoubles = false;
@@ -445,7 +445,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     listaCaracteres[i + 1].ToString() == "\t" || (objExpreciones.llavesSimples_.IsMatch(listaCaracteres[i + 1].ToString())))
                                 && stringEncontrado == false && comentarioMultiple == false)
                                 {
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     dato = string.Empty;
                                     contadorAux = contadorColumana + 1;
                                 }
@@ -453,7 +453,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     var cadenaAux = dato.Remove(0, dato.Length - 1);
                                     dato = dato.Remove(dato.Length - 1, 1);
-                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorAux}-{contadorColumana}"));
+                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{contadorLinea},{contadorAux}-{contadorColumana}"));
                                     contadorAux = contadorColumana + 1;
                                     
                                 }
@@ -538,13 +538,6 @@ namespace MiniCompilador.Análisis_Léxico
                 }
             }
         }
-
-
-
-
-
-
-
         /// <summary>
         /// Metodo que valida con las expresiones regulares para ve en cual casa
         /// 1 = palabrasReservadas,2=identificador,3=booleana,4=entero,5=hexadecimal,6=double,7=cadena
