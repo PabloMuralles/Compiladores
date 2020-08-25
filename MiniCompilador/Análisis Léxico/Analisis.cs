@@ -522,13 +522,14 @@ namespace MiniCompilador.Análisis_Léxico
                             ///
                             if (Categoria == "Token unido")
                             {
-                                var dato_separado = Separar_caracter(item.Item1,objExpreciones);
+                                var CN = LC[1].Split('-');
+                                var dato_separado = Separar_caracter(item.Item1,objExpreciones,Convert.ToInt32(CN[0]));
                                 string Ncategiria = Validar(dato_separado[0], objExpreciones);
                                 string Scategiria = Validar(dato_separado[1], objExpreciones);
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n",dato_separado[0],LC[0],LC[1],Ncategiria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n",dato_separado[0],LC[0],dato_separado[1],Ncategiria);
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[1], LC[0], LC[1], Scategiria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[0], dato_separado[3], Scategiria);
                             }
                             else if (Categoria == "Token no encontrado")
                             {
@@ -642,22 +643,26 @@ namespace MiniCompilador.Análisis_Léxico
             return ("Token unido");
 
         }
-        public string[] Separar_caracter(string caracter, Expreciones objExpreciones_) 
+        public string[] Separar_caracter(string caracter, Expreciones objExpreciones_, int columna) 
         {
             string Numero = string.Empty;
             string Letra = string.Empty;
+            int columna_auxiliar = columna;
+            int columna_final = 0;
             foreach (var item in caracter)
             {
                 if (objExpreciones_.entero_.IsMatch(Convert.ToString(item)))
-                {
+                {               
                     Numero += item;
+                    columna_auxiliar++;
                 }
                 else if (objExpreciones_.identificador_.IsMatch(Convert.ToString(item)))
                 {
                     Letra += item;
+                    columna_final++;
                 }
             }
-            string dato = Numero + "," + Letra;
+            string dato = Numero + ","+$"{columna}-{columna_auxiliar}"+ ","+  Letra+","+$"{columna_auxiliar}-{columna_auxiliar+columna_final}";
             var dato_separado = dato.Split(',');
             return (dato_separado);
         }
