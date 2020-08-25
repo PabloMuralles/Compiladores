@@ -375,14 +375,20 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica==false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
                                 {
-                                   
+                                    
                                     var cadenaAux = dato.Remove(0, dato.Length - 1);
                                     dato = dato.Remove(dato.Length - 1, 1);
                                     lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i + 1) - (cadenaAux.Length - 1)}-{i + 1}, {contadorLinea}"));
                                 }
 
                             }
-                            
+                            else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)
+                            {
+                                // este else if se quito en el commit donde se separaban caracteres diferentes de nuestro contexto. No recuerdo porque si no interifere con ese codigo.
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}")); 
+                                dato = string.Empty;
+                            }
+
                         }
                     }
                     contadorColumAux = i;
