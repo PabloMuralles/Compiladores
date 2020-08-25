@@ -578,7 +578,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return ("entero");
+                return ($"entero + (Valor ={cadena})");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
