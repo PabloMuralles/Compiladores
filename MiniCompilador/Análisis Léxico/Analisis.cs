@@ -81,7 +81,27 @@ namespace MiniCompilador.Análisis_Léxico
                             if (stringEncontrado == false)
                             {
                                 stringEncontrado = true;
-                                dato += listaCaracteres[i].ToString();
+                                //dato += listaCaracteres[i].ToString();
+                                if (dato.Length != 0)
+                                {
+                                    // porque puede quedar un " arriba entonces si llega hacer esto mete un espacio vacio
+                                    if (dato.Length == 1)
+                                    {
+                                        if (dato != "\"")
+                                        {
+                                            var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                            dato = dato.Remove(0, dato.Length - 1);
+                                            lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                        dato = dato.Remove(0, dato.Length - 1);
+                                        lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                    }
+                                 
+                                }
 
                             }
                             else if (stringEncontrado == true)
