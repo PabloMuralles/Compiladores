@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Windows.Forms.VisualStyles;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Forms;
 
 namespace MiniCompilador.Análisis_Léxico
 {
