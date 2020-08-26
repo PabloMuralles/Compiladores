@@ -26,6 +26,7 @@ namespace MiniCompilador.Análisis_Léxico
             Categorizacion(lexemas);
 
             archivo.Close();
+ 
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -57,7 +58,7 @@ namespace MiniCompilador.Análisis_Léxico
                 {
                     // cuando los strings son de mas lineas
                     stringEncontrado = false;
-
+ 
                     lexemas_.Add(new Tuple<string, string>(dato, $"{(contadorColumAux + 1) - (dato.Length - 1)}-{contadorColumAux + 1},{contadorLinea - 1},Error la cadena no se cerro"));
                     dato = string.Empty;
 
@@ -71,6 +72,7 @@ namespace MiniCompilador.Análisis_Léxico
                         {
                             dato += listaCaracteres[i].ToString();
                         }
+ 
                     }
 
                     else
@@ -82,7 +84,27 @@ namespace MiniCompilador.Análisis_Léxico
                             if (stringEncontrado == false)
                             {
                                 stringEncontrado = true;
-                                dato += listaCaracteres[i].ToString();
+                                //dato += listaCaracteres[i].ToString();
+                                if (dato.Length != 0)
+                                {
+                                    // porque puede quedar un " arriba entonces si llega hacer esto mete un espacio vacio
+                                    if (dato.Length == 1)
+                                    {
+                                        if (dato != "\"")
+                                        {
+                                            var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                            dato = dato.Remove(0, dato.Length - 1);
+                                            lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                        dato = dato.Remove(0, dato.Length - 1);
+                                        lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                    }
+                                 
+                                }
 
                             }
                             else if (stringEncontrado == true)
@@ -188,8 +210,10 @@ namespace MiniCompilador.Análisis_Léxico
                                     if (listaCaracteres[i + 1] == ']' || listaCaracteres[i + 1] == '}' || listaCaracteres[i + 1] == ')')
                                     {
                                         dato += listaCaracteres[i + 1].ToString();
-
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+ 
+                                        // este contador de columnas se le sumo dos por tomar el siguiente y guardarlo de una vez
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 2) - (dato.Length - 1)}-{i + 2}, {contadorLinea}"));
+ 
                                         dato = string.Empty;
                                         i++;
                                     }
@@ -240,6 +264,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         dato = dato.Remove(dato.Length - 1, 1);
                                         if (dato.Length != 0)
                                         {
+                                            // revisar esta asignacion de columna
                                             lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                             dato = string.Empty;
                                         }
@@ -284,8 +309,21 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 if (comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false)
                                 {
-                                    lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
-                                    dato = string.Empty;
+                                    //verificar que pasa cuando empieza con un caracter simple
+                                    if (dato.Length > 1)
+                                    {
+                                        var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                        dato = dato.Remove(0, dato.Length - 1);
+                                        lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                        dato = string.Empty;
+
+                                    }
+                                    else
+                                    {
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                        dato = string.Empty;
+                                    }
                                 }
                             }
                         }
@@ -371,14 +409,16 @@ namespace MiniCompilador.Análisis_Léxico
                                     lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                     dato = string.Empty;
                                 }
-                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
-                                {
-
-                                    var cadenaAux = dato.Remove(0, dato.Length - 1);
-                                    dato = dato.Remove(dato.Length - 1, 1);
-                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i + 1) - (cadenaAux.Length - 1)}-{i + 1}, {contadorLinea}"));
-                                }
-
+ 
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false &&
+                                    comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) &&
+                                    !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
+                                     {
+                                        var cadenaAux = dato.Remove(0, dato.Length - 1);
+                                        dato = dato.Remove(dato.Length - 1, 1);
+                                        lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i + 1) - (cadenaAux.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                     }
+ 
                             }
                             else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)
                             {
