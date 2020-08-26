@@ -24,6 +24,8 @@ namespace MiniCompilador.Análisis_Léxico
             IdentificadorLexemas(lexemas, archivo);
 
             Categorizacion(lexemas);
+
+            archivo.Close();
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -417,6 +419,10 @@ namespace MiniCompilador.Análisis_Léxico
 
         }
 
+        /// <summary>
+        /// Metodo para podes categorizar los lexemas y poder convertirlos en tokens
+        /// </summary>
+        /// <param name="Lexema_">una lista de tuplas string string donde viene en el primero string el lexema en el segundo viene linea, columna y un error si lo existe separado por comas</param>
         public void Categorizacion(List<Tuple<string, string>> Lexema_)
         {
             var objExpreciones = new Expreciones();
@@ -489,9 +495,9 @@ namespace MiniCompilador.Análisis_Léxico
                 }
             }
         }
+
         /// <summary>
         /// Metodo que valida con las expresiones regulares para ve en cual casa
-        /// 1 = palabrasReservadas,2=identificador,3=booleana,4=entero,5=hexadecimal,6=double,7=cadena
         /// </summary>
         /// <param name="cadena">caracter o cadena a evaluar</param>
         /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
@@ -521,7 +527,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.doubles_.IsMatch(cadena))
             {
-                return ("dobles");
+                return ($"doubles (Valor ={cadena})");
             }
             else if (objExpreciones_.cadena_.IsMatch(cadena))
             {
@@ -552,6 +558,13 @@ namespace MiniCompilador.Análisis_Léxico
                 return (Caracter_unidos(cadena, objExpreciones_));
             }
         }
+
+        /// <summary>
+        /// Este metodo sirve si existe el caso que venga un entero junto con palabras para evaluar si es un entero con una palabra reserva o un identificar mal escritos
+        /// </summary>
+        /// <param name="caracter">el lexema a evluar</param>
+        /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
+        /// <returns></returns>
         private string Caracter_unidos(string caracter, Expreciones objExpreciones_)
         {
             string Numero = string.Empty;
@@ -573,6 +586,14 @@ namespace MiniCompilador.Análisis_Léxico
             }
             return ("Token unido");
         }
+
+        /// <summary>
+        /// Metodo para separar lexemas que vengan unido por ejemplo el 23this
+        /// </summary>
+        /// <param name="caracter">el lexema unido</param>
+        /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
+        /// <param name="columna">la ultima columna de donde esta el lexema</param>
+        /// <returns></returns>
         private string[] Separar_caracter(string caracter, Expreciones objExpreciones_, int columna)
         {
             string Numero = string.Empty;
@@ -596,6 +617,11 @@ namespace MiniCompilador.Análisis_Léxico
             var dato_separado = dato.Split(',');
             return (dato_separado);
         }
+
+        /// <summary>
+        /// Metodo que manda el mensaje que si todo esta correcto o no en la interfaz grafica
+        /// </summary>
+        /// <param name="mensaje">mensaje que se desea mostrar</param>
         public void Mandar_mensaje(List<string> mensaje)
         {
             string M_mostrar = string.Empty;

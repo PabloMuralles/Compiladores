@@ -41,6 +41,7 @@ namespace MiniCompilador.GUI
                         //ExtencionValidar = true;
                         path.Text = Direccion;
                         textomostrar.Text = ArchivoEnseñar.ReadToEnd();
+                        ArchivoEnseñar.Close();
                     }
                     else
                     {
