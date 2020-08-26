@@ -59,7 +59,6 @@ namespace MiniCompilador.Análisis_Léxico
                     lexemas_.Add(new Tuple<string, string>(dato, $"{(contadorColumAux + 1) - (dato.Length - 1)}-{contadorColumAux + 1},{contadorLinea - 1},Error la cadena no se cerro"));
                     dato = string.Empty;
 
-
                 }
                 for (int i = 0; i < listaCaracteres.Count(); i++)
                 {
@@ -206,7 +205,8 @@ namespace MiniCompilador.Análisis_Léxico
                                     if (listaCaracteres[i + 1] == ']' || listaCaracteres[i + 1] == '}' || listaCaracteres[i + 1] == ')')
                                     {
                                         dato += listaCaracteres[i + 1].ToString();
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                        // este contador de columnas se le sumo dos por tomar el siguiente y guardarlo de una vez
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 2) - (dato.Length - 1)}-{i + 2}, {contadorLinea}"));
                                         dato = string.Empty;
                                         i++;
                                     }
@@ -256,6 +256,7 @@ namespace MiniCompilador.Análisis_Léxico
                                         dato = dato.Remove(dato.Length - 1, 1);
                                         if (dato.Length != 0)
                                         {
+                                            // revisar esta asignacion de columna
                                             lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                             dato = string.Empty;
                                         }
