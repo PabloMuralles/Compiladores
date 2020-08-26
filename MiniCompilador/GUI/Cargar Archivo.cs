@@ -7,7 +7,7 @@ namespace MiniCompilador.GUI
     public partial class Cargar_Archivo : Form
     {
         private string Direccion = string.Empty;
-
+        public string Archivo = string.Empty;
         //private bool ExtencionValidar = false;
         public Cargar_Archivo()
         {
@@ -31,7 +31,7 @@ namespace MiniCompilador.GUI
 
                 // da la extecion del archivo para poder validarlo que sea txt
                 
-                var Archivo = Path.GetFileNameWithoutExtension(Direccion);
+                Archivo = Path.GetFileNameWithoutExtension(Direccion);
 
                 /*valido la extencion del archivo y si es txt lo leo para posteriomente 
                  * guardarlo y sino es un txt se muestra un messaje*/
@@ -71,7 +71,7 @@ namespace MiniCompilador.GUI
                 {
                     errorProvider1.Clear();
                     Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
-                    analisis.LecturaArchivo(path.Text);
+                    analisis.LecturaArchivo(path.Text, Archivo);
                 }
                 else
                 {
