@@ -30,7 +30,8 @@ namespace MiniCompilador.GUI
                 Direccion = Abrir.FileName;
 
                 // da la extecion del archivo para poder validarlo que sea txt
-                var Extencion = Path.GetExtension(Direccion);
+                
+                var Archivo = Path.GetFileNameWithoutExtension(Direccion);
 
                 /*valido la extencion del archivo y si es txt lo leo para posteriomente 
                  * guardarlo y sino es un txt se muestra un messaje*/

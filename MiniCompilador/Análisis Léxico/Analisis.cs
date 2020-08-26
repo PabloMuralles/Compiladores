@@ -13,14 +13,15 @@ namespace MiniCompilador.Análisis_Léxico
     class Analisis
     {
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
+        public string Nombre_Archivo = string.Empty;
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
         /// </summary>
         /// <param name="path">direccion del archivo</param>
-        public void LecturaArchivo(string path)
+        public void LecturaArchivo(string path, string Nombre)
         {
             var lexemas = new List<Tuple<string, string>>();
-
+            Nombre_Archivo = Nombre;
             var archivo = new StreamReader(path);
 
             IdentificadorLexemas(lexemas, archivo);
@@ -441,9 +442,12 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else
             {
-                File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Salida.out"), string.Empty);
+                if (File.Exists(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out")))
+                {
+                 File.WriteAllText(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out"), string.Empty);                    
+                }                
             }
-            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", "Salida.out"), FileMode.OpenOrCreate))
+            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out"), FileMode.OpenOrCreate))
             {
                 using (var write = new StreamWriter(writeStream))
                 {
