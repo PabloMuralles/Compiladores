@@ -443,8 +443,8 @@ namespace MiniCompilador.Análisis_Léxico
                         {
                             write.Write(" \n ");
                             var LC = item.Item2.Split(',');
-                            write.Write($"{LC[1]}");
-                            Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[1]}");
+                            write.Write($"{LC[1]} encontrado en linea {LC[0]}");
+                            Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[0]}");
                         }
                         else
                         {
@@ -471,7 +471,7 @@ namespace MiniCompilador.Análisis_Léxico
                             else
                             {
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[0], LC[1], Categoria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
                             }
                         }
                     }
