@@ -461,12 +461,24 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 var CN = LC[0].Split('-');
                                 var dato_separado = Separar_caracter(item.Item1, objExpreciones, Convert.ToInt32(CN[0]));
-                                string Ncategiria = Validar(dato_separado[0], objExpreciones);
-                                string Scategiria = Validar(dato_separado[1], objExpreciones);
-                                write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[1], Ncategiria);
-                                write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[3], Scategiria);
+                                if (!objExpreciones.entero_.IsMatch(dato_separado[0]))
+                                {
+                                    string Ncategiria = Validar(dato_separado[0], objExpreciones);
+                                    string Scategiria = Validar(dato_separado[1], objExpreciones);
+                                    write.Write(" \n ");
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Ncategiria);
+                                    write.Write(" \n ");
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Scategiria);
+                                }
+                                else
+                                {
+                                    string Ncategiria = Validar(dato_separado[0], objExpreciones);
+                                    string Scategiria = Validar(dato_separado[1], objExpreciones);
+                                    write.Write(" \n ");
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Scategiria);
+                                    write.Write(" \n ");
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Ncategiria);
+                                }
                             }
                             else if (Categoria == "Token no encontrado")
                             {
