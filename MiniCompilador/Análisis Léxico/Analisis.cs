@@ -13,22 +13,22 @@ namespace MiniCompilador.Análisis_Léxico
     class Analisis
     {
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
-        public string Nombre_Archivo = string.Empty;
+        private string Nombre_Archivo = string.Empty;
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
         /// </summary>
         /// <param name="path">direccion del archivo</param>
-        public void LecturaArchivo(string path, string Nombre)
+        public void LecturaArchivo(string path)
         {
             var lexemas = new List<Tuple<string, string>>();
-            Nombre_Archivo = Nombre;
+
+            Nombre_Archivo = Path.GetFileNameWithoutExtension(path);
+
             var archivo = new StreamReader(path);
 
             IdentificadorLexemas(lexemas, archivo);
 
             Categorizacion(lexemas);
-
-
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -61,9 +61,9 @@ namespace MiniCompilador.Análisis_Léxico
                     // cuando los strings son de mas lineas
                     stringEncontrado = false;
 
-                    lexemas_.Add(new Tuple<string, string>(dato, $"{(contadorColumAux+1)-(dato.Length-1)}-{contadorColumAux+1},{contadorLinea-1},Error la cadena no se cerro"));
+                    lexemas_.Add(new Tuple<string, string>(dato, $"{(contadorColumAux + 1) - (dato.Length - 1)}-{contadorColumAux + 1},{contadorLinea - 1},Error la cadena no se cerro"));
                     dato = string.Empty;
-                    
+
                 }
                 for (int i = 0; i < listaCaracteres.Count(); i++)
                 {
@@ -73,7 +73,7 @@ namespace MiniCompilador.Análisis_Léxico
                         if (stringEncontrado == true)
                         {
                             dato += listaCaracteres[i].ToString();
-                        }                        
+                        }
                     }
 
                     else
@@ -115,7 +115,7 @@ namespace MiniCompilador.Análisis_Léxico
                                             dato += listaCaracteres[i + 1].ToString();
                                             validarDoubles = true;
                                             i++;
-                                            
+
                                         }
                                         else if ((listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e'))
                                         {
@@ -123,12 +123,12 @@ namespace MiniCompilador.Análisis_Léxico
                                             validarDoubles = true;
                                             notacionCientifica = true;
                                             i++;
-                                            
+
                                         }
                                         else if (notacionCientifica == true)
                                         {
                                             var datoAux = dato.Remove(dato.Length - 1, 1);
-                                            dato= dato.Remove(0,dato.Length - 1);
+                                            dato = dato.Remove(0, dato.Length - 1);
                                             lexemas_.Add(new Tuple<string, string>(datoAux, $"{(i + 1) - (dato.Length - 1)}-{i - dato.Length}, {contadorLinea}"));
                                         }
                                         else
@@ -167,7 +167,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     var cadenaAux = dato.Remove(dato.Length - 1, 1);
                                     dato = dato.Remove(0, dato.Length - 1);
-                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i)-(cadenaAux.Length-1)}-{i},{contadorLinea}"));
+                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
                                     lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
                                     dato = string.Empty;
 
@@ -177,7 +177,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                     dato = string.Empty;
                                 }
-                       
+
                             }
 
                         }
@@ -252,14 +252,12 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
                                     else
                                     {
-
                                         lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                         dato = string.Empty;
                                     }
                                 }
                                 else
                                 {
-
                                     lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                     dato = string.Empty;
                                 }
@@ -276,21 +274,14 @@ namespace MiniCompilador.Análisis_Léxico
                                             comentarioMultiple = false;
                                             dato = string.Empty;
                                             i++;
-
                                         }
                                         else
                                         {
-
                                             lexemas_.Add(new Tuple<string, string>("Ç", $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}, Comentario sin emparejar"));
                                             dato = string.Empty;
                                         }
                                     }
-
-
-
                                 }
-
-
                             }
                             else
                             {
@@ -310,8 +301,8 @@ namespace MiniCompilador.Análisis_Léxico
                                     if (i + 1 < listaCaracteres.Count())
                                     {
                                         if (char.IsDigit(listaCaracteres[i + 1]))
-                                        {    
-                                             /// ver para que sirve esto 
+                                        {
+                                            /// ver para que sirve esto 
                                         }
                                         else if (listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e')
                                         {
@@ -339,7 +330,6 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     if (i + 1 < listaCaracteres.Count())
                                     {
-
                                         if (char.IsDigit(listaCaracteres[i + 1]) || listaCaracteres[i + 1] == '-' || listaCaracteres[i + 1] == '+')
                                         {
                                             dato += listaCaracteres[i + 1].ToString();
@@ -386,7 +376,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
                                 {
-                                    
+
                                     var cadenaAux = dato.Remove(0, dato.Length - 1);
                                     dato = dato.Remove(dato.Length - 1, 1);
                                     lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i + 1) - (cadenaAux.Length - 1)}-{i + 1}, {contadorLinea}"));
@@ -396,7 +386,7 @@ namespace MiniCompilador.Análisis_Léxico
                             else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)
                             {
                                 // este else if se quito en el commit donde se separaban caracteres diferentes de nuestro contexto. No recuerdo porque si no interifere con ese codigo.
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}")); 
+                                lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                 dato = string.Empty;
                             }
                         }
@@ -412,10 +402,10 @@ namespace MiniCompilador.Análisis_Léxico
 
                     }
                     validarDoubles = false;
-                    
+
                 }
                 contadorLinea++;
-               
+
                 linea = archivo_.ReadLine();
             }
             if (stringEncontrado == true)
@@ -444,8 +434,8 @@ namespace MiniCompilador.Análisis_Léxico
             {
                 if (File.Exists(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out")))
                 {
-                 File.WriteAllText(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out"), string.Empty);                    
-                }                
+                    File.WriteAllText(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out"), string.Empty);
+                }
             }
             using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", $"{Nombre_Archivo}.out"), FileMode.OpenOrCreate))
             {
@@ -469,11 +459,11 @@ namespace MiniCompilador.Análisis_Léxico
                             if (Categoria == "Token unido")
                             {
                                 var CN = LC[0].Split('-');
-                                var dato_separado = Separar_caracter(item.Item1,objExpreciones,Convert.ToInt32(CN[0]));
+                                var dato_separado = Separar_caracter(item.Item1, objExpreciones, Convert.ToInt32(CN[0]));
                                 string Ncategiria = Validar(dato_separado[0], objExpreciones);
                                 string Scategiria = Validar(dato_separado[1], objExpreciones);
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n",dato_separado[0],LC[1],dato_separado[1],Ncategiria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[1], Ncategiria);
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[3], Scategiria);
                             }
@@ -484,9 +474,9 @@ namespace MiniCompilador.Análisis_Léxico
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
                             }
                             else
-                            { 
-                            write.Write(" \n ");
-                            write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[0], LC[1], Categoria);
+                            {
+                                write.Write(" \n ");
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[0], LC[1], Categoria);
                             }
                         }
                     }
@@ -511,7 +501,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// <param name="cadena">caracter o cadena a evaluar</param>
         /// <param name="objExpreciones_">el objeto de la clase expresiones</param>
         /// <returns>verdadero si caso con alguna y un int que seria el identificador con cual caso</returns>
-        public string Validar(string cadena, Expreciones objExpreciones_)
+        private string Validar(string cadena, Expreciones objExpreciones_)
         {
 
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
@@ -567,7 +557,7 @@ namespace MiniCompilador.Análisis_Léxico
                 return (Caracter_unidos(cadena, objExpreciones_));
             }
         }
-        public string Caracter_unidos(string caracter, Expreciones objExpreciones_)
+        private string Caracter_unidos(string caracter, Expreciones objExpreciones_)
         {
             string Numero = string.Empty;
             string Letra = string.Empty;
@@ -587,9 +577,8 @@ namespace MiniCompilador.Análisis_Léxico
                 }
             }
             return ("Token unido");
-
         }
-        public string[] Separar_caracter(string caracter, Expreciones objExpreciones_, int columna) 
+        private string[] Separar_caracter(string caracter, Expreciones objExpreciones_, int columna)
         {
             string Numero = string.Empty;
             string Letra = string.Empty;
@@ -598,7 +587,7 @@ namespace MiniCompilador.Análisis_Léxico
             foreach (var item in caracter)
             {
                 if (objExpreciones_.entero_.IsMatch(Convert.ToString(item)))
-                {               
+                {
                     Numero += item;
                     columna_auxiliar++;
                 }
@@ -608,25 +597,23 @@ namespace MiniCompilador.Análisis_Léxico
                     columna_final++;
                 }
             }
-            string dato = Numero + ","+$"{columna}-{columna_auxiliar}"+ ","+  Letra+","+$"{columna_auxiliar}-{columna_auxiliar+columna_final}";
+            string dato = Numero + "," + $"{columna}-{columna_auxiliar}" + "," + Letra + "," + $"{columna_auxiliar}-{columna_auxiliar + columna_final}";
             var dato_separado = dato.Split(',');
             return (dato_separado);
         }
         public void Mandar_mensaje(List<string> mensaje)
         {
-            
-
             string M_mostrar = string.Empty;
             foreach (var item in mensaje)
-            {            
-              M_mostrar += item + " \n ";
+            {
+                M_mostrar += item + " \n ";
             }
             cargar_Archivo.Mostrar_mensaje(M_mostrar);
         }
 
-        }
-
     }
+
+}
 
 
 
