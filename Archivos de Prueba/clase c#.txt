@@ -4,7 +4,10 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-		int carro = FF218;
+		string prueba = "kdj dsff;
+		hola continua strin
+		string prueba2="jsdf
+		continua"
         }
     }
 }
