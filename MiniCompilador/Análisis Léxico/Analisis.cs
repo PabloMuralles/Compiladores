@@ -459,7 +459,7 @@ namespace MiniCompilador.Análisis_Léxico
                             write.Write(" \n ");
                             var LC = item.Item2.Split(',');
                             write.Write($"{LC[1]}");
-                            Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[0]}");
+                            Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[1]}");
                         }
                         else
                         {
@@ -479,7 +479,7 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else if (Categoria == "Token no encontrado")
                             {
-                                Errores.Add($"Error encontrado en linea {LC[0]}");
+                                Errores.Add($"Error encontrado en linea {LC[1]}");
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
                             }
