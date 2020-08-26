@@ -464,20 +464,20 @@ namespace MiniCompilador.Análisis_Léxico
                             ///
                             if (Categoria == "Token unido")
                             {
-                                var CN = LC[1].Split('-');
+                                var CN = LC[0].Split('-');
                                 var dato_separado = Separar_caracter(item.Item1,objExpreciones,Convert.ToInt32(CN[0]));
                                 string Ncategiria = Validar(dato_separado[0], objExpreciones);
                                 string Scategiria = Validar(dato_separado[1], objExpreciones);
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n",dato_separado[0],LC[0],dato_separado[1],Ncategiria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n",dato_separado[0],LC[1],dato_separado[1],Ncategiria);
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[0], dato_separado[3], Scategiria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[3], Scategiria);
                             }
                             else if (Categoria == "Token no encontrado")
                             {
                                 Errores.Add($"Error encontrado en linea {LC[0]}");
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[0], LC[1], Categoria);
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
                             }
                             else
                             { 
