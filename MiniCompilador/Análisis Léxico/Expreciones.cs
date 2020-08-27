@@ -57,7 +57,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             booleanas = new Regex("true|false");
 
-            identificador = new Regex(@"^([A-Za-z][A-Za-z_]*)*$");
+            identificador = new Regex(@"^([A-Za-z][A-Za-z_0-9]*)*$");
 
             entero = new Regex(@"^([0-9]+)*$");
 
