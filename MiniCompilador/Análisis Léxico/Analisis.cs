@@ -522,9 +522,18 @@ namespace MiniCompilador.Análisis_Léxico
                             }
                             else if (Categoria == "Token no encontrado")
                             {
+                                if (LC.Contains("Error la cadena no se cerro") || LC.Contains(" Comentario sin emparejar"))
+                                {
+                                    Errores.Add($"Error Cadena/Comentario en linea {LC[1]}");
+                                    write.Write(" \n ");
+                                    write.Write("{0}  Línea: {1}, columna {2} {3}\n", item.Item1, LC[1], LC[0], LC[2]);
+                                }
+                                else 
+                                {
                                 Errores.Add($"Error encontrado en linea {LC[1]}");
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
+                                }
                             }
                             else if (LC.Contains("EOF Cadena"))
                             {
@@ -532,12 +541,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1}, Error {2} \n", item.Item1, LC[0], LC[1]);
                             }
-                            else if (LC.Contains("Error la cadena no se cerro") || LC.Contains(" Comentario sin emparejar"))
-                            {
-                                Errores.Add($"Error Cadena/Comentario en linea {LC[0]}");
-                                write.Write(" \n ");
-                                write.Write("{0}  Línea: {1}, columna {2} {3}\n", item.Item1, LC[1], LC[0],LC[2]);
-                            }
+                            
                             else if(Categoria == "identificador mayor a 31 caracteres")
                             {
                                 Errores.Add($"Error {Categoria} Linea {LC[1]}");
