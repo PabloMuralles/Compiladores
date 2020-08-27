@@ -538,6 +538,12 @@ namespace MiniCompilador.Análisis_Léxico
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1}, columna {2} {3}\n", item.Item1, LC[1], LC[0],LC[2]);
                             }
+                            else if(Categoria == "identificador mayor a 31 caracteres")
+                            {
+                                Errores.Add($"Error {Categoria} Linea {LC[1]}");
+                                write.Write(" \n ");
+                                write.Write("{0}  Línea: {1} , columna: {2}  Error \n", Categoria, LC[1], LC[0]);
+                            }
                             else
                             {
                                 write.Write(" \n ");
@@ -579,7 +585,16 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.identificador_.IsMatch(cadena))
             {
-                return ("identificador");
+                int Cantidad = Cantidad_identificador(cadena);
+                if (Cantidad < 32)
+                {
+                    return ("identificador");
+                }
+                else 
+                {
+                    return ("identificador mayor a 31 caracteres");
+                }
+
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
@@ -694,6 +709,16 @@ namespace MiniCompilador.Análisis_Léxico
                 M_mostrar += item + " \n ";
             }
             cargar_Archivo.Mostrar_mensaje(M_mostrar, direccion);
+        }
+
+        private int Cantidad_identificador(string identificador)
+        {
+            int Caracteres = 0;
+            foreach (var item in identificador)
+            {
+                Caracteres++;
+            }
+            return (Caracteres);
         }
 
     }
