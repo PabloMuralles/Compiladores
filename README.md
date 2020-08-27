@@ -8,6 +8,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
      - [Requerimientos](#Requerimientos-)
           - [Objetivo](#objetivo)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
+          - [Funcionamiento](#funcionamiento-%EF%B8%8F)
 - [Construido con](#construido-con-%EF%B8%8F)
 - [Autores](#autores-%EF%B8%8F)
 - [Licencia](#licencia-)
@@ -132,65 +133,24 @@ esta bueno jejeje"
 + - * / % < <= > >= = == != && || ! ; , . [ ] ( ) { } [] () {}
 ```
 
-### Instalación 🔧
+#### Funcionamiento ⚙️
 
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
+Los archivos de salida se guardaran en el direcctorio del proyecto especificamente en la siguiente ruta: \bin\Debug\Salida
 
-_Dí cómo será ese paso_
+A continuación un pequeño video del funcionamiento de la fase 1
+[![VIDEO](https://img.youtube.com/vi/1HR2VJ3BnYc/0.jpg)](https://www.youtube.com/watch?v=1HR2VJ3BnYc)
 
-```
-Da un ejemplo
-```
-
-_Y repite_
-
-```
-hasta finalizar
-```
-
-_Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
-
-## Ejecutando las pruebas ⚙️
-
-_Explica como ejecutar las pruebas automatizadas para este sistema_
-
-### Analice las pruebas end-to-end 🔩
-
-_Explica que verifican estas pruebas y por qué_
-
-```
- 
-```
-
-### Y las pruebas de estilo de codificación ⌨️
-
-_Explica que verifican estas pruebas y por qué_
-
-```
- 
-```
-
- 📦
-
-
-  🖇️
-
- 
-  📖
-
- 
- 📌
 
 ## Construido con 🛠️
 
-* [.NET](.NETFramework,Version=v4.7.2) - El framework usado
+* [.NET](https://dotnet.microsoft.com/download/dotnet-framework/net472) - Framework usado
  
 
 
 ## Autores ✒️
 
-* **Pablo Muralles**   
-* **Santiago Bocel** 
+* **Pablo Muralles**  - Carné:1113818
+* **Santiago Bocel**  - Cerné:1076818
 
   
 
