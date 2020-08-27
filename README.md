@@ -138,6 +138,7 @@ esta bueno jejeje"
 Los archivos de salida se guardaran en el direcctorio del proyecto especificamente en la siguiente ruta: \bin\Debug\Salida
 
 A continuación un pequeño video del funcionamiento de la fase 1
+
 [![VIDEO](https://img.youtube.com/vi/1HR2VJ3BnYc/0.jpg)](https://www.youtube.com/watch?v=1HR2VJ3BnYc)
 
 
