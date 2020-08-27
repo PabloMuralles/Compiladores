@@ -27,8 +27,7 @@ namespace MiniCompilador.Análisis_Léxico
         private readonly Regex espacioBlanco;
         private readonly Regex letras;
         private readonly Regex caracteres;
-        //private readonly Regex comentariosLinea;
-        //private readonly Regex comentariosMultiples;
+       
 
         /// <summary>
         /// Propiedades para que se pueda acesar a las expresiones regulares desde otras clases sin que puedan modificarlas
@@ -50,8 +49,7 @@ namespace MiniCompilador.Análisis_Léxico
         public Regex caracteres_ { get => caracteres; }
 
 
-        //public Regex comentariosLinea_ { get => comentariosLinea; }
-        //public Regex comentariosMultiples_ { get => comentariosMultiples; }
+
 
         public Expreciones()
         {
@@ -87,10 +85,7 @@ namespace MiniCompilador.Análisis_Léxico
 
 
 
-            //comentariosLinea = new Regex(@"^ $");
-            //comentariosMultiples = new Regex(@"^/\*[^\*/]\*/$");
-
-
+            
         }
 
 
