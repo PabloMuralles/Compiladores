@@ -532,7 +532,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1}, Error {2} \n", item.Item1, LC[0], LC[1]);
                             }
-                            else if (LC.Contains("Error la cadena no se cerro") || LC.Contains("Comentario sin emparejar"))
+                            else if (LC.Contains("Error la cadena no se cerro") || LC.Contains(" Comentario sin emparejar"))
                             {
                                 Errores.Add($"Error Cadena/Comentario en linea {LC[0]}");
                                 write.Write(" \n ");
