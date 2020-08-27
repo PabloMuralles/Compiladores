@@ -548,11 +548,11 @@ namespace MiniCompilador.Análisis_Léxico
                     if (!Errores.Any())
                     {
                         Errores.Add("0 Errores detectados");
-                        Mandar_mensaje(Errores);
+                        Mandar_mensaje(Errores, Nombre_Archivo);
                     }
                     else
                     {
-                        Mandar_mensaje(Errores);
+                        Mandar_mensaje(Errores, Nombre_Archivo);
                     }
 
                     write.Close();
@@ -686,14 +686,14 @@ namespace MiniCompilador.Análisis_Léxico
         /// Metodo que manda el mensaje que si todo esta correcto o no en la interfaz grafica
         /// </summary>
         /// <param name="mensaje">mensaje que se desea mostrar</param>
-        public void Mandar_mensaje(List<string> mensaje)
+        public void Mandar_mensaje(List<string> mensaje, string direccion)
         {
             string M_mostrar = string.Empty;
             foreach (var item in mensaje)
             {
                 M_mostrar += item + " \n ";
             }
-            cargar_Archivo.Mostrar_mensaje(M_mostrar);
+            cargar_Archivo.Mostrar_mensaje(M_mostrar, direccion);
         }
 
     }
