@@ -321,7 +321,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
 
                             }
-                            else if (listaCaracteres[i] == '*' && comentarioMultiple == true)
+                            else if (listaCaracteres[i] == '*' )
                             {
                                 if (i + 1 < listaCaracteres.Count())
                                 {
@@ -337,6 +337,28 @@ namespace MiniCompilador.Análisis_Léxico
                                         {
                                             lexemas_.Add(new Tuple<string, string>("Ç", $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}, Comentario sin emparejar"));
                                             dato = string.Empty;
+                                            i++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (comentarioMultiple == false)
+                                        {
+                                            //verificar que pasa cuando empieza con un caracter simple
+                                            if (dato.Length > 1)
+                                            {
+                                                var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                                dato = dato.Remove(0, dato.Length - 1);
+                                                lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                                lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                                dato = string.Empty;
+
+                                            }
+                                            else
+                                            {
+                                                lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                                dato = string.Empty;
+                                            }
                                         }
                                     }
                                 }
