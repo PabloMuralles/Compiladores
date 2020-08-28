@@ -65,7 +65,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             hexadecimal = new Regex(@"^0(x|X)[0-9A-Fa-f]+$");
 
-            doubles = new Regex(@"^(([0-9]+.[0-9]+|.[0-9]+)|([0-9]+.(E|e)(-|\+)?[0-9]+))$");
+            doubles = new Regex(@"^(([0-9]+(\.)[0-9]*)|([0-9]+(\.)([0-9])*(E|e)(-|\+)?[0-9]+))$");
 
             cadena= new Regex("(\"[^\"\n]\")|(\"\")");
 
