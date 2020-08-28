@@ -65,6 +65,7 @@ namespace MiniCompilador.Análisis_Léxico
                 }
                 for (int i = 0; i < listaCaracteres.Count(); i++)
                 {
+                    regresar:
                     if (listaCaracteres[i].ToString() == " " || listaCaracteres[i].ToString() == "\t")
                     {
                         // si es un espacio en blanco o tab
@@ -122,7 +123,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 if (i + 1 < listaCaracteres.Count())
                                 {
-                                    if (i != 0 && dato.Length > 2)
+                                    if (i != 0 && dato.Length > 2) 
                                     {
                                         var datoAnterior = Convert.ToChar(dato.Substring(dato.Length - 2, 1));
                                         if (char.IsDigit(listaCaracteres[i + 1]) && char.IsDigit(datoAnterior) && validarDoubles == false)
@@ -138,8 +139,9 @@ namespace MiniCompilador.Análisis_Léxico
                                             dato = string.Empty;
 
                                         }
-                                        else if ((listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e'))
+                                        else if ((listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e') && notacionCientifica == false)
                                         {
+                                            // ese cumple para el caso de que 1.e y activar el bool
                                             dato += listaCaracteres[i + 1].ToString();
                                             validarDoubles = true;
                                             notacionCientifica = true;
@@ -385,7 +387,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                             }
                         }
-                        else if (validarDoubles == true || notacionCientifica == true)
+                        else if (validarDoubles == true || notacionCientifica == true )
                         {
                             if (validarDoubles == true && notacionCientifica == false)
                             {
@@ -393,18 +395,22 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     if (i + 1 < listaCaracteres.Count())
                                     {
+                                        //45.45
+                                        // dato 45.4
                                         if (char.IsDigit(listaCaracteres[i + 1]))
                                         {
-                                            /// ver para que sirve esto 
+                                            // para que se concaten los numeros si son doubles 
                                         }
                                         else if (listaCaracteres[i + 1] == 'E' || listaCaracteres[i + 1] == 'e')
                                         {
+                                            // este es para el caso que se 1.4e45 se active el bool de notacion cientifica
                                             dato += listaCaracteres[i + 1].ToString();
                                             notacionCientifica = true;
                                             i++;
                                         }
                                         else
                                         {
+                                            // esto es por si viene 45.45carro lo corta
                                             lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                             dato = string.Empty;
                                             validarDoubles = false;
@@ -445,7 +451,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 else
                                 {
-                                    /// deje este como ok porque no se si de verdad va llegar a funcionar
+                                    /// 
                                     var cadenaAux = dato.Remove(dato.Length - 1, 1);
                                     dato = dato.Remove(0, dato.Length - 1);
                                     //
@@ -454,6 +460,38 @@ namespace MiniCompilador.Análisis_Léxico
 
                                 }
                             }
+                            // esto era para poder tomar
+                            else if (validarDoubles == true && notacionCientifica == true)
+                            {
+                                
+                                if (i + 1 < listaCaracteres.Count())
+                                {
+                                    if (!char.IsDigit(listaCaracteres[i + 1]))
+                                    {
+                                        
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                        dato = string.Empty;
+                                        validarDoubles = false;
+                                        notacionCientifica = false;
+
+                                    }
+                                    else
+                                    {
+                                        i++;
+                                        goto regresar;
+                                    }
+
+                                }
+                                else
+                                {
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                    dato = string.Empty;
+                                    validarDoubles = false;
+                                    notacionCientifica = false;
+                                }
+
+                            }
+                             
                         }
                         else
                         {
