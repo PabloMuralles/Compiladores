@@ -67,9 +67,9 @@ namespace MiniCompilador.Análisis_Léxico
 
             doubles = new Regex(@"^(([0-9]+(\.)[0-9]*)|([0-9]+(\.)([0-9])*(E|e)(-|\+)?[0-9]+))$");
 
-            cadena= new Regex("(\"[^\"\n]\")|(\"\")");
+            cadena = new Regex("(\"([^\"\n])*\")|(\"\")");
 
-            cadenaNulo = new Regex("(\"[^\"\n\0]\")");
+            cadenaNulo = new Regex("(\"([^\"\n\0])*\")");
 
             caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=)$");
 
