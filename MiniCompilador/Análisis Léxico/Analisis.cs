@@ -648,9 +648,16 @@ namespace MiniCompilador.Análisis_Léxico
 
                             else if (Categoria == "identificador mayor a 31 caracteres")
                             {
+                                //31
+                                var Cadena_anterior = item.Item1;
+                                string Nueva_cadena = string.Empty;
+                                for (int i = 0; i < 32; i++)
+                                {
+                                    Nueva_cadena += Cadena_anterior[i];
+                                }
                                 Errores.Add($"Error {Categoria} Linea {LC[1]}");
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Error \n", Categoria, LC[1], LC[0]);
+                                write.Write("{0}  Línea: {1} , columna: {2}  {3} \n", Nueva_cadena, LC[1], LC[0], Categoria);
                             }
                             else if (Categoria == "Error cadena contiene caracter nulo")
                             {
