@@ -584,6 +584,12 @@ namespace MiniCompilador.Análisis_Léxico
                                 write.Write(" \n ");
                                 write.Write("{0}  Línea: {1} , columna: {2}  Error \n", Categoria, LC[1], LC[0]);
                             }
+                            else if (Categoria == "Error cadena contiene caracter nulo")
+                            {
+                                Errores.Add($"{Categoria} Linea {LC[1]}");
+                                write.Write(" \n ");
+                                write.Write("{0} \"/0/\" Línea: {1} , columna: {2} \n", Categoria, LC[1], LC[0]);
+                            }
                             else
                             {
                                 write.Write(" \n ");
