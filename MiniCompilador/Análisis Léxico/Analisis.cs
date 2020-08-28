@@ -630,7 +630,8 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     Errores.Add($"Error Cadena/Comentario en linea {LC[1]}");
                                     write.Write(" \n ");
-                                    write.Write("{0}  Línea: {1}, columna {2} {3}\n", item.Item1, LC[1], LC[0], LC[2]);
+                                    write.Write("{0}  Línea: {1}, columna {2} {3} \n", item.Item1, LC[1], LC[0], LC[2]);
+                                    write.Write("\n");
                                 }
                                 else
                                 {
