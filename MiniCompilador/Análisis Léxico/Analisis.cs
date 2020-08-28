@@ -547,8 +547,16 @@ namespace MiniCompilador.Análisis_Léxico
                         {
                             write.Write(" \n ");
                             var LC = item.Item2.Split(',');
-                            write.Write($"{LC[1]} encontrado en linea {LC[0]}");
-                            Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[0]}");
+                            if (LC.Contains(" Comentario sin emparejar"))
+                            {
+                                write.Write($"{LC[2]} encontrado en linea {LC[1]}");
+                                Errores.Add($"Error \"{LC[2]}\" encontrado en linea {LC[1]}");
+                            }
+                            else
+                            {
+                             write.Write($"{LC[1]} encontrado en linea {LC[0]}");
+                             Errores.Add($"Error \"EOF comentario \" encontrado en linea {LC[0]}");
+                            }
                         }
                         else
                         {
