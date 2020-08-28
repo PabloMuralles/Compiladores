@@ -27,6 +27,7 @@ namespace MiniCompilador.Análisis_Léxico
         private readonly Regex espacioBlanco;
         private readonly Regex letras;
         private readonly Regex caracteres;
+        private readonly Regex cadenaNulo;
        
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace MiniCompilador.Análisis_Léxico
         public Regex espacioBlanco_ { get => espacioBlanco; }
         public Regex letras_ { get => letras; }
         public Regex caracteres_ { get => caracteres; }
+        public Regex cadenaNulo_ { get => cadenaNulo; }
 
 
 
@@ -65,7 +67,9 @@ namespace MiniCompilador.Análisis_Léxico
 
             doubles = new Regex(@"^(([0-9]+.[0-9]+|.[0-9]+)|([0-9]+.(E|e)(-|\+)?[0-9]+))$");
 
-            cadena= new Regex("(\"[^\"\n\0]\")|(\"\")");
+            cadena= new Regex("(\"[^\"\n]\")|(\"\")");
+
+            cadenaNulo = new Regex("(\"[^\"\n\0]\")");
 
             caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=)$");
 
