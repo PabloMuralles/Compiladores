@@ -65,7 +65,7 @@ namespace MiniCompilador.Análisis_Léxico
                 }
                 for (int i = 0; i < listaCaracteres.Count(); i++)
                 {
-                    regresar:
+                regresar:
                     if (listaCaracteres[i].ToString() == " " || listaCaracteres[i].ToString() == "\t")
                     {
                         // si es un espacio en blanco o tab
@@ -123,7 +123,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 if (i + 1 < listaCaracteres.Count())
                                 {
-                                    if (i != 0 && dato.Length > 2) 
+                                    if (i != 0 && dato.Length > 2)
                                     {
                                         var datoAnterior = Convert.ToChar(dato.Substring(dato.Length - 2, 1));
                                         if (char.IsDigit(listaCaracteres[i + 1]) && char.IsDigit(datoAnterior) && validarDoubles == false)
@@ -198,7 +198,7 @@ namespace MiniCompilador.Análisis_Léxico
                                             lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                             dato = string.Empty;
                                         }
-                                        else if(char.IsLetter(datoAnterior))
+                                        else if (char.IsLetter(datoAnterior))
                                         {
                                             var cadenaAux = dato.Remove(dato.Length - 1, 1);
                                             dato = dato.Remove(0, dato.Length - 1);
@@ -206,7 +206,7 @@ namespace MiniCompilador.Análisis_Léxico
                                             lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
                                             dato = string.Empty;
                                         }
-                                        
+
                                     }
                                     else
                                     {
@@ -323,7 +323,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
 
                             }
-                            else if (listaCaracteres[i] == '*' )
+                            else if (listaCaracteres[i] == '*')
                             {
                                 if (i + 1 < listaCaracteres.Count())
                                 {
@@ -387,7 +387,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                             }
                         }
-                        else if (validarDoubles == true || notacionCientifica == true )
+                        else if (validarDoubles == true || notacionCientifica == true)
                         {
                             if (validarDoubles == true && notacionCientifica == false)
                             {
@@ -463,12 +463,12 @@ namespace MiniCompilador.Análisis_Léxico
                             // esto era para poder tomar
                             else if (validarDoubles == true && notacionCientifica == true)
                             {
-                                
+
                                 if (i + 1 < listaCaracteres.Count())
                                 {
                                     if (!char.IsDigit(listaCaracteres[i + 1]))
                                     {
-                                        
+
                                         lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                         dato = string.Empty;
                                         validarDoubles = false;
@@ -491,7 +491,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
 
                             }
-                             
+
                         }
                         else
                         {
@@ -505,22 +505,49 @@ namespace MiniCompilador.Análisis_Léxico
                                     lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                     dato = string.Empty;
                                 }
-
-                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false &&
-                                    comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) &&
-                                    !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
                                 {
-                                    var cadenaAux = dato.Remove(0, dato.Length - 1);
-                                    dato = dato.Remove(dato.Length - 1, 1);
-                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i + 1) - (cadenaAux.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                    // Este if sirve para validar cualquier caracter que no sea conocido en nuestra gramatica funciona si y solo si no es el ultimo caracter de la gramatica
+                                    if (dato.Length > 1)
+                                    {
+                                        // a____?
+                                        var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                        dato = dato.Remove(0, dato.Length - 1);
+                                        lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                        dato = string.Empty;
+
+                                    }
+                                    else
+                                    {
+                                        //#
+                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                        dato = string.Empty;
+                                    }
+ 
                                 }
 
                             }
                             else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)
                             {
-                                // este else if se quito en el commit donde se separaban caracteres diferentes de nuestro contexto. No recuerdo porque si no interifere con ese codigo.
-                                lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
-                                dato = string.Empty;
+                                if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false &&
+                                    comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) &&
+                                    !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
+                                {
+                                    // Este if sirve para validar cualquier caracter que no sea conocido en nuestra gramatica funciona si y solo si  es el ultimo caracter de la gramatica
+                                    var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                    dato = dato.Remove(0, dato.Length - 1);
+                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                    dato = string.Empty;
+                                }
+                                else
+                                {
+                                    // este else if se quito en el commit donde se separaban caracteres diferentes de nuestro contexto. No recuerdo porque si no interifere con ese codigo.
+                                    lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                    dato = string.Empty;
+
+                                }
                             }
                         }
                     }
