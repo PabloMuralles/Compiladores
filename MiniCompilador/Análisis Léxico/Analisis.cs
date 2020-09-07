@@ -10,7 +10,7 @@ namespace MiniCompilador.Análisis_Léxico
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
         
         private string Nombre_Archivo = string.Empty;
-        List<Tuple<string, string>> Diccionario_Tocken = new List<Tuple<string, string>>();
+        List<Tuple<string, string>> Diccionario_Token = new List<Tuple<string, string>>();
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
         /// </summary>
@@ -28,8 +28,9 @@ namespace MiniCompilador.Análisis_Léxico
             Categorizacion(lexemas);
 
             archivo.Close();
-           
 
+            Laboratorio.Parseo Laboratorio = new Laboratorio.Parseo();
+            Laboratorio.Lectura_Token(Diccionario_Token);
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -640,10 +641,10 @@ namespace MiniCompilador.Análisis_Léxico
                                     string Ncategiria = Validar(dato_separado[0], objExpreciones);
                                     string Scategiria = Validar(dato_separado[1], objExpreciones);
                                     write.Write(" \n ");
-                                    Diccionario_Tocken.Add(new Tuple<string, string>(dato_separado[2], Categoria));
+                                    Diccionario_Token.Add(new Tuple<string, string>(dato_separado[2], Categoria));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Ncategiria);
                                     write.Write(" \n ");
-                                    Diccionario_Tocken.Add(new Tuple<string, string>(dato_separado[0], Categoria));
+                                    Diccionario_Token.Add(new Tuple<string, string>(dato_separado[0], Categoria));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Scategiria);
                                 }
                                 else
@@ -651,10 +652,10 @@ namespace MiniCompilador.Análisis_Léxico
                                     string Ncategiria = Validar(dato_separado[0], objExpreciones);
                                     string Scategiria = Validar(dato_separado[1], objExpreciones);
                                     write.Write(" \n ");
-                                    Diccionario_Tocken.Add(new Tuple<string, string>(dato_separado[0], Categoria));
+                                    Diccionario_Token.Add(new Tuple<string, string>(dato_separado[0], Categoria));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Scategiria);
                                     write.Write(" \n ");
-                                    Diccionario_Tocken.Add(new Tuple<string, string>(dato_separado[2], Categoria));
+                                    Diccionario_Token.Add(new Tuple<string, string>(dato_separado[2], Categoria));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Ncategiria);
                                 }
                             }
@@ -692,7 +693,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 Errores.Add($"Error {Categoria} Linea {LC[1]}");
                                 write.Write(" \n ");
-                                Diccionario_Tocken.Add(new Tuple<string, string>(Nueva_cadena, Categoria));
+                                Diccionario_Token.Add(new Tuple<string, string>(Nueva_cadena, Categoria));
                                 write.Write("{0}  Línea: {1} , columna: {2}  {3} \n", Nueva_cadena, LC[1], LC[0], Categoria);
                             }
                             else if (Categoria == "Error cadena contiene caracter nulo")
@@ -704,7 +705,7 @@ namespace MiniCompilador.Análisis_Léxico
                             else
                             {
                                 write.Write(" \n ");
-                                Diccionario_Tocken.Add(new Tuple<string, string>(item.Item1, Categoria));
+                                Diccionario_Token.Add(new Tuple<string, string>(item.Item1, Categoria));
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
                             }
                         }

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Minic.Laboratorio
+namespace MiniCompilador.Laboratorio
 {
     class Parseo
     {
-        public void Lectura_Tocken(List<Tuple<string,string>> Tockens) 
+        public void Lectura_Token(List<Tuple<string,string>> Tockens) 
         {
-        
+         
         }
     }
 }
