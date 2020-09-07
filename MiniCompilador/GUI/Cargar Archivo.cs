@@ -63,8 +63,8 @@ namespace MiniCompilador.GUI
             {
                 if (!string.IsNullOrEmpty(path.Text))
                 {
-                    errorProvider1.Clear();
-                    Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
+                    errorProvider1.Clear();             
+                    Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();                   
                     analisis.LecturaArchivo(path.Text);
                 }
                 else
