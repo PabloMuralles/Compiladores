@@ -15,7 +15,7 @@ namespace MiniCompilador.Laboratorio
         private string lookahead = string.Empty;
         private int contador = 0;
         private List<string> errores = new List<string>();
-
+        GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
 
         private void MatchToken(string expectedToken)
         {
@@ -25,17 +25,11 @@ namespace MiniCompilador.Laboratorio
                 {
                     contador++;
                     lookahead = tokens[contador].Item1;
-
                 }
                 else
                 {
-                    // errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
-
-                }
-                if (lookahead == "$")
-                {
-
-                }
+                    errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
+                }                
             }
             catch (Exception)
             {
@@ -46,8 +40,11 @@ namespace MiniCompilador.Laboratorio
 
         private bool Program_()
         {
-
-            return Decl() && Program_P();
+            if (lookahead != "$")
+            {
+             return Decl() && Program_P();
+            }
+            return false;
         }
 
         private bool Program_P()
@@ -307,6 +304,25 @@ namespace MiniCompilador.Laboratorio
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
             Program_();
+            Salida(errores);
+            
+        }
+
+        private void Salida(List<string> mensaje)
+        {
+            string M_mostrar = string.Empty;
+            if (!mensaje.Any())
+            {
+                M_mostrar = "condiciones perfectas";
+            }
+            else 
+            { 
+              foreach (var item in mensaje)
+              {
+                M_mostrar += item + " \n ";
+              }            
+            }
+             cargar_Archivo.Mostrar_mensajelab(M_mostrar);
         }
 
     }
