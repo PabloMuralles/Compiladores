@@ -15,7 +15,7 @@ namespace MiniCompilador.Laboratorio
         private int contador = 0;
         private List<string> errores = new List<string>();
 
-        private bool MatchToken(string expectedToken)
+        private bool MatchToken(string expectedToken, bool epsilon)
         {
             try
             {
@@ -27,7 +27,10 @@ namespace MiniCompilador.Laboratorio
                 }
                 else
                 {
-                    errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador -1].Item2)}");
+                    if (epsilon == false)
+                    {
+                        errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
+                    }
                     return false;
                 }
             }
@@ -38,14 +41,20 @@ namespace MiniCompilador.Laboratorio
             }
         }
 
+        public void EscribirErrores()
+        {
+            
+        }
+
         private void E()
         {
+            T();
             EP();
         }
 
         private void EP()
         {
-            if (MatchToken("+"))
+            if (MatchToken("+",true))
             {
                 T();
                 EP();
@@ -60,7 +69,7 @@ namespace MiniCompilador.Laboratorio
 
         private void TP()
         {
-            if (MatchToken("*")) 
+            if (MatchToken("*",true)) 
             {
                 F();
                 TP();
@@ -69,7 +78,7 @@ namespace MiniCompilador.Laboratorio
 
         private void F()
         {
-            if (MatchToken("*"))
+            if (MatchToken("5", false))
             {
 
             }
@@ -116,9 +125,10 @@ namespace MiniCompilador.Laboratorio
         /// <param name="tokens_">Lista de tuplas generada en el analisis lexico</param>
         public Parseo(List<Tuple<string, string>> tokens_)
         {
-            tokens.Add(new Tuple<string, string>("$", " "));
+            //tokens_.Add(new Tuple<string, string>("$", " "));
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
+            E();
         }
 
     }

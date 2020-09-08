@@ -29,8 +29,8 @@ namespace MiniCompilador.Análisis_Léxico
 
             archivo.Close();
 
-            Laboratorio.Parseo Laboratorio = new Laboratorio.Parseo();
-            Laboratorio.Lectura_Token(Diccionario_Token);
+            Laboratorio.Parseo Laboratorio = new Laboratorio.Parseo(Diccionario_Token);
+           
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
