@@ -55,7 +55,7 @@ namespace MiniCompilador.Análisis_Léxico
 
         public Expreciones()
         {
-            palabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine)$");
+            palabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine|Print)$");
 
             booleanas = new Regex("true|false");
 
