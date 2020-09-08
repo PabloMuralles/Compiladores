@@ -10,7 +10,7 @@ namespace MiniCompilador.Laboratorio
 {
     class Parseo
     {
-
+ 
         private List<Tuple<string, string>> tokens = new List<Tuple<string, string>>();
         private string lookahead = string.Empty;
         private int contador = 0;
@@ -66,6 +66,7 @@ namespace MiniCompilador.Laboratorio
         {
             Variable();
         }
+ 
          
         private void Variable()
         {
