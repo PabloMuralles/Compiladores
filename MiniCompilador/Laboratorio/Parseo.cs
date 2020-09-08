@@ -10,18 +10,12 @@ namespace MiniCompilador.Laboratorio
     class Parseo
     {
 
-
         private List<Tuple<string, string>> tokens = new List<Tuple<string, string>>();
-
         private string lookahead = string.Empty;
-
         private int contador = 0;
-
         private List<string> errores = new List<string>();
 
-        
-
-        private void MatchToken(string expectedToken)
+        private bool MatchToken(string expectedToken)
         {
             try
             {
@@ -29,10 +23,12 @@ namespace MiniCompilador.Laboratorio
                 {
                     contador++;
                     lookahead = tokens[contador].Item1;
+                    return true;
                 }
                 else
                 {
                     errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador -1].Item2)}");
+                    return false;
                 }
             }
             catch (Exception)
@@ -40,6 +36,59 @@ namespace MiniCompilador.Laboratorio
                 // se terminaron los tokens a leer 
                 throw;
             }
+        }
+
+        private void E()
+        {
+            EP();
+        }
+
+        private void EP()
+        {
+            if (MatchToken("+"))
+            {
+                T();
+                EP();
+            }
+        }
+
+        private void T()
+        {
+            F();
+            TP();
+        }
+
+        private void TP()
+        {
+            if (MatchToken("*")) 
+            {
+                F();
+                TP();
+            }
+        }
+
+        private void F()
+        {
+            if (MatchToken("*"))
+            {
+
+            }
+        }
+
+        private void FunctionProgram()
+        {
+            FunctionDecl();
+            FunctionProgramP();
+        }
+
+        private void FunctionProgramP()
+        {
+            FunctionProgram();
+        }
+
+        private void FunctionDecl()
+        {
+
         }
 
         /// <summary>
@@ -67,6 +116,7 @@ namespace MiniCompilador.Laboratorio
         /// <param name="tokens_">Lista de tuplas generada en el analisis lexico</param>
         public Parseo(List<Tuple<string, string>> tokens_)
         {
+            tokens.Add(new Tuple<string, string>("$", " "));
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
         }
