@@ -10,11 +10,12 @@ namespace MiniCompilador.Laboratorio
 {
     class Parseo
     {
- 
+
         private List<Tuple<string, string>> tokens = new List<Tuple<string, string>>();
         private string lookahead = string.Empty;
         private int contador = 0;
         private List<string> errores = new List<string>();
+
 
         private void MatchToken(string expectedToken)
         {
@@ -24,12 +25,16 @@ namespace MiniCompilador.Laboratorio
                 {
                     contador++;
                     lookahead = tokens[contador].Item1;
-                     
+
                 }
                 else
-                { 
-                       errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
-                    
+                {
+                    // errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
+
+                }
+                if (lookahead == "$")
+                {
+
                 }
             }
             catch (Exception)
@@ -39,63 +44,94 @@ namespace MiniCompilador.Laboratorio
             }
         }
 
-        private void Program_()
+        private bool Program_()
         {
-            Decl();
-            Program_P();
-            
-             
+
+            return Decl() && Program_P();
         }
 
-        private void Program_P()
+        private bool Program_P()
         {
-            if (lookahead != "$")
+            if (Program_())
             {
-                Program_();
-
-            } 
+                return true;
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        private void Decl()
+        private bool Decl()
         {
-            VariableDecl();
-            FunctionDecl();
+            if (VariableDecl())
+            {
+                return true;
+            }
+            else if (FunctionDecl())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        private void VariableDecl()
+        private bool VariableDecl()
         {
+
             Variable();
+            return true;
         }
- 
-         
-        private void Variable()
+
+
+        private bool Variable()
         {
             Type();
-            // ver como vamos a manejar las tuplas
-            MatchToken("identificador");
+            if (lookahead == "identificador")
+            {
+                MatchToken("identificador");
+                return true;
+            }
+            else
+            {
+
+                return false;
+            }
+
+
         }
-        private void Type()
+        private bool Type()
         {
-            if (lookahead == "int") 
+            if (lookahead == "int")
             {
                 MatchToken("int");
                 TypeP();
+                return true;
 
             }
             else if (lookahead == "double")
             {
                 MatchToken("int");
                 TypeP();
+                return true;
             }
             else if (lookahead == "string")
             {
                 MatchToken("string");
                 TypeP();
+                return true;
             }
             else if (lookahead == "identificador")
             {
                 MatchToken("identificador");
                 TypeP();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         private void TypeP()
@@ -105,9 +141,9 @@ namespace MiniCompilador.Laboratorio
                 MatchToken("[]");
                 TypeP();
             }
-             
+
         }
-        private void FunctionDecl()
+        private bool FunctionDecl()
         {
             if (lookahead == "void")
             {
@@ -117,23 +153,31 @@ namespace MiniCompilador.Laboratorio
                 if (lookahead != ")")
                 {
                     Formals();
+                    return true;
                 }
                 MatchToken(")");
-
-
+                return true;
             }
             else
             {
-                Type();
-                MatchToken("identificiador");
-                MatchToken("(");
-                if (lookahead != ")")
+                if (Type())
                 {
-                    Formals();
-                }
-                MatchToken(")");
-                
+                    MatchToken("identificiador");
+                    MatchToken("(");
+                    if (lookahead != ")")
+                    {
+                        Formals();
 
+                    }
+
+                    MatchToken(")");
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
 
             }
 
@@ -259,7 +303,7 @@ namespace MiniCompilador.Laboratorio
         /// <param name="tokens_">Lista de tuplas generada en el analisis lexico</param>
         public Parseo(List<Tuple<string, string>> tokens_)
         {
-            tokens_.Add(new Tuple<string, string>("$", " "));
+            tokens_.Add(new Tuple<string, string>("$", ""));
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
             Program_();
