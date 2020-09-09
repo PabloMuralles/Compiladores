@@ -29,7 +29,7 @@ namespace MiniCompilador.Laboratorio
                 else
                 {
                     errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
-                }                
+                }
             }
             catch (Exception)
             {
@@ -40,32 +40,12 @@ namespace MiniCompilador.Laboratorio
 
         private bool Program_()
         {
-            if (lookahead != "$")
-            {
-             return Decl() && Program_P();
-            }
-            return false;
+            return Decl() && Program_P();
         }
 
         private bool Program_P()
         {
-            if (Program_())
-            {
-                return true;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private bool Decl()
-        {
-            if (VariableDecl())
-            {
-                return true;
-            }
-            else if (FunctionDecl())
+            if (lookahead != "$")
             {
                 return true;
             }
@@ -75,29 +55,35 @@ namespace MiniCompilador.Laboratorio
             }
         }
 
-        private bool VariableDecl()
+        private bool Decl()
         {
-
-            Variable();
-            return true;
+            return VariableDecl() || FunctionDecl();
         }
 
+        private bool VariableDecl()
+        {
+            if (Variable())
+            {
+                MatchToken(";");
+                return true;
+            }
+            else
+            {    
+                return false;
+            }
 
+        }
         private bool Variable()
         {
-            Type();
-            if (lookahead == "identificador")
+            if (Type())
             {
                 MatchToken("identificador");
                 return true;
             }
             else
             {
-
                 return false;
             }
-
-
         }
         private bool Type()
         {
@@ -131,14 +117,17 @@ namespace MiniCompilador.Laboratorio
                 return false;
             }
         }
-        private void TypeP()
+
+        private bool TypeP()
         {
             if (lookahead == "[]")
             {
                 MatchToken("[]");
                 TypeP();
-            }
 
+                return true;
+            }
+            return true;
         }
         private bool FunctionDecl()
         {
@@ -153,6 +142,7 @@ namespace MiniCompilador.Laboratorio
                     return true;
                 }
                 MatchToken(")");
+                Stmt();
                 return true;
             }
             else
@@ -164,10 +154,9 @@ namespace MiniCompilador.Laboratorio
                     if (lookahead != ")")
                     {
                         Formals();
-
                     }
-
                     MatchToken(")");
+                    Stmt();
                     return true;
 
                 }
@@ -180,16 +169,22 @@ namespace MiniCompilador.Laboratorio
 
         }
 
-        private void Formals()
+        private bool Formals()
         {
-            VariableP();
-            MatchToken(",");
+            Variable();
+            if (lookahead != ",") // no entra si es epsilon
+            {
+                VariableP();
+            }
+            MatchToken(",");// program --> decl | program 
+            return true;
         }
 
-        private void VariableP()
+        private bool VariableP()
         {
             Variable();
             VariableP();
+            return true;
         }
 
         private void Stmt()
@@ -197,43 +192,46 @@ namespace MiniCompilador.Laboratorio
             StmtP();
             Stmt();
         }
-        private void StmtP()
+        private bool StmtP()
         {
             if (lookahead == "for")
             {
                 ForStmt();
+                return true;
             }
             else if (lookahead == "return")
             {
                 ReturnStmt();
+                return true;
             }
             else
             {
                 // falta expr
                 MatchToken(";");
+                return true;
             }
         }
 
-        private void ForStmt()
+        private bool ForStmt()
         {
             MatchToken("for");
             MatchToken("(");
-            if (lookahead != ")")
+            if (lookahead != ";")
+            {
+                MatchToken(";");
+            }
+            else
             {
                 ExprP();
+                MatchToken(";");
             }
-            MatchToken(")");
             MatchToken(";");
             Expr();
             MatchToken(";");
-            MatchToken("(");
-            if (lookahead != ")")
-            {
-                ExprP();
-            }
+            MatchToken(")");
             Stmt();
 
-
+            return true;
         }
 
         private void ReturnStmt()
@@ -247,13 +245,14 @@ namespace MiniCompilador.Laboratorio
             MatchToken(")");
             MatchToken(";");
         }
-        private void ExprP()
+        private bool ExprP()
         {
-            ExprP();
+            return Expr();
         }
 
-        private void Expr()
+        private bool Expr()
         {
+            return true;
             // Lvalue = P | P 
         }
 
@@ -305,7 +304,7 @@ namespace MiniCompilador.Laboratorio
             lookahead = tokens[contador].Item1;
             Program_();
             Salida(errores);
-            
+
         }
 
         private void Salida(List<string> mensaje)
@@ -315,14 +314,14 @@ namespace MiniCompilador.Laboratorio
             {
                 M_mostrar = "condiciones perfectas";
             }
-            else 
-            { 
-              foreach (var item in mensaje)
-              {
-                M_mostrar += item + " \n ";
-              }            
+            else
+            {
+                foreach (var item in mensaje)
+                {
+                    M_mostrar += item + " \n ";
+                }
             }
-             cargar_Archivo.Mostrar_mensajelab(M_mostrar);
+            cargar_Archivo.Mostrar_mensajelab(M_mostrar);
         }
 
     }
