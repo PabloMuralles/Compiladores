@@ -40,33 +40,33 @@ namespace MiniCompilador.Laboratorio
 
         private bool Program_()
         {
-            if (lookahead != "$")
-            {
-                return Decl() && Program_P();
-            }
-            return false;
+
+            return Decl() && Program_P();
+
         }
 
         private bool Program_P()
         {
-            if (Program_())
+            if (lookahead != "$")
             {
                 return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
         private bool Decl()
         {
-            if (VariableDecl())
+            return VariableDecl() || FunctionDecl();
+        }
+
+        private bool VariableDecl()
+        {
+            if (Variable())
             {
-                return true;
-            }
-            else if (FunctionDecl())
-            {
+                MatchToken(";");
                 return true;
             }
             else
@@ -74,20 +74,13 @@ namespace MiniCompilador.Laboratorio
                 //Error no cumple con la gramatica
                 return false;
             }
+
+
+
         }
-
-        private bool VariableDecl()
-        {
-
-            Variable();
-            MatchToken(";");
-            return true;
-        }
-
-
         private bool Variable()
         {
-            if (Type() && lookahead == "identificador")
+            if (Type())
             {
                 MatchToken("identificador");
                 return true;
@@ -96,8 +89,6 @@ namespace MiniCompilador.Laboratorio
             {
                 return false;
             }
-
-
         }
         private bool Type()
         {
@@ -128,12 +119,14 @@ namespace MiniCompilador.Laboratorio
                 return false;
             }
         }
+
         private bool TypeP()
         {
             if (lookahead == "[]")
             {
                 MatchToken("[]");
                 TypeP();
+
                 return true;
             }
             return true;
@@ -150,10 +143,11 @@ namespace MiniCompilador.Laboratorio
                     Stmt();
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                MatchToken(")");
+                Stmt();
+                return true;
+
             }
             else if (lookahead == "void")
             {
@@ -162,6 +156,14 @@ namespace MiniCompilador.Laboratorio
                 MatchToken("(");
                 if (Formals())
                 {
+
+                    MatchToken("identificiador");
+                    MatchToken("(");
+                    if (lookahead != ")")
+                    {
+                        Formals();
+                    }
+
                     MatchToken(")");
                     Stmt();
                     return true;
@@ -179,6 +181,7 @@ namespace MiniCompilador.Laboratorio
         }
 
 
+
         private bool Formals()
         {
             if (Variable())
@@ -191,6 +194,7 @@ namespace MiniCompilador.Laboratorio
             {
                 return false;
             }
+
         }
 
         private bool VariableP()
@@ -219,21 +223,26 @@ namespace MiniCompilador.Laboratorio
         {
             if (lookahead == "for")
             {
+
                 return ForStmt();
             }
             else if (lookahead == "return")
             {
                 return ReturnStmt();
+
+
             }
             else if (lookahead == "entero")
             {
                 // falta expr
                 MatchToken(";");
                 return true;
+
             }
             else
             {
                 return false;
+
             }
         }
 
@@ -241,6 +250,7 @@ namespace MiniCompilador.Laboratorio
         {
             MatchToken("for");
             MatchToken("(");
+
             if (ExprP())
             {
                 MatchToken(";");
@@ -266,6 +276,8 @@ namespace MiniCompilador.Laboratorio
                 return false;
             }
 
+
+  
         }
 
         private bool  ReturnStmt()
@@ -289,6 +301,7 @@ namespace MiniCompilador.Laboratorio
                 return true;
             }
             else { return false; }
+
         }
 
         private bool Expr()
