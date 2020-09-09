@@ -29,7 +29,7 @@ namespace MiniCompilador.Laboratorio
                 else
                 {
                     errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
-                }                
+                }
             }
             catch (Exception)
             {
@@ -42,7 +42,7 @@ namespace MiniCompilador.Laboratorio
         {
             if (lookahead != "$")
             {
-             return Decl() && Program_P();
+                return Decl() && Program_P();
             }
             return false;
         }
@@ -71,6 +71,7 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
+                //Error no cumple con la gramatica
                 return false;
             }
         }
@@ -79,20 +80,20 @@ namespace MiniCompilador.Laboratorio
         {
 
             Variable();
+            MatchToken(";");
             return true;
         }
 
 
         private bool Variable()
-        {            
-            if (Type() &&lookahead == "identificador" )
+        {
+            if (Type() && lookahead == "identificador")
             {
                 MatchToken("identificador");
                 return true;
             }
             else
             {
-                // Error
                 return false;
             }
 
@@ -102,25 +103,25 @@ namespace MiniCompilador.Laboratorio
         {
             if (lookahead == "int")
             {
-                MatchToken("int");            
+                MatchToken("int");
                 return TypeP();
 
             }
             else if (lookahead == "double")
             {
-                MatchToken("int");               
+                MatchToken("int");
                 return TypeP();
             }
             else if (lookahead == "string")
             {
-                MatchToken("string");                
+                MatchToken("string");
                 return TypeP();
             }
             else if (lookahead == "identificador")
             {
                 MatchToken("identificador");
                 return TypeP();
-                
+
             }
             else
             {
@@ -139,34 +140,31 @@ namespace MiniCompilador.Laboratorio
         }
         private bool FunctionDecl()
         {
-            if (lookahead == "void")
+            if (Type())
             {
-                MatchToken("void");
-                MatchToken("identificiador");
+                MatchToken("identificador");
                 MatchToken("(");
-                if (lookahead != ")")
+                if (Formals())
                 {
-                    Formals();
+                    MatchToken(")");
+                    Stmt();
                     return true;
                 }
-                MatchToken(")");
-                return true;
-            }
-            else
-            {
-                if (Type())
+                else
                 {
-                    MatchToken("identificiador");
-                    MatchToken("(");
-                    if (lookahead != ")")
-                    {
-                        Formals();
-
-                    }
-
+                    return false;
+                }
+            }
+            else if (lookahead == "void")
+            {
+                MatchToken("void");
+                MatchToken("identificador");
+                MatchToken("(");
+                if (Formals())
+                {
                     MatchToken(")");
+                    Stmt();
                     return true;
-
                 }
                 else
                 {
@@ -174,83 +172,128 @@ namespace MiniCompilador.Laboratorio
                 }
 
             }
-
-        }
-
-        private void Formals()
-        {
-            VariableP();
-            MatchToken(",");
-        }
-
-        private void VariableP()
-        {
-            Variable();
-            VariableP();
-        }
-
-        private void Stmt()
-        {
-            StmtP();
-            Stmt();
-        }
-        private void StmtP()
-        {
-            if (lookahead == "for")
+            else
             {
-                ForStmt();
+                return false;
             }
-            else if (lookahead == "return")
+        }
+
+
+        private bool Formals()
+        {
+            if (Variable())
             {
-                ReturnStmt();
+                VariableP();
+                MatchToken(",");
+                return true;
             }
             else
             {
-                // falta expr
-                MatchToken(";");
+                return false;
             }
         }
 
-        private void ForStmt()
+        private bool VariableP()
+        {
+            if (Variable())
+            {
+                VariableP();
+                return true;
+            }
+            return true;
+        }
+
+        private bool Stmt()
+        {
+            if (StmtP())
+            {
+                Stmt();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool StmtP()
+        {
+            if (lookahead == "for")
+            {
+                return ForStmt();
+            }
+            else if (lookahead == "return")
+            {
+                return ReturnStmt();
+            }
+            else if (lookahead == "entero")
+            {
+                // falta expr
+                MatchToken(";");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool ForStmt()
         {
             MatchToken("for");
             MatchToken("(");
-            if (lookahead != ")")
+            if (ExprP())
             {
-                ExprP();
+                MatchToken(";");
             }
+            else { MatchToken(";"); }
+            if (Expr())
+            {
+                MatchToken(";");
+            }
+            else { MatchToken(";"); }
+            if (ExprP())
+            {
+                MatchToken(";");
+            }
+            else { MatchToken(";"); }
             MatchToken(")");
-            MatchToken(";");
-            Expr();
-            MatchToken(";");
-            MatchToken("(");
-            if (lookahead != ")")
+            if (Stmt())
             {
-                ExprP();
+                return true;
             }
-            Stmt();
-
+            else
+            {
+                return false;
+            }
 
         }
 
-        private void ReturnStmt()
+        private bool  ReturnStmt()
         {
             MatchToken("return");
-            MatchToken("(");
-            if (lookahead != ")")
+            if (ExprP())
             {
-                ExprP();
+             MatchToken(";");
+                return true;
             }
-            MatchToken(")");
-            MatchToken(";");
+            else
+            {
+                MatchToken(";");
+                return true;
+            }
         }
-        private void ExprP()
+        private bool ExprP()
         {
-            ExprP();
+            if (Expr())
+            {
+                return true;
+            }
+            else { return false; }
         }
 
-        private void Expr()
+        private bool Expr()
         {
+            return true;
             // Lvalue = P | P 
         }
 
@@ -302,7 +345,7 @@ namespace MiniCompilador.Laboratorio
             lookahead = tokens[contador].Item1;
             Program_();
             Salida(errores);
-            
+
         }
 
         private void Salida(List<string> mensaje)
@@ -312,14 +355,14 @@ namespace MiniCompilador.Laboratorio
             {
                 M_mostrar = "condiciones perfectas";
             }
-            else 
-            { 
-              foreach (var item in mensaje)
-              {
-                M_mostrar += item + " \n ";
-              }            
+            else
+            {
+                foreach (var item in mensaje)
+                {
+                    M_mostrar += item + " \n ";
+                }
             }
-             cargar_Archivo.Mostrar_mensajelab(M_mostrar);
+            cargar_Archivo.Mostrar_mensajelab(M_mostrar);
         }
 
     }
