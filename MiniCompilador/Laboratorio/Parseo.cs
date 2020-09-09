@@ -84,16 +84,15 @@ namespace MiniCompilador.Laboratorio
 
 
         private bool Variable()
-        {
-            Type();
-            if (lookahead == "identificador")
+        {            
+            if (Type() &&lookahead == "identificador" )
             {
                 MatchToken("identificador");
                 return true;
             }
             else
             {
-
+                // Error
                 return false;
             }
 
@@ -103,42 +102,40 @@ namespace MiniCompilador.Laboratorio
         {
             if (lookahead == "int")
             {
-                MatchToken("int");
-                TypeP();
-                return true;
+                MatchToken("int");            
+                return TypeP();
 
             }
             else if (lookahead == "double")
             {
-                MatchToken("int");
-                TypeP();
-                return true;
+                MatchToken("int");               
+                return TypeP();
             }
             else if (lookahead == "string")
             {
-                MatchToken("string");
-                TypeP();
-                return true;
+                MatchToken("string");                
+                return TypeP();
             }
             else if (lookahead == "identificador")
             {
                 MatchToken("identificador");
-                TypeP();
-                return true;
+                return TypeP();
+                
             }
             else
             {
                 return false;
             }
         }
-        private void TypeP()
+        private bool TypeP()
         {
             if (lookahead == "[]")
             {
                 MatchToken("[]");
                 TypeP();
+                return true;
             }
-
+            return true;
         }
         private bool FunctionDecl()
         {
