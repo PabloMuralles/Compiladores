@@ -68,12 +68,13 @@ namespace MiniCompilador.Laboratorio
                 return true;
             }
             else
-            {    
+            {
                 return false;
             }
 
         }
         private bool Variable()
+
         {
             if (Type())
             {
@@ -82,6 +83,7 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
+
                 return false;
             }
         }
@@ -90,27 +92,24 @@ namespace MiniCompilador.Laboratorio
             if (lookahead == "int")
             {
                 MatchToken("int");
-                TypeP();
-                return true;
+                return TypeP();
 
             }
             else if (lookahead == "double")
             {
                 MatchToken("int");
-                TypeP();
-                return true;
+                return TypeP();
             }
             else if (lookahead == "string")
             {
                 MatchToken("string");
-                TypeP();
-                return true;
+                return TypeP();
             }
             else if (lookahead == "identificador")
             {
                 MatchToken("identificador");
-                TypeP();
-                return true;
+                return TypeP();
+
             }
             else
             {
