@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiniCompilador.Análisis_Léxico;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -16,6 +17,8 @@ namespace MiniCompilador.Laboratorio
         private int contador = 0;
         private List<string> errores = new List<string>();
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
+        private int contadorAux = 0;
+        private bool backExpr = false;
 
         private void MatchToken(string expectedToken)
         {
@@ -200,7 +203,7 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
-                return false;
+                return true;
             }
 
         }
@@ -240,7 +243,7 @@ namespace MiniCompilador.Laboratorio
 
 
             }
-            else if (lookahead == "entero")
+            else if (Expr())
             {
                 // falta expr
                 MatchToken(";");
@@ -314,28 +317,302 @@ namespace MiniCompilador.Laboratorio
 
         private bool Expr()
         {
-            return true;
-            // Lvalue = P | P 
+            // para hacer backtraking
+            contadorAux = contador;
+             
+            if (Lvalue())
+            {
+                if (lookahead == "=")
+                {
+                    MatchToken("=");
+                    if (P())
+                    {
+                        return true;
+                    }
+                    else { return false; }
+                }
+                else
+                {
+                    contador = contadorAux;
+                    return P();
+
+                }
+
+            }
+            else
+            {
+                return P();
+            }
         }
 
-        private void Lvalue()
+        private bool Lvalue()
         {
             if (lookahead == "identificador")
             {
                 MatchToken("identificador");
+
+                return true;
             }
             else
             {
-                Expr();
-                if (lookahead == ".")
+                if (Expr())
                 {
-                    MatchToken(".");
-                    MatchToken("identificador");
+                    if (lookahead == ".")
+                    {
+                        MatchToken(".");
+                        MatchToken("identificador");
+                        return true;
+                    }
+                    else if (lookahead == "[")
+                    {
+                        MatchToken("[");
+                        if (Expr())
+                        {
+                            if (lookahead == "]")
+                            {
+                                MatchToken("]");
+                                return true;
+                            } else  { return false;  }
+                        }
+                        else { return false;}
+                    }
+                    else { return false;}
                 }
+                else {return false; }
             }
         }
 
+        private bool P()
+        {
+            return T() && P();
+        }
 
+        private bool PP()
+        {
+            if (lookahead == "||")
+            {
+                MatchToken("||");
+                return T() && PP();
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool T()
+        {
+            return H() && TP();
+        }
+
+        private bool TP()
+        {
+            if (lookahead == "&&")
+            {
+                MatchToken("&&");
+                return H() && TP();
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool H()
+        {
+            return F() && HP();
+        }
+
+        private bool HP()
+        {
+            if (lookahead == "==")
+            {
+                MatchToken("==");
+                F();
+                HP();
+                return true;
+            }
+            else if (lookahead == "!=")
+            {
+                MatchToken("!=");
+                F();
+                HP();
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool F()
+        {
+            return L() && FP();
+        }
+
+        private bool FP()
+        {
+            if (lookahead == "<")
+            {
+                MatchToken("<");
+                FP();
+                return true;
+            }
+            else if (lookahead == ">")
+            {
+                MatchToken(">");
+                FP();
+                return true;
+
+            }
+            else if (lookahead == "<=")
+            {
+                MatchToken("<=");
+                FP();
+                return true;
+            }
+            else if (lookahead == ">=")
+            {
+                MatchToken(">=");
+                FP();
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool L()
+        {
+            return M() && LP();
+        }
+        private bool LP()
+        {
+            if (lookahead == "+")
+            {
+                MatchToken("+");
+                LP();
+                return true;
+            }
+            else if (lookahead == "-")
+            {
+                MatchToken("-");
+                LP();
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool M()
+        {
+            return N() && MP();
+        }
+        private bool MP()
+        {
+            if (lookahead == "*")
+            {
+                MatchToken("*");
+                MP();
+                return true;
+            }
+            else if (lookahead == "/")
+            {
+                MatchToken("/");
+                MP();
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool N()
+        {
+            if (lookahead == "-")
+            {
+                MatchToken("-");
+                // duda si el return se podria poner expre
+                Expr();
+                return true;
+            }
+            else if (lookahead == "!")
+            {
+                MatchToken("!");
+                // duda si el return se podria poner expre
+                Expr();
+                return true;
+            }
+            else
+            {
+                return G();
+            }
+        }
+        private bool G()
+        {
+
+            if (lookahead == "(")
+            {
+                MatchToken("(");
+                Expr();
+                MatchToken(")");
+                return true;
+            }
+            else if(lookahead == "this")
+            {
+                MatchToken("this");
+                return true;
+            }
+            else if (lookahead == "New")
+            {
+                // duad sobre si se haria backtraking
+                MatchToken("New");
+                MatchToken("(");
+                MatchToken("identificador");
+                MatchToken(")");
+                return true;
+            }
+            else
+            {
+                return Constant() || Lvalue();
+            }
+        }
+
+        private bool Constant()
+        {
+            if (lookahead == "entero")
+            {
+                MatchToken("entero");
+                return true;
+            }
+            else if (lookahead == "booleanas")
+            {
+                MatchToken("booleanas");
+                return true;
+            }
+            else if (lookahead == "doubles")
+            {
+                MatchToken("doubles");
+                return true;
+            }
+            else if (lookahead == "cadena")
+            {
+                MatchToken("cadena");
+                return true;
+            }
+            else if (lookahead == "null")
+            {
+                // duda si null es así tal cual
+                MatchToken("null");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+         
         /// <summary>
         /// Metodo para poder mostrar la linea y la columna donde se encuentra el error
         /// </summary>
