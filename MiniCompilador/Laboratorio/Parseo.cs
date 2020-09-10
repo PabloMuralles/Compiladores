@@ -28,7 +28,15 @@ namespace MiniCompilador.Laboratorio
                 }
                 else
                 {
-                    errores.Add($"Error sintactico: se esperaba {expectedToken} y se tenia {lookahead}. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
+                    if (lookahead == "$")
+                    {
+                        errores.Add($"Error sintactico: se esperaba ' {expectedToken} ' y ya no se tenian tokens.");
+                    }
+                    else
+                    {
+                        errores.Add($"Error sintactico: se esperaba ' {expectedToken} ' y se tenia ' {lookahead} '. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
+                    }
+                     
                 }
             }
             catch (Exception)
