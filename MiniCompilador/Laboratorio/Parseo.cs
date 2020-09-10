@@ -38,7 +38,7 @@ namespace MiniCompilador.Laboratorio
                     {
                         errores.Add($"Error sintactico: se esperaba ' {expectedToken} ' y se tenia ' {lookahead} '. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
                     }
-                     
+
                 }
             }
             catch (Exception)
@@ -166,14 +166,7 @@ namespace MiniCompilador.Laboratorio
                 MatchToken("(");
                 if (Formals())
                 {
-
-                    MatchToken("identificiador");
-                    MatchToken("(");
-                    if (lookahead != ")")
-                    {
-                        Formals();
-                    }
-
+                    
                     MatchToken(")");
                     Stmt();
                     return true;
@@ -287,15 +280,15 @@ namespace MiniCompilador.Laboratorio
             }
 
 
-  
+
         }
 
-        private bool  ReturnStmt()
+        private bool ReturnStmt()
         {
             MatchToken("return");
             if (ExprP())
             {
-             MatchToken(";");
+                MatchToken(";");
                 return true;
             }
             else
@@ -318,7 +311,7 @@ namespace MiniCompilador.Laboratorio
         {
             // para hacer backtraking
             contadorAux = contador;
-             
+
             if (Lvalue())
             {
                 if (lookahead == "=")
@@ -371,13 +364,14 @@ namespace MiniCompilador.Laboratorio
                             {
                                 MatchToken("]");
                                 return true;
-                            } else  { return false;  }
+                            }
+                            else { return false; }
                         }
-                        else { return false;}
+                        else { return false; }
                     }
-                    else { return false;}
+                    else { return false; }
                 }
-                else {return false; }
+                else { return false; }
             }
         }
 
@@ -557,7 +551,7 @@ namespace MiniCompilador.Laboratorio
                 MatchToken(")");
                 return true;
             }
-            else if(lookahead == "this")
+            else if (lookahead == "this")
             {
                 MatchToken("this");
                 return true;
@@ -611,7 +605,7 @@ namespace MiniCompilador.Laboratorio
             }
         }
 
-         
+
         /// <summary>
         /// Metodo para poder mostrar la linea y la columna donde se encuentra el error
         /// </summary>
