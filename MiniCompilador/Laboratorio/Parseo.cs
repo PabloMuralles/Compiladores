@@ -18,7 +18,6 @@ namespace MiniCompilador.Laboratorio
         private List<string> errores = new List<string>();
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
         private int contadorAux = 0;
-        private bool backExpr = false;
 
         private void MatchToken(string expectedToken)
         {

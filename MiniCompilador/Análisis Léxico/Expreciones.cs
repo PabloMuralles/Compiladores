@@ -50,9 +50,6 @@ namespace MiniCompilador.Análisis_Léxico
         public Regex caracteres_ { get => caracteres; }
         public Regex cadenaNulo_ { get => cadenaNulo; }
 
-
-
-
         public Expreciones()
         {
             palabrasReservadas = new Regex(@"^(void|int|double|bool|string|class|interface|null|this|for|while|foreach|if|else|return|break|New|NewArray|Console|WriteLine|Print)$");
@@ -87,13 +84,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
 
-
-
-            
         }
-
-
     }
-
 }
 
