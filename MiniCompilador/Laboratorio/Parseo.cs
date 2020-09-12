@@ -1,11 +1,6 @@
-﻿using MiniCompilador.Análisis_Léxico;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiniCompilador.Laboratorio
 {
@@ -352,10 +347,7 @@ namespace MiniCompilador.Laboratorio
         private bool Expr()
         {
             // para hacer backtraking
-            if (contadorAux != contador)
-            {
-                return false;
-            }
+         
             contadorAux = contador;
             if (Lvalue())
             {
@@ -394,8 +386,9 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
-                if (Expr())
+                if (lookahead == "identificador")
                 {
+                    MatchToken("identificador");
                     if (lookahead == ".")
                     {
                         MatchToken(".");
@@ -693,7 +686,7 @@ namespace MiniCompilador.Laboratorio
             string M_mostrar = string.Empty;
             if (!mensaje.Any())
             {
-                M_mostrar = "condiciones perfectas";
+                M_mostrar = "No presenta errores sintácticos";
             }
             else
             {
