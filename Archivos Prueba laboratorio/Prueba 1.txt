@@ -1,0 +1,3 @@
+public void Prueba(int dato , )
+int[] dato();
+string carro = "Hola";

@@ -1,0 +1,3 @@
+void prueba()
+int carro = 5;
+string[][] arreglo(int Dato, int carro);

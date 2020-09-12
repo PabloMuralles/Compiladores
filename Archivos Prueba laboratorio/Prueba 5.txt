@@ -1,0 +1,3 @@
+int dato();
+string Dato();
+bool valor();
