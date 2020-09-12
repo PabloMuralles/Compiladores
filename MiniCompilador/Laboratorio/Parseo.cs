@@ -307,7 +307,6 @@ namespace MiniCompilador.Laboratorio
             {
                 MatchToken(";");
             }
-            else { MatchToken(";"); }
             MatchToken(")");
             if (Stmt())
             {
