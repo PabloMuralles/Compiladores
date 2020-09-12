@@ -54,6 +54,7 @@
       <DependentUpon>Cargar Archivo.cs</DependentUpon>
     </Compile>
     <Compile Include="Análisis Léxico\Expreciones.cs" />
+    <Compile Include="Laboratorio\Parseo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\Cargar Archivo.resx">

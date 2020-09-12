@@ -9,6 +9,9 @@ namespace MiniCompilador.Análisis_Léxico
     {
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
         private string Nombre_Archivo = string.Empty;
+        
+        List<Tuple<string, string>> Diccionario_Token = new List<Tuple<string, string>>();
+        
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
         /// </summary>
@@ -20,13 +23,13 @@ namespace MiniCompilador.Análisis_Léxico
             Nombre_Archivo = Path.GetFileNameWithoutExtension(path);
 
             var archivo = new StreamReader(path);
-
             IdentificadorLexemas(lexemas, archivo);
-
             Categorizacion(lexemas);
-
             archivo.Close();
-
+ 
+            Laboratorio.Parseo Laboratorio = new Laboratorio.Parseo(Diccionario_Token);
+           
+ 
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -587,7 +590,7 @@ namespace MiniCompilador.Análisis_Léxico
         /// </summary>
         /// <param name="Lexema_">una lista de tuplas string string donde viene en el primero string el lexema en el segundo viene linea, columna y un error si lo existe separado por comas</param>
         public void Categorizacion(List<Tuple<string, string>> Lexema_)
-        {
+        {            
             var objExpreciones = new Expreciones();
             string CarpetaOut = Environment.CurrentDirectory;
             if (!Directory.Exists(Path.Combine(CarpetaOut, "Salida")))
@@ -627,6 +630,7 @@ namespace MiniCompilador.Análisis_Léxico
                         {
                             var LC = item.Item2.Split(',');
                             string Categoria = Validar(item.Item1, objExpreciones);
+                            var Mostrar_Categoria = Categoria.Split(',');
                             ///
                             if (Categoria == "Token unido")
                             {
@@ -635,20 +639,28 @@ namespace MiniCompilador.Análisis_Léxico
                                 if (!objExpreciones.entero_.IsMatch(dato_separado[0]))
                                 {
                                     string Ncategiria = Validar(dato_separado[0], objExpreciones);
+                                    var Mostrar_Ncategoria = Ncategiria.Split(',');
                                     string Scategiria = Validar(dato_separado[1], objExpreciones);
+                                    var Mostrar_Scategoria = Scategiria.Split(',');
                                     write.Write(" \n ");
-                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Ncategiria);
+                                    Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Ncategoria[1], dato_separado[2] +","+ LC[1] +","+ dato_separado[1]));
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Mostrar_Ncategoria[0]);
                                     write.Write(" \n ");
-                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Scategiria);
+                                    Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Scategoria[1], dato_separado[0] + ","+ LC[1]+","+ dato_separado[3]));
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Mostrar_Scategoria[0]);
                                 }
                                 else
                                 {
                                     string Ncategiria = Validar(dato_separado[0], objExpreciones);
+                                    var Mostrar_Ncategoria = Ncategiria.Split(',');
                                     string Scategiria = Validar(dato_separado[1], objExpreciones);
+                                    var Mostrar_Scategoria = Scategiria.Split(',');
                                     write.Write(" \n ");
-                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Scategiria);
+                                    Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Scategoria[1], dato_separado[0] + "," + LC[1] + "," + dato_separado[3]));
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Mostrar_Scategoria[0]);
                                     write.Write(" \n ");
-                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Ncategiria);
+                                    Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Ncategoria[1], dato_separado[2] + "," + LC[1] + "," + dato_separado[1]));
+                                    write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Mostrar_Ncategoria[0]);
                                 }
                             }
                             else if (Categoria == "Token no encontrado")
@@ -674,7 +686,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 write.Write("{0}  Línea: {1}, Error {2} \n", item.Item1, LC[0], LC[1]);
                             }
 
-                            else if (Categoria == "identificador mayor a 31 caracteres")
+                            else if (Categoria == "identificador mayor a 31 caracteres,identificador")
                             {
                                 //31
                                 var Cadena_anterior = item.Item1;
@@ -683,9 +695,10 @@ namespace MiniCompilador.Análisis_Léxico
                                 {
                                     Nueva_cadena += Cadena_anterior[i];
                                 }
-                                Errores.Add($"Error {Categoria} Linea {LC[1]}");
+                                Errores.Add($"Error {Mostrar_Categoria[0]} Linea {LC[1]}");
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  {3} \n", Nueva_cadena, LC[1], LC[0], Categoria);
+                                Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Categoria[1], Nueva_cadena+","+ LC[1]+","+ LC[0]));
+                                write.Write("{0}  Línea: {1} , columna: {2}  {3} \n", Nueva_cadena, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                             else if (Categoria == "Error cadena contiene caracter nulo")
                             {
@@ -696,7 +709,8 @@ namespace MiniCompilador.Análisis_Léxico
                             else
                             {
                                 write.Write(" \n ");
-                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Categoria);
+                                Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Categoria[1], item.Item1 + "," + LC[1] + "," + LC[0]));
+                                write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                         }
                     }
@@ -714,6 +728,7 @@ namespace MiniCompilador.Análisis_Léxico
                 }
             }
         }
+        
 
         /// <summary>
         /// Metodo que valida con las expresiones regulares para ve en cual casa
@@ -726,36 +741,37 @@ namespace MiniCompilador.Análisis_Léxico
 
             if (objExpreciones_.palabrasReservadas_.IsMatch(cadena))
             {
-                return ("Palabra_Reservada ->" + "\"" + cadena + "\"");
+               
+                return ("Palabra_Reservada ->" + "\"" + cadena + "\""+$",{cadena}");
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
-                return ("booleana");
+                return ("booleana,boolena");
             }
             else if (objExpreciones_.identificador_.IsMatch(cadena))
             {
                 int Cantidad = Cantidad_identificador(cadena);
                 if (Cantidad < 32)
                 {
-                    return ("identificador");
+                    return ("identificador,identificador");
                 }
                 else
                 {
-                    return ("identificador mayor a 31 caracteres");
+                    return ("identificador mayor a 31 caracteres,identificador");
                 }
 
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return ($"entero (Valor ={cadena})");
+                return ($"entero (Valor ={cadena})"+",entero");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
-                return ("Hexadecimal");
+                return ("Hexadecimal,hexadecimal");
             }
             else if (objExpreciones_.doubles_.IsMatch(cadena))
             {
-                return ($"doubles (Valor ={cadena})");
+                return ($"doubles (Valor ={cadena})"+",doubles");
             }
             else if (objExpreciones_.cadena_.IsMatch(cadena))
             {
@@ -765,29 +781,29 @@ namespace MiniCompilador.Análisis_Léxico
                 }
                 else
                 {
-                    return ("cadena");
+                    return ("cadena,cadena");
                 }
 
             }
             else if (objExpreciones_.caracteresDobles_.IsMatch(cadena))
             {
-                return ("\"" + cadena + "\"");
+                return ("\"" + cadena + "\""+$",{cadena}");
             }
             else if (objExpreciones_.caracteresSimples_.IsMatch(cadena))
             {
-                return ("\"" + cadena + "\"");
+                return ("\"" + cadena + "\"" + $",{cadena}");
             }
             else if (objExpreciones_.llavesSimples_.IsMatch(cadena))
             {
-                return ("\"" + cadena + "\"");
+                return ("\"" + cadena + "\"" + $",{cadena}");
             }
             else if (objExpreciones_.llavesDobles_.IsMatch(cadena))
             {
-                return ("\"" + cadena + "\"");
+                return ("\"" + cadena + "\"" + $",{cadena}");
             }
             else if (objExpreciones_.signosPuntuacion_.IsMatch(cadena))
             {
-                return ("\"" + cadena + "\"");
+                return ("\"" + cadena + "\"" + $",{cadena}");
             }
             else
             {
