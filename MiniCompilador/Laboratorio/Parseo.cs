@@ -165,7 +165,7 @@ namespace MiniCompilador.Laboratorio
                 // puede venir un token ()
                 if (lookahead == "()")
                 {
-                    MatchToken("()");
+                    MatchToken("()");                   
                     Stmt();
                     return true;
                 }
@@ -174,6 +174,7 @@ namespace MiniCompilador.Laboratorio
                     if (lookahead == "(")
                     {
                         MatchToken("(");
+                        Formals();
                         MatchToken(")");
                         Stmt();
                         return true;
@@ -201,6 +202,7 @@ namespace MiniCompilador.Laboratorio
                     if (lookahead == "(")
                     {
                         MatchToken("(");
+                        Formals();
                         MatchToken(")");
                         Stmt();
                         return true;
@@ -674,7 +676,7 @@ namespace MiniCompilador.Laboratorio
             tokens_.Add(new Tuple<string, string>("$", ""));
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
-            while (tokens.Count() == contador)
+            while (lookahead != "$")
             {
                 Program_();
             }
