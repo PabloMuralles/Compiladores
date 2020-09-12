@@ -74,6 +74,8 @@ namespace MiniCompilador.Laboratorio
 
         private bool VariableDecl()
         {
+            // backtraking
+            contadorAux = contador;
             if (Variable())
             {
                 if (lookahead == ";")
@@ -83,6 +85,8 @@ namespace MiniCompilador.Laboratorio
                 }
                 else
                 {
+                    contador = contadorAux;
+                    lookahead = tokens[contador].Item1;
                     return false;
                 }
             }
@@ -157,8 +161,8 @@ namespace MiniCompilador.Laboratorio
                 if (lookahead == "()")
                 {
                     MatchToken("()");
-                   Stmt();
-                   return true;
+                    Stmt();
+                    return true;
                 }
                 else
                 {
@@ -188,16 +192,16 @@ namespace MiniCompilador.Laboratorio
                 }
                 else
                 {
-                    MatchToken("(");
-                    if (Formals())
+                    if (lookahead == "(")
                     {
-
+                        MatchToken("(");
                         MatchToken(")");
                         Stmt();
                         return true;
                     }
                     else
                     {
+                        MatchToken("(");
                         return false;
                     }
                 }
@@ -355,6 +359,8 @@ namespace MiniCompilador.Laboratorio
                 else
                 {
                     contador = contadorAux;
+                    lookahead = tokens[contador].Item1;
+
                     return P();
 
                 }
