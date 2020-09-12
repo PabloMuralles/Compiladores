@@ -681,7 +681,7 @@ namespace MiniCompilador.Laboratorio
             tokens_.Add(new Tuple<string, string>("$", ""));
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
-            while (lookahead != "$")
+            while (tokens.Count() == contador)
             {
                 Program_();
             }
