@@ -147,6 +147,7 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
+                MatchToken(lookahead);
                 return false;
             }
         }
