@@ -147,7 +147,6 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
-                MatchToken(lookahead);
                 return false;
             }
         }
@@ -221,6 +220,7 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
+                MatchToken("void");
                 return false;
             }
         }
