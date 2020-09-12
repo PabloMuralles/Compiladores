@@ -74,11 +74,19 @@ Constant → intConstant | doubleConstant | boolConstant | stringConstant | null
 
 #### Funcionamiento ⚙️
 
+Recuperación de errores del  Análisis Sintáctico
+
+[![VIDEO](https://img.youtube.com/vi/qCk-OYWRWEQ/0.jpg)](https://www.youtube.com/watch?v=qCk-OYWRWEQ)
+ 
+
+
 Los archivos de salida se guardarán en el directorio del proyecto específicamente en la siguiente ruta: \bin\Debug\Salida
 
 A continuación, un pequeño video del funcionamiento de la fase 1
 
 [![VIDEO](https://img.youtube.com/vi/1HR2VJ3BnYc/0.jpg)](https://www.youtube.com/watch?v=1HR2VJ3BnYc)
+
+
 
 
 ## Construido con 🛠️
