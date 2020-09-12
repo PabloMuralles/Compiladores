@@ -127,7 +127,7 @@ namespace MiniCompilador.Laboratorio
             }
             else if (lookahead == "double")
             {
-                MatchToken("int");
+                MatchToken("double");
                 return TypeP();
             }
             else if (lookahead == "string")
