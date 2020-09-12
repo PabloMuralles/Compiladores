@@ -37,6 +37,8 @@ namespace MiniCompilador.Laboratorio
                     else
                     {
                         errores.Add($"Error sintactico: se esperaba ' {expectedToken} ' y se tenia ' {lookahead} '. {ObtenerUbicacion(tokens[contador == 0 ? contador : contador - 1].Item2)}");
+                        contador++;
+                        lookahead = tokens[contador].Item1;
                     }
 
                 }
@@ -50,7 +52,7 @@ namespace MiniCompilador.Laboratorio
 
         private bool Program_()
         {
-
+            
             return Decl() && Program_P();
 
         }
@@ -63,7 +65,15 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
-                return false;
+                if (Program_())
+                {
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
+                 
             }
         }
 
@@ -166,17 +176,18 @@ namespace MiniCompilador.Laboratorio
                 }
                 else
                 {
-                    MatchToken("(");
-                    if (Formals())
+                    if (lookahead == "(")
                     {
+                        MatchToken("(");
                         MatchToken(")");
                         Stmt();
                         return true;
                     }
-
-                    MatchToken(")");
-                    Stmt();
-                    return true;
+                    else
+                    {
+                        MatchToken("(");
+                        return false;
+                    }
                 }
 
             }
@@ -669,8 +680,11 @@ namespace MiniCompilador.Laboratorio
             tokens_.Add(new Tuple<string, string>("$", ""));
             tokens = tokens_;
             lookahead = tokens[contador].Item1;
-            Program_();
-            Salida(errores);
+            while (lookahead != "$")
+            {
+                Program_();
+            }
+               Salida(errores);
         }
 
         private void Salida(List<string> mensaje)
