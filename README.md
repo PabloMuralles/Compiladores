@@ -8,6 +8,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
      - [Requerimientos](#Requerimientos-)
           - [Objetivo](#objetivo)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
+          - [Gramática](#Gramática)
           - [Funcionamiento](#funcionamiento-%EF%B8%8F)
 - [Construido con](#construido-con-%EF%B8%8F)
 - [Autores](#autores-%EF%B8%8F)
