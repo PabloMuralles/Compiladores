@@ -87,7 +87,7 @@ namespace MiniCompilador.GUI
         }
         public void Mostrar_mensajelab(string mensaje)
         {
-            MessageBox.Show("Laoratorio" + " \n"+ mensaje);
+            MessageBox.Show( mensaje, "Mensajes", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
