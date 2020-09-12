@@ -709,7 +709,7 @@ namespace MiniCompilador.Análisis_Léxico
                             else
                             {
                                 write.Write(" \n ");
-                                Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Categoria[1], item.Item1 + "," + LC[1] + "," + LC[0]));
+                                Diccionario_Token.Add(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"',','), item.Item1 + "," + LC[1] + "," + LC[0]));
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                         }
