@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace MiniCompilador.Laboratorio
 {
@@ -302,7 +303,7 @@ namespace MiniCompilador.Laboratorio
             {
                 MatchToken(";");
             }
-            else { MatchToken(";"); }
+            else { return false; }
             if (ExprP())
             {
                 MatchToken(";");
@@ -320,7 +321,6 @@ namespace MiniCompilador.Laboratorio
 
 
         }
-
         private bool ReturnStmt()
         {
             MatchToken("return");
@@ -369,7 +369,6 @@ namespace MiniCompilador.Laboratorio
                     return P();
 
                 }
-
             }
             else
             {
@@ -418,7 +417,7 @@ namespace MiniCompilador.Laboratorio
 
         private bool P()
         {
-            return T() && P();
+            return T() && PP();
         }
 
         private bool PP()
@@ -488,12 +487,14 @@ namespace MiniCompilador.Laboratorio
             if (lookahead == "<")
             {
                 MatchToken("<");
+                L();
                 FP();
                 return true;
             }
             else if (lookahead == ">")
             {
                 MatchToken(">");
+                L();
                 FP();
                 return true;
 
@@ -501,12 +502,14 @@ namespace MiniCompilador.Laboratorio
             else if (lookahead == "<=")
             {
                 MatchToken("<=");
+                L();
                 FP();
                 return true;
             }
             else if (lookahead == ">=")
             {
                 MatchToken(">=");
+                L();
                 FP();
                 return true;
             }
@@ -524,12 +527,14 @@ namespace MiniCompilador.Laboratorio
             if (lookahead == "+")
             {
                 MatchToken("+");
+                M();
                 LP();
                 return true;
             }
             else if (lookahead == "-")
             {
                 MatchToken("-");
+                M();
                 LP();
                 return true;
             }
@@ -547,12 +552,14 @@ namespace MiniCompilador.Laboratorio
             if (lookahead == "*")
             {
                 MatchToken("*");
+                N();
                 MP();
                 return true;
             }
             else if (lookahead == "/")
             {
                 MatchToken("/");
+                N();
                 MP();
                 return true;
             }
@@ -608,7 +615,19 @@ namespace MiniCompilador.Laboratorio
             }
             else
             {
-                return Constant() || Lvalue();
+                if (Lvalue())
+                {
+                    return true;
+                }
+                else if (Constant())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                //return Constant() || Lvalue();
             }
         }
 
