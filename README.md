@@ -50,7 +50,7 @@ Stmt → Stmt’ Stmt | ε
 Stmt´ → ForStmt | ReturnStmt | Expr ; 
 ForStmt → for ( Expr’ ; Expr ; Expr’) Stmt
 Expr’ → Expr | ε 
-ReturnStmt → return P ;
+ReturnStmt → return Expr’  ;
 Expr → LValue = P | P 
 P → T P’ 
 P’ → || T P’ | ε
@@ -68,6 +68,7 @@ N → - Expr | ! Expr | G
 G → (Expr) |Constant | LValue | this | New(ident) 
 Lvalue → ident | ident . ident | ident [ Expr ]
 Constant → intConstant | doubleConstant | boolConstant | stringConstant | null
+
 
 ```
 
