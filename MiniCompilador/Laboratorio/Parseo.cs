@@ -677,10 +677,7 @@ namespace MiniCompilador.Laboratorio
 
             var newCadena = string.Empty;
 
-            for (int i = 1; i < split.Length; i++)
-            {
-                newCadena += split[i] + " ";
-            }
+            newCadena = $"Linea: {split[1]} Columna: {split[2]}";
 
             return newCadena;
         }
