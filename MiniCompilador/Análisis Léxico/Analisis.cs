@@ -8,6 +8,7 @@ namespace MiniCompilador.Análisis_Léxico
     class Analisis
     {
         GUI.Cargar_Archivo cargar_Archivo = new GUI.Cargar_Archivo();
+        Minic.Análisis_sintactico.Analis_LR_1_ Analis_LR_1_ = new Minic.Análisis_sintactico.Analis_LR_1_();
         private string Nombre_Archivo = string.Empty;
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
@@ -19,8 +20,7 @@ namespace MiniCompilador.Análisis_Léxico
 
             Nombre_Archivo = Path.GetFileNameWithoutExtension(path);
 
-            var archivo = new StreamReader(path);
-
+            var archivo = new StreamReader(path);        
             IdentificadorLexemas(lexemas, archivo);
 
             Categorizacion(lexemas);
@@ -709,10 +709,10 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         Mandar_mensaje(Errores, Nombre_Archivo);
                     }
-
                     write.Close();
                 }
             }
+
         }
 
         /// <summary>
