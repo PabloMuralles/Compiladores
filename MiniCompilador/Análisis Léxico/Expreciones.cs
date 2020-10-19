@@ -86,13 +86,8 @@ namespace MiniCompilador.Análisis_Léxico
             letras = new Regex(@"^([a-z]|[A-Z])$");
 
             caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
-
-
-
             
         }
-
-
     }
 
 }

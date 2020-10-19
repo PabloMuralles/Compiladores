@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minic.Análisis_sintactico;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -78,7 +79,6 @@ namespace MiniCompilador.GUI
                 errorProvider1.Clear();
                 errorProvider1.SetError(path, p.Message);
             }
-
         }
         public void Mostrar_mensaje(string mensaje, string direccion)
         {
