@@ -20,11 +20,18 @@ namespace Minic.Análisis_sintactico
         public static Dictionary<int, Dictionary<string, string>> table = new Dictionary<int, Dictionary<string, string>>();
 
         public static Dictionary<int, Tuple<int, string>> grammar = new Dictionary<int, Tuple<int, string>>();
+
+        /// <summary>
+        /// Method to create the thread to do de method to read de excel file
+        /// </summary>
         static public void LoadThread()
         {
             threadTable = new Thread(new ThreadStart(ReadExcelFile));
             threadTable.Start();
         }
+        /// <summary>
+        /// Method to read de excel file that conteins the analysis table 
+        /// </summary>
         static public void ReadExcelFile()
         {
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -87,6 +94,9 @@ namespace Minic.Análisis_sintactico
             excel.Quit();
         }
 
+        /// <summary>
+        /// Method to read the file that have the grammar in folder of the proyect inside of the folder grammar 
+        /// </summary>
         static public void ReadTxtFile()
         {
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;

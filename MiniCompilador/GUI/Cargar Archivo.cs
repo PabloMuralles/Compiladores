@@ -60,32 +60,25 @@ namespace MiniCompilador.GUI
 
         private void button_Analizar_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (!string.IsNullOrEmpty(path.Text))
-            //    {
-            //        errorProvider1.Clear();
-            //        Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
-            //        analisis.LecturaArchivo(path.Text);
-            //    }
-            //    else
-            //    {
-            //        throw new Exception("No se a cargado archivo");
-            //    }
+            try
+            {
+                if (!string.IsNullOrEmpty(path.Text))
+                {
+                    errorProvider1.Clear();
+                    Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
+                    analisis.LecturaArchivo(path.Text);
+                }
+                else
+                {
+                    throw new Exception("No se a cargado archivo");
+                }
 
-            //}
-            //catch (Exception p)
-            //{
-            //    errorProvider1.Clear();
-            //    errorProvider1.SetError(path, p.Message);
-            //}
-
-            Upload.LoadThread();
-
-            //Analis_LR_1_ hola = new Analis_LR_1_();
-            //hola.search_symbol();
-            Upload.ReadTxtFile();
-
+            }
+            catch (Exception p)
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(path, p.Message);
+            }
         }
         public void Mostrar_mensaje(string mensaje, string direccion)
         {
