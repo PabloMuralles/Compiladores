@@ -13,17 +13,19 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Minic.Análisis_sintactico
 {
-    class UploadTable
+    class Upload
     {
         public static Thread threadTable;
 
         public static Dictionary<int, Dictionary<string, string>> table = new Dictionary<int, Dictionary<string, string>>();
+
+        public static Dictionary<int, Tuple<int, string>> grammar = new Dictionary<int, Tuple<int, string>>();
         static public void LoadThread()
         {
-            threadTable = new Thread(new ThreadStart(ReadFile));
+            threadTable = new Thread(new ThreadStart(ReadExcelFile));
             threadTable.Start();
         }
-        static public void ReadFile()
+        static public void ReadExcelFile()
         {
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
@@ -84,5 +86,34 @@ namespace Minic.Análisis_sintactico
             wb.Close(0);
             excel.Quit();
         }
+
+        static public void ReadTxtFile()
+        {
+            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
+
+            var path = Path.Combine(projectPath, "Gramatica", "Gramatica.txt");
+
+            var sw = new StreamReader(path);
+
+            var line = sw.ReadLine();
+
+            var countProduction = 0;
+
+            while (line != null)
+            {
+                string[] stringSeparators = new string[] { "->" };
+                line.Trim();
+                var splitPoduction = line.Split(stringSeparators, StringSplitOptions.None);
+                var splitDefinition = splitPoduction[1].Trim().Split(' ');
+
+                grammar.Add(countProduction, new Tuple<int, string>(splitDefinition.Count(), splitPoduction[0]));
+
+                line = sw.ReadLine();
+                countProduction++;
+            }
+
+        }
+
     }
 }

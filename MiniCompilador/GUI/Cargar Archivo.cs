@@ -80,10 +80,11 @@ namespace MiniCompilador.GUI
             //    errorProvider1.SetError(path, p.Message);
             //}
 
-            UploadTable.LoadThread();
+            Upload.LoadThread();
 
-            Analis_LR_1_ hola = new Analis_LR_1_();
-            hola.search_symbol();
+            //Analis_LR_1_ hola = new Analis_LR_1_();
+            //hola.search_symbol();
+            Upload.ReadTxtFile();
 
         }
         public void Mostrar_mensaje(string mensaje, string direccion)
