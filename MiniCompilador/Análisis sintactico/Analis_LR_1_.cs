@@ -146,8 +146,11 @@ namespace Minic.Análisis_sintactico
 
 
         }
-        private int search_symbol(string[] symbol)
+        public int search_symbol()
         {
+            UploadTable.threadTable.Join();
+            var hola = UploadTable.table;
+
             ///buscar la accion que corresponde a cada simbolo
 
             return 0;
