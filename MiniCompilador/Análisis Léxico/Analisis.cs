@@ -750,7 +750,7 @@ namespace MiniCompilador.Análisis_Léxico
                 int Cantidad = Cantidad_identificador(cadena);
                 if (Cantidad < 32)
                 {
-                    return ("identificador,identificador");
+                    return ("ident,ident");
                 }
                 else
                 {

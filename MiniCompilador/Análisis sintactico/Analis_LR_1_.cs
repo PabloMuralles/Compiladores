@@ -204,9 +204,9 @@ namespace Minic.Análisis_sintactico
             {
                 // Error el estado a buscar no existe
             }
-        }       
+        }
 
-        private void search_Accion(Dictionary<string, string> symbol_Action, string symbol,string line)
+        private void search_Accion(Dictionary<string, string> symbol_Action, string symbol, string line)
         {
             //s desplazarce
             // r reduccion
@@ -215,7 +215,7 @@ namespace Minic.Análisis_sintactico
             {
                 if (symbol_Action[symbol].Contains("s"))
                 {
-                  var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(0));
+                    var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
                     pila.Push(Acction);
                     Simbolo.Push(symbol);
                     Entrada.Dequeue();
@@ -225,9 +225,14 @@ namespace Minic.Análisis_sintactico
                 {
                     //Accion de reducir
                 }
-                else if(symbol_Action[symbol].Contains("acc"))
+                else if (symbol_Action[symbol].Contains("acc"))
                 {
                     // salir 
+                }
+                else if (symbol_Action[symbol].Contains("/"))
+                {
+                    var conflicts = symbol_Action[symbol].Split('/');
+                    conflicto(conflicts);
                 }
                 else
                 {
@@ -237,10 +242,23 @@ namespace Minic.Análisis_sintactico
             }
             else
             {
+                //validar si ya paso por un conflicto de reduccion
+                // si si regresar de donde salio y probar con otro lado
+
                 // ERROR el simbolo no coinside con el estado presente
             }
         }
+        private void conflicto(string[] conflicts)
+        {
+            if (conflicts[0].Contains("r") && conflicts[1].Contains("r")) //r/r
+            {
+                // si causa un error de 
+            }
+            else//d/r
+            {
 
+            }
+        }
 
     }
 }
