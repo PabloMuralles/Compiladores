@@ -10,20 +10,23 @@ namespace Minic.Análisis_sintactico
     class Analis_LR_1_
     {
         Dictionary<int, Dictionary<string, string>> tables_dictionary = new Dictionary<int, Dictionary<string, string>>();
+        Stack<int> pila = new Stack<int>();
+        Stack<string> Simbolo = new Stack<string>();
+        Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
         private void Import_table()
         {
             for (int i = 0; i <= 180; i++)
             {
-              tables_dictionary.Add(i, ReturnDictionary(i));
+                tables_dictionary.Add(i, ReturnDictionary(i));
             }
         }
         private Dictionary<string, string> ReturnDictionary(int state)
-         {
-            Dictionary<string, string> symbol_action = new Dictionary<string, string>();            
+        {
+            Dictionary<string, string> symbol_action = new Dictionary<string, string>();
             switch (state)
             {
                 case 0:
-                    symbol_action.Add("ident","s12");
+                    symbol_action.Add("ident", "s12");
                     symbol_action.Add("class", "s5");
                     symbol_action.Add("interface", "s6");
                     symbol_action.Add("const", "s7");
@@ -32,42 +35,93 @@ namespace Minic.Análisis_sintactico
                     symbol_action.Add("double", "s9");
                     symbol_action.Add("bool", "s10");
                     symbol_action.Add("string", "s11");
-                    symbol_action.Add("Program", "");
-                    symbol_action.Add("Decl", "");
-                    symbol_action.Add("Reserved", "");
-                    symbol_action.Add("", "");
+                    symbol_action.Add("Program", "1");
+                    symbol_action.Add("Decl", "2");
+                    symbol_action.Add("Reserved", "4");
+                    symbol_action.Add("Type", "3");
                     break;
                 case 1:
+                    symbol_action.Add("$", "acc");
                     break;
                 case 2:
+                    symbol_action.Add("ident", "s12");
+                    symbol_action.Add("class", "s5");
+                    symbol_action.Add("interface", "s6");
+                    symbol_action.Add("const", "s7");
+                    symbol_action.Add("void", "s13");
+                    symbol_action.Add("int", "s8");
+                    symbol_action.Add("double", "s9");
+                    symbol_action.Add("bool", "s10");
+                    symbol_action.Add("string", "s11");
+                    symbol_action.Add("$", "r2");
+                    symbol_action.Add("Program", "14");
+                    symbol_action.Add("Decl", "2");
+                    symbol_action.Add("Reserved", "4");
+                    symbol_action.Add("Type", "3");
                     break;
                 case 3:
+                    symbol_action.Add("ident", "s15/r8");
+                    symbol_action.Add("(", "r8");
+                    symbol_action.Add("[]", "s16");
                     break;
                 case 4:
+                    symbol_action.Add("ident", "s17");
                     break;
                 case 5:
+                    symbol_action.Add("ident", "s18");
                     break;
                 case 6:
+                    symbol_action.Add("ident", "s19");
                     break;
                 case 7:
+                    symbol_action.Add("int", "s21");
+                    symbol_action.Add("double", "s22");
+                    symbol_action.Add("bool", "s23");
+                    symbol_action.Add("string", "s24");
+                    symbol_action.Add("ConstType", "20");
                     break;
                 case 8:
+                    symbol_action.Add("ident", "r10");
+                    symbol_action.Add("(", "r10");
+                    symbol_action.Add("[]", "r10");
                     break;
                 case 9:
+                    symbol_action.Add("ident", "r11");
+                    symbol_action.Add("(", "r11");
+                    symbol_action.Add("[]", "r11");
                     break;
                 case 10:
+                    symbol_action.Add("ident", "r12");
+                    symbol_action.Add("(", "r12");
+                    symbol_action.Add("[]", "r12");
                     break;
                 case 11:
+                    symbol_action.Add("ident", "r13");
+                    symbol_action.Add("(", "r13");
+                    symbol_action.Add("[]", "r13");
                     break;
                 case 12:
+                    symbol_action.Add("ident", "r14");
+                    symbol_action.Add("(", "r14");
+                    symbol_action.Add("[]", "r14");
                     break;
                 case 13:
+                    symbol_action.Add("ident", "r9");
+                    symbol_action.Add("(", "r9");
+                    break;
+                case 14:
+                    symbol_action.Add("$", "r1");
                     break;
                 case 15:
+                    symbol_action.Add(";", "s25");
                     break;
                 case 16:
+                    symbol_action.Add("ident", "r15");
+                    symbol_action.Add("(", "r15");
+                    symbol_action.Add("[]", "r15");
                     break;
                 case 17:
+                    symbol_action.Add("(", "s26");
                     break;
                 case 18:
                     break;
@@ -119,43 +173,72 @@ namespace Minic.Análisis_sintactico
                     break;
                 case 42:
                     break;
-                case 43:
-                    break;
                 default:
                     break;
             }
 
             return symbol_action;
-          }
-        public void table(List<Tuple<string, string>> tokens_)
+        }
+        /// <summary>
+        /// Validar la entrada de cada tocken
+        /// </summary>
+        /// <param name="tokens_">Entrada</param>
+        public void table(Queue<Tuple<string, string>> tokens_)
         {
             Import_table();
-            tokens_.Add(new Tuple<string, string>("$", "")); //Fin de linea
-            Stack<int> pila = new Stack<int>();
+            tokens_.Enqueue(new Tuple<string, string>("$", "")); //Fin de linea
             pila.Push(0);
-
-
-            if (tables_dictionary.ContainsKey(pila.Peek()))
+            Entrada = tokens_;
+            search_symbol(pila.Peek(), tokens_.Peek());
+        }
+        private void search_symbol(int state, Tuple<string, string> token_)
+        {
+            if (tables_dictionary.ContainsKey(state))
             {
-                
+                var symbol = token_.Item1;
+                var line = token_.Item2;
+                var symbol_Action = tables_dictionary[state];
+                search_Accion(symbol_Action, symbol, line);
             }
             else
             {
+                // Error el estado a buscar no existe
+            }
+        }       
+
+        private void search_Accion(Dictionary<string, string> symbol_Action, string symbol,string line)
+        {
+            //s desplazarce
+            // r reduccion
+            // num desplazamiento
+            if (symbol_Action.ContainsKey(symbol))
+            {
+                if (symbol_Action[symbol].Contains("s"))
+                {
+                  var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(0));
+                    pila.Push(Acction);
+                    Simbolo.Push(symbol);
+                    Entrada.Dequeue();
+                    search_symbol(pila.Peek(), Entrada.Peek()); // Avanzar al siguiente token en la entrada
+                }
+                else if (symbol_Action[symbol].Contains("r"))
+                {
+                    //Accion de reducir
+                }
+                else if(symbol_Action[symbol].Contains("acc"))
+                {
+                    // salir 
+                }
+                else
+                {
+                    //Error simbolo en linea tal: line
+                }
 
             }
-
-
-        }
-        private int search_symbol(string[] symbol)
-        {
-            ///buscar la accion que corresponde a cada simbolo
-
-            return 0;
-        }
-
-        private void search_Accion()
-        {
-
+            else
+            {
+                // ERROR el simbolo no coinside con el estado presente
+            }
         }
 
 
