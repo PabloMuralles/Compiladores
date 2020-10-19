@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minic.Análisis_sintactico;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -61,16 +62,18 @@ namespace MiniCompilador.GUI
         {
             try
             {
-                if (!string.IsNullOrEmpty(path.Text))
-                {
-                    errorProvider1.Clear();
-                    Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
-                    analisis.LecturaArchivo(path.Text);
-                }
-                else
-                {
-                    throw new Exception("No se a cargado archivo");
-                }
+                //if (!string.IsNullOrEmpty(path.Text))
+                //{
+                //    errorProvider1.Clear();
+                //    Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
+                //    analisis.LecturaArchivo(path.Text);
+                //}
+                //else
+                //{
+                //    throw new Exception("No se a cargado archivo");
+                //}
+                UploadTable uploadTable = new UploadTable();
+                uploadTable.ReadFile();
 
             }
             catch (Exception p)

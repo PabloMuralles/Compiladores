@@ -22,13 +22,13 @@ namespace Minic.Análisis_sintactico
             Dictionary<string, string> symbol_action = new Dictionary<string, string>();            
             switch (state)
             {
-                case 0:
-                    symbol_action.Add("ident","s12");
-                    symbol_action.Add("class", "s5");
-                    symbol_action.Add("interface", "s6");
-                    symbol_action.Add("const", "s7");
-                    symbol_action.Add("void", "s13");
-                    symbol_action.Add("int", "s8");
+                case 91:
+                    symbol_action.Add("ident","r56");
+                    symbol_action.Add(";", "r56");
+                    symbol_action.Add("(", "r56");
+                    symbol_action.Add(")", "r56");
+                    symbol_action.Add(",", "r56");
+                    symbol_action.Add("&&", "s8");
                     symbol_action.Add("double", "s9");
                     symbol_action.Add("bool", "s10");
                     symbol_action.Add("string", "s11");
@@ -37,89 +37,89 @@ namespace Minic.Análisis_sintactico
                     symbol_action.Add("Reserved", "");
                     symbol_action.Add("", "");
                     break;
-                case 1:
+                case 92:
                     break;
-                case 2:
+                case 93:
                     break;
-                case 3:
+                case 94:
                     break;
-                case 4:
+                case 95:
                     break;
-                case 5:
+                case 96:
                     break;
-                case 6:
+                case 97:
                     break;
-                case 7:
+                case 98:
                     break;
-                case 8:
+                case 99:
                     break;
-                case 9:
+                case 100:
                     break;
-                case 10:
+                case 101:
                     break;
-                case 11:
+                case 102:
                     break;
-                case 12:
+                case 103:
                     break;
-                case 13:
+                case 104:
                     break;
-                case 15:
+                case 105:
                     break;
-                case 16:
+                case 106:
                     break;
-                case 17:
+                case 107:
                     break;
-                case 18:
+                case 108:
                     break;
-                case 19:
+                case 109:
                     break;
-                case 20:
+                case 110:
                     break;
-                case 21:
+                case 111:
                     break;
-                case 22:
+                case 112:
                     break;
-                case 23:
+                case 113:
                     break;
-                case 24:
+                case 114:
                     break;
-                case 25:
+                case 115:
                     break;
-                case 26:
+                case 116:
                     break;
-                case 27:
+                case 117:
                     break;
-                case 28:
+                case 118:
                     break;
-                case 29:
+                case 119:
                     break;
-                case 30:
+                case 120:
                     break;
-                case 31:
+                case 121:
                     break;
-                case 32:
+                case 122:
                     break;
-                case 33:
+                case 123:
                     break;
-                case 34:
+                case 124:
                     break;
-                case 35:
+                case 125:
                     break;
-                case 36:
+                case 126:
                     break;
-                case 37:
+                case 127:
                     break;
-                case 38:
+                case 128:
                     break;
-                case 39:
+                case 129:
                     break;
-                case 40:
+                case 130:
                     break;
-                case 41:
+                case 131:
                     break;
-                case 42:
+                case 132:
                     break;
-                case 43:
+                case 133:
                     break;
                 default:
                     break;
