@@ -10,6 +10,7 @@ namespace Minic.Análisis_sintactico
     class Analis_LR_1_
     {
         Dictionary<int, Dictionary<string, string>> tables_dictionary = new Dictionary<int, Dictionary<string, string>>();
+        Dictionary<int, Tuple<int, string>> grammar = new Dictionary<int, Tuple<int, string>>();
         Stack<int> pila = new Stack<int>();
         Stack<string> Simbolo = new Stack<string>();
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
@@ -23,8 +24,8 @@ namespace Minic.Análisis_sintactico
             Upload.threadTable.Join();
             Upload.ReadTxtFile();
 
-            var table = Upload.table;
-            var grammar = Upload.grammar;
+           tables_dictionary = Upload.table;
+           grammar = Upload.grammar;
 
             tokens_.Enqueue(new Tuple<string, string>("$", "")); //Fin de linea
             pila.Push(0);
@@ -47,10 +48,7 @@ namespace Minic.Análisis_sintactico
         }
 
         private void search_Accion(Dictionary<string, string> symbol_Action, string symbol, string line)
-        {
-            //s desplazarce
-            // r reduccion
-            // num desplazamiento
+        {         
             if (symbol_Action.ContainsKey(symbol))
             {
                 if (symbol_Action[symbol].Contains("s"))
@@ -63,7 +61,15 @@ namespace Minic.Análisis_sintactico
                 }
                 else if (symbol_Action[symbol].Contains("r"))
                 {
-                    //Accion de reducir
+                    var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
+                    var num_reducir = grammar[Acction].Item1;
+                    for (int i = 0; i < num_reducir; i++)
+                    {
+                        Simbolo.Pop();
+                    }
+                    Simbolo.Push(grammar[Acction].Item2);
+                    pila.Pop();
+                    search_symbol(pila.Peek(),Entrada.Peek());
                 }
                 else if (symbol_Action[symbol].Contains("acc"))
                 {
@@ -74,7 +80,7 @@ namespace Minic.Análisis_sintactico
                     var conflicts = symbol_Action[symbol].Split('/');
                     conflicto(conflicts);
                 }
-                else
+                else // num desplazamiento
                 {
                     //Error simbolo en linea tal: line
                 }
