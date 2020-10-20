@@ -120,6 +120,7 @@
             this.Controls.Add(this.button_Analizar);
             this.Controls.Add(this.path);
             this.Name = "Cargar_Archivo";
+            this.Load += new System.EventHandler(this.Cargar_Archivo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
