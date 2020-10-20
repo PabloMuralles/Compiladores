@@ -65,6 +65,7 @@ namespace MiniCompilador.GUI
                 if (!string.IsNullOrEmpty(path.Text))
                 {
                     errorProvider1.Clear();
+                    Upload.LoadThread();
                     Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
                     analisis.LecturaArchivo(path.Text);
                 }
