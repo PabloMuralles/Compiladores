@@ -11,6 +11,7 @@ namespace MiniCompilador.Análisis_Léxico
         private string Nombre_Archivo = string.Empty;
         Minic.Análisis_sintactico.Analis_LR_1_ Analis_LR_1_ = new Minic.Análisis_sintactico.Analis_LR_1_();
         Queue<Tuple<string, string>> Pila_Token = new Queue<Tuple<string, string>>();
+        private bool validateLexicalAnalysis = false;
 
         /// <summary>
         /// Metodo para poder leer el archivo que ingresa el usuriario
@@ -26,7 +27,10 @@ namespace MiniCompilador.Análisis_Léxico
             IdentificadorLexemas(lexemas, archivo);
             Categorizacion(lexemas);
             archivo.Close();
-            Analis_LR_1_.table(Pila_Token);
+            if (validateLexicalAnalysis == true)
+            {
+                Analis_LR_1_.table(Pila_Token);
+            }
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada
@@ -715,6 +719,7 @@ namespace MiniCompilador.Análisis_Léxico
                     {
                         Errores.Add("0 Errores detectados");
                         Mandar_mensaje(Errores, Nombre_Archivo);
+
                     }
                     else
                     {
