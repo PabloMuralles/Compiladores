@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+
 namespace Minic.Análisis_sintactico
 {
     class Analis_LR_1_
@@ -12,9 +13,8 @@ namespace Minic.Análisis_sintactico
         Dictionary<int, Dictionary<string, string>> tables_dictionary = new Dictionary<int, Dictionary<string, string>>();
         Dictionary<int, Tuple<int, string>> grammar = new Dictionary<int, Tuple<int, string>>();
         Stack<int> pila = new Stack<int>();
-        Stack<string> Simbolo = new Stack<string>();
+        Stack<Tuple<string, string>> Simbolo = new Stack<Tuple<string, string>>();
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
-       
         /// <summary>
         /// Validar la entrada de cada tocken
         /// </summary>
@@ -24,8 +24,8 @@ namespace Minic.Análisis_sintactico
             Upload.threadTable.Join();
             Upload.ReadTxtFile();
 
-           tables_dictionary = Upload.table;
-           grammar = Upload.grammar;
+            tables_dictionary = Upload.table;
+            grammar = Upload.grammar;
 
             tokens_.Enqueue(new Tuple<string, string>("$", "")); //Fin de linea
             pila.Push(0);
@@ -48,14 +48,15 @@ namespace Minic.Análisis_sintactico
         }
 
         private void search_Accion(Dictionary<string, string> symbol_Action, string symbol, string line)
-        {         
+        {
+
             if (symbol_Action.ContainsKey(symbol))
             {
                 if (symbol_Action[symbol].Contains("s"))
                 {
                     var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
                     pila.Push(Acction);
-                    Simbolo.Push(symbol);
+                    Simbolo.Push(new Tuple<string, string>(symbol, line));
                     Entrada.Dequeue();
                     search_symbol(pila.Peek(), Entrada.Peek()); // Avanzar al siguiente token en la entrada
                 }
@@ -67,9 +68,9 @@ namespace Minic.Análisis_sintactico
                     {
                         Simbolo.Pop();
                     }
-                    Simbolo.Push(grammar[Acction].Item2);
+                    Simbolo.Push(new Tuple<string, string>(grammar[Acction].Item2, line));
                     pila.Pop();
-                    search_symbol(pila.Peek(),Entrada.Peek());
+                    search_symbol(pila.Peek(), Simbolo.Peek());
                 }
                 else if (symbol_Action[symbol].Contains("acc"))
                 {
@@ -82,7 +83,7 @@ namespace Minic.Análisis_sintactico
                 }
                 else // num desplazamiento
                 {
-                    //Error simbolo en linea tal: line
+                   
                 }
 
             }
