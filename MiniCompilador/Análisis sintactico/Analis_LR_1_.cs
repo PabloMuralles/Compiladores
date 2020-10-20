@@ -52,7 +52,12 @@ namespace Minic.Análisis_sintactico
 
             if (symbol_Action.ContainsKey(symbol))
             {
-                if (symbol_Action[symbol].Contains("s"))
+                 if (symbol_Action[symbol].Contains("/"))
+                {
+                    var conflicts = symbol_Action[symbol].Split('/');
+                    conflicto(conflicts);
+                }
+                else if (symbol_Action[symbol].Contains("s"))
                 {
                     var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
                     pila.Push(Acction);
@@ -76,14 +81,11 @@ namespace Minic.Análisis_sintactico
                 {
                     // salir 
                 }
-                else if (symbol_Action[symbol].Contains("/"))
-                {
-                    var conflicts = symbol_Action[symbol].Split('/');
-                    conflicto(conflicts);
-                }
                 else // num desplazamiento
                 {
-                   
+                    var Acction = Convert.ToInt32(symbol_Action[symbol]);
+                    pila.Push(Acction);
+                    search_symbol(pila.Peek(), Entrada.Peek());
                 }
 
             }
