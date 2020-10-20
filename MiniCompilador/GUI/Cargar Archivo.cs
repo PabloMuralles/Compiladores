@@ -13,6 +13,7 @@ namespace MiniCompilador.GUI
         public Cargar_Archivo()
         {
             InitializeComponent();
+            
         }
         /// <summary>
         /// action del boton para cargar archivo
@@ -65,7 +66,7 @@ namespace MiniCompilador.GUI
                 if (!string.IsNullOrEmpty(path.Text))
                 {
                     errorProvider1.Clear();
-                    Upload.LoadThread();
+                    //Upload.LoadThread();
                     Análisis_Léxico.Analisis analisis = new Análisis_Léxico.Analisis();
                     analisis.LecturaArchivo(path.Text);
                 }
@@ -85,6 +86,11 @@ namespace MiniCompilador.GUI
         {
         
             MessageBox.Show(mensaje + " \n "+ $"Mas informacion en {direccion}.out");
+        }
+
+        private void Cargar_Archivo_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

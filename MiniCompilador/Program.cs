@@ -1,4 +1,5 @@
-﻿using MiniCompilador.GUI;
+﻿using Minic.Análisis_sintactico;
+using MiniCompilador.GUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace MiniCompilador
         [STAThread]
         static void Main()
         {
+            Upload.LoadThread();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Cargar_Archivo());

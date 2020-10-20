@@ -117,7 +117,7 @@ namespace Minic.Análisis_sintactico
                 var splitPoduction = line.Split(stringSeparators, StringSplitOptions.None);
                 var splitDefinition = splitPoduction[1].Trim().Split(' ');
 
-                grammar.Add(countProduction, new Tuple<int, string>(splitDefinition.Count(), splitPoduction[0]));
+                grammar.Add(countProduction, new Tuple<int, string>(splitDefinition.Count(), splitPoduction[0].Trim()));
 
                 line = sw.ReadLine();
                 countProduction++;
