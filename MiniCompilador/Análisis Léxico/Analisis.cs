@@ -717,12 +717,14 @@ namespace MiniCompilador.Análisis_Léxico
                     }
                     if (!Errores.Any())
                     {
+                        validateLexicalAnalysis = true;
                         Errores.Add("0 Errores detectados");
                         Mandar_mensaje(Errores, Nombre_Archivo);
 
                     }
                     else
                     {
+                        validateLexicalAnalysis = false;
                         Mandar_mensaje(Errores, Nombre_Archivo);
                     }
 
