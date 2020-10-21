@@ -27,10 +27,10 @@ namespace MiniCompilador.Análisis_Léxico
             IdentificadorLexemas(lexemas, archivo);
             Categorizacion(lexemas);
             archivo.Close();
-            if (validateLexicalAnalysis == true)
-            {
+           // if (validateLexicalAnalysis == true)
+            //{
                 Analis_LR_1_.table(Pila_Token);
-            }
+            //}
         }
         /// <summary>
         /// Metodo que va identificar los lexemas del archivo de entrada

@@ -16,6 +16,8 @@ namespace Minic.Análisis_sintactico
         Stack<Tuple<string, string>> Simbolo = new Stack<Tuple<string, string>>();
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
         List<string> Errores = new List<string>();
+        bool flag_conflicto;
+        int contador_after = 0;
         /// <summary>
         /// Validar la entrada de cada tocken
         /// </summary>
@@ -56,7 +58,7 @@ namespace Minic.Análisis_sintactico
                  if (symbol_Action[symbol].Contains("/"))
                 {
                     var conflicts = symbol_Action[symbol].Split('/');
-                    conflicto(conflicts);
+                    conflicto(conflicts, line);
                 }
                 else if (symbol_Action[symbol].Contains("s"))
                 {
@@ -102,15 +104,25 @@ namespace Minic.Análisis_sintactico
                 search_symbol(pila.Peek(),Entrada.Peek());
             }
         }
-        private void conflicto(string[] conflicts)
+        private void conflicto(string[] conflicts, string line)
         {
             if (conflicts[0].Contains("r") && conflicts[1].Contains("r")) //r/r
             {
+                var Acction = Convert.ToInt32(conflicts[0].Substring(1));
+                var num_reducir = grammar[Acction].Item1;
+                for (int i = 0; i < num_reducir; i++)
+                {
+                    Simbolo.Pop();
+                }
+                Simbolo.Push(new Tuple<string, string>(grammar[Acction].Item2, line ));
+                pila.Pop();
+                search_symbol(pila.Peek(), Simbolo.Peek());
+
                 // si causa un error de 
             }
-            else//d/r
+            else//s/r
             {
-
+                 
             }
         }
 
