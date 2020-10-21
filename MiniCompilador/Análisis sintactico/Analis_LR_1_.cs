@@ -58,7 +58,7 @@ namespace Minic.Análisis_sintactico
                  if (symbol_Action[symbol].Contains("/"))
                 {
                     var conflicts = symbol_Action[symbol].Split('/');
-                    conflicto(conflicts, line);
+                    conflicto(conflicts,symbol, line);
                 }
                 else if (symbol_Action[symbol].Contains("s"))
                 {
@@ -104,7 +104,7 @@ namespace Minic.Análisis_sintactico
                 search_symbol(pila.Peek(),Entrada.Peek());
             }
         }
-        private void conflicto(string[] conflicts, string line)
+        private void conflicto(string[] conflicts,string symbol ,string line)
         {
             if (conflicts[0].Contains("r") && conflicts[1].Contains("r")) //r/r
             {
@@ -122,7 +122,12 @@ namespace Minic.Análisis_sintactico
             }
             else//s/r
             {
-                 
+                var temp = conflicts[0].Substring(1);
+                var Acction = Convert.ToInt32(temp);
+                pila.Push(Acction);
+                Simbolo.Push(new Tuple<string, string>(symbol, line));
+                Entrada.Dequeue();
+                search_symbol(pila.Peek(), Entrada.Peek());
             }
         }
 
