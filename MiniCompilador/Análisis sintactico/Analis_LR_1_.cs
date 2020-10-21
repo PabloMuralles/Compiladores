@@ -15,6 +15,7 @@ namespace Minic.Análisis_sintactico
         Stack<int> pila = new Stack<int>();
         Stack<Tuple<string, string>> Simbolo = new Stack<Tuple<string, string>>();
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
+        List<string> Errores = new List<string>();
         /// <summary>
         /// Validar la entrada de cada tocken
         /// </summary>
@@ -95,6 +96,10 @@ namespace Minic.Análisis_sintactico
                 // si si regresar de donde salio y probar con otro lado
 
                 // ERROR el simbolo no coinside con el estado presente
+                var datos_errores = line.Split(',');
+                Errores.Add($"Error tocken: {datos_errores[0]} linea: {datos_errores[1]} columna: {datos_errores[2]} ");
+                Entrada.Dequeue(); // consumir error y seguir analizando desde ultima posicion en pila
+                search_symbol(pila.Peek(),Entrada.Peek());
             }
         }
         private void conflicto(string[] conflicts)
