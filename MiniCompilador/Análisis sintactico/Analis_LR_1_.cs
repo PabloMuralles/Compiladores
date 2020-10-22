@@ -16,8 +16,7 @@ namespace Minic.Análisis_sintactico
         Stack<Tuple<string, string>> Simbolo = new Stack<Tuple<string, string>>();
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
         List<string> Errores = new List<string>();
-        bool flag_conflicto;
-        int contador_after = 0;
+     
         /// <summary>
         /// Validar la entrada de cada tocken
         /// </summary>
@@ -37,6 +36,7 @@ namespace Minic.Análisis_sintactico
         }
         private void search_symbol(int state, Tuple<string, string> token_)
         {
+          
             if (tables_dictionary.ContainsKey(state))
             {
                 var symbol = token_.Item1;
@@ -55,10 +55,10 @@ namespace Minic.Análisis_sintactico
 
             if (symbol_Action.ContainsKey(symbol))
             {
-                 if (symbol_Action[symbol].Contains("/"))
+                if (symbol_Action[symbol].Contains("/"))
                 {
                     var conflicts = symbol_Action[symbol].Split('/');
-                    conflicto(conflicts,symbol, line);
+                    conflicto(conflicts, symbol, line);
                 }
                 else if (symbol_Action[symbol].Contains("s"))
                 {
@@ -96,15 +96,16 @@ namespace Minic.Análisis_sintactico
             {
                 //validar si ya paso por un conflicto de reduccion
                 // si si regresar de donde salio y probar con otro lado
-
-                // ERROR el simbolo no coinside con el estado presente
-                var datos_errores = line.Split(',');
-                Errores.Add($"Error tocken: {datos_errores[0]} linea: {datos_errores[1]} columna: {datos_errores[2]} ");
-                Entrada.Dequeue(); // consumir error y seguir analizando desde ultima posicion en pila
-                search_symbol(pila.Peek(),Entrada.Peek());
+              
+                    // ERROR el simbolo no coinside con el estado presente
+                    var datos_errores = line.Split(',');
+                    Errores.Add($"Error tocken: {datos_errores[0]} linea: {datos_errores[1]} columna: {datos_errores[2]} ");
+                    Entrada.Dequeue(); // consumir error y seguir analizando desde ultima posicion en pila
+                    search_symbol(pila.Peek(), Entrada.Peek());
+                
             }
         }
-        private void conflicto(string[] conflicts,string symbol ,string line)
+        private void conflicto(string[] conflicts, string symbol, string line)
         {
             if (conflicts[0].Contains("r") && conflicts[1].Contains("r")) //r/r
             {
@@ -114,7 +115,7 @@ namespace Minic.Análisis_sintactico
                 {
                     Simbolo.Pop();
                 }
-                Simbolo.Push(new Tuple<string, string>(grammar[Acction].Item2, line ));
+                Simbolo.Push(new Tuple<string, string>(grammar[Acction].Item2, line));
                 pila.Pop();
                 search_symbol(pila.Peek(), Simbolo.Peek());
 
@@ -122,14 +123,15 @@ namespace Minic.Análisis_sintactico
             }
             else//s/r
             {
-                var temp = conflicts[0].Substring(1);
-                var Acction = Convert.ToInt32(temp);
+               
+                var Acction = Convert.ToInt32(conflicts[0].Substring(1).Trim());
                 pila.Push(Acction);
                 Simbolo.Push(new Tuple<string, string>(symbol, line));
                 Entrada.Dequeue();
                 search_symbol(pila.Peek(), Entrada.Peek());
             }
         }
+        
 
     }
 }
