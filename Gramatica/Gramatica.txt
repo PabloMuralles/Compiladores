@@ -1,13 +1,12 @@
-S’ -> Program
+S' -> Program
 Program -> Decl Program
 Program -> Decl 
 Decl -> Type ident ;
-Decl -> Reserved ident ( Formals ) StmtBlock
-Decl -> class ident Id Id’ { Field’ }
+Decl ->Type ident ( Formals ) StmtBlock
+Decl ->void ident ( Formals ) StmtBlock
+Decl -> class ident Id Id' { Field’ }
 Decl -> interface ident { Prototype’ }
 Decl -> const ConstType ident ; 
-Reserved ->Type
-Reserved -> void
 Type -> int
 Type -> double
 Type -> bool
@@ -21,25 +20,26 @@ ConstType -> string
 Formals -> Type ident , Formals
 Formals -> Type ident
 Id -> : ident
-Id -> ''
-Id’ -> , ident Id’
-Id’ -> ''
+Id -> ε
+Id' -> , ident Id'
+Id' -> ε
 Field’ -> Field Field’
-Field’ -> ''
+Field’ -> ε
 Field -> Type ident ;
-Field -> Reserved ( Formals ) StmtBlock
+Field -> Type ( Formals ) StmtBlock
+Field -> void ( Formals ) StmtBlock
 Field -> const ConstType ident ;
 Prototype’ ->  Prototype Prototype’
-Prototype’ -> ''
+Prototype’ -> ε
 Prototype -> Type ident ( Formals ) ;
 Prototype -> void ident ( Formals ) ;
 StmtBlock -> { VariableDecl’ ConstDecl’ Stmt’ }
 ConstDecl’ -> const ConstType ident ; ConstDecl’
-ConstDecl’ -> ''
+ConstDecl’ -> ε
 VariableDecl’ -> Type ident ; VariableDecl’
-VariableDecl’ -> ''
+VariableDecl’ -> ε
 Stmt’ -> Stmt Stmt’
-Stmt’ -> ''
+Stmt’ -> ε
 Stmt -> Expr ;
 Stmt -> ;
 Stmt ->  if ( Expr ) Stmt IfStmt
@@ -50,13 +50,14 @@ Stmt -> return Expr ;
 Stmt -> Console . Writeline ( Expr’ , ) ;
 Stmt -> StmtBlock
 IfStmt -> else Stmt
-IfStmt -> ''
-Expr’ -> Expr Expr’
-Expr’ -> ''
+IfStmt -> ε
+Expr’ -> Expr , Expr’
+Expr’ -> ε
 Expr -> ident = ConditionAnd
 Expr -> ConditionAnd
-ConditionAnd ->  ConditionAnd && Equality
-ConditionAnd ->  Equality
+ConditionAnd -> Equality ConditionAnd'
+ConditionAnd' ->  && Equality ConditionAnd'
+ConditionAnd' -> ε
 Equality -> Equality == Relational
 Equality -> Relational
 Relational -> Relational < Additive
@@ -71,7 +72,7 @@ Unary -> - Primary
 Unary -> ! Primary 
 Unary -> Primary
 Primary ->  Primary . ident
-Primary ->  Primary . ident = Terminal
+Primary ->  Primary . ident = Expr
 Primary ->  Terminal
 Terminal -> this
 Terminal -> ( Expr )
