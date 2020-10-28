@@ -644,10 +644,10 @@ namespace MiniCompilador.Análisis_Léxico
                                     string Scategiria = Validar(dato_separado[1], objExpreciones);
                                     var Mostrar_Scategoria = Scategiria.Split(',');
                                     write.Write(" \n ");
-                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Ncategoria[1], dato_separado[2] + "," + LC[1] + "," + dato_separado[1]));
+                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Ncategoria[1],LC[1] + "," + dato_separado[1]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Mostrar_Ncategoria[0]);
                                     write.Write(" \n ");
-                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Scategoria[1], dato_separado[0] + "," + LC[1] + "," + dato_separado[3]));
+                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Scategoria[1], LC[1] + "," + dato_separado[3]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Mostrar_Scategoria[0]);
                                 }
                                 else
@@ -657,10 +657,10 @@ namespace MiniCompilador.Análisis_Léxico
                                     string Scategiria = Validar(dato_separado[1], objExpreciones);
                                     var Mostrar_Scategoria = Scategiria.Split(',');
                                     write.Write(" \n ");
-                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Scategoria[1], dato_separado[0] + "," + LC[1] + "," + dato_separado[3]));
+                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Scategoria[1], LC[1] + "," + dato_separado[3]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Mostrar_Scategoria[0]);
                                     write.Write(" \n ");
-                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Ncategoria[1], dato_separado[2] + "," + LC[1] + "," + dato_separado[1]));
+                                    Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Ncategoria[1], LC[1] + "," + dato_separado[1]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Mostrar_Ncategoria[0]);
                                 }
                             }
@@ -698,7 +698,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 }
                                 Errores.Add($"Error {Mostrar_Categoria[0]} Linea {LC[1]}");
                                 write.Write(" \n ");
-                                Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1], Nueva_cadena + "," + LC[1] + "," + LC[0]));
+                                Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1], LC[1] + "," + LC[0]));
                                 write.Write("{0}  Línea: {1} , columna: {2}  {3} \n", Nueva_cadena, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                             else if (Categoria == "Error cadena contiene caracter nulo")
@@ -710,7 +710,7 @@ namespace MiniCompilador.Análisis_Léxico
                             else
                             {
                                 write.Write(" \n ");
-                                Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), item.Item1 + "," + LC[1] + "," + LC[0]));
+                                Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), LC[1] + "," + LC[0]));
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                         }
