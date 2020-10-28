@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-
+using MiniCompilador.GUI;
 
 namespace Minic.Análisis_sintactico
 {
@@ -17,7 +17,7 @@ namespace Minic.Análisis_sintactico
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
         List<string> Errores = new List<string>();
         public static Dictionary<string, List<string>> follows = new Dictionary<string, List<string>>();
-
+        Cargar_Archivo Cargar_Archivo = new Cargar_Archivo();
         /// <summary>
         /// Validar la entrada de cada tocken
         /// </summary>
@@ -91,7 +91,12 @@ namespace Minic.Análisis_sintactico
                 }
                 else if (symbol_Action[symbol].Contains("acc"))
                 {
-                    // salir 
+                    if (!Errores.Any())
+                    {
+
+                        Errores.Add("Success");
+                    }
+                    Exit_Analyze();
                 }
                 else // num desplazamiento (irA)
                 {
@@ -147,7 +152,7 @@ namespace Minic.Análisis_sintactico
                             {
                                 if (IsAllDigits(item.Value))
                                 {
-                                    tempQNoTerminal.Enqueue(new Tuple<string,string>(item.Key,item.Value));
+                                    tempQNoTerminal.Enqueue(new Tuple<string, string>(item.Key, item.Value));
                                 }
                             }
                             var firstNoTerminal = tempQNoTerminal.Peek();
@@ -176,6 +181,17 @@ namespace Minic.Análisis_sintactico
             }
             return true;
         }
+
+        private void Exit_Analyze()
+        {
+            string msg_Analyze = string.Empty;
+            foreach (var item in Errores)
+            {
+                msg_Analyze += item + " \n ";
+            }
+            Cargar_Archivo.msg_Analyze_syntactic(msg_Analyze);
+        }
+
 
 
 

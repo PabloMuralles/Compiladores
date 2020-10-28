@@ -885,7 +885,7 @@ namespace MiniCompilador.Análisis_Léxico
             {
                 M_mostrar += item + " \n ";
             }
-            cargar_Archivo.Mostrar_mensaje(M_mostrar, direccion);
+            cargar_Archivo.msg_Analyze_lexicon(M_mostrar, direccion);
         }
 
         private int Cantidad_identificador(string identificador)
