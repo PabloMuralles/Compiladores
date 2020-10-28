@@ -16,6 +16,7 @@ namespace Minic.Análisis_sintactico
         Stack<Tuple<string, string>> Simbolo = new Stack<Tuple<string, string>>();
         Queue<Tuple<string, string>> Entrada = new Queue<Tuple<string, string>>();
         List<string> Errores = new List<string>();
+        public static Dictionary<string, List<string>> follows = new Dictionary<string, List<string>>();
 
         /// <summary>
         /// Validar la entrada de cada tocken
@@ -24,10 +25,13 @@ namespace Minic.Análisis_sintactico
         public void table(Queue<Tuple<string, string>> tokens_)
         {
             Upload.threadTable.Join();
-            Upload.ReadTxtFile();
+            Upload.ReadTxtFileGrammar();
+            Upload.ReadTxtFileFollows();
 
             tables_dictionary = Upload.table;
             grammar = Upload.grammar;
+            follows = Upload.follow;
+
 
             tokens_.Enqueue(new Tuple<string, string>("$", "")); //Fin de linea
             pila.Push(0);
@@ -107,7 +111,7 @@ namespace Minic.Análisis_sintactico
 
                 if (symbol_Action.ContainsKey("ε"))
                 {
-                    symbol = "ε" ;
+                    symbol = "ε";
                     if (symbol_Action[symbol].Contains("s"))
                     {
                         var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
@@ -131,10 +135,71 @@ namespace Minic.Análisis_sintactico
                 else
                 {
                     //error
+                    if (pila.Count > 0)
+                    {
+                        pila.Pop();
+                        for (int i = 0; i < pila.Count; i++)
+                        {
+                            var tempState = pila.Peek();
+                            var tempQNoTerminal = new Queue<Tuple<string, string>>();
+                            var action = tables_dictionary[tempState];
+                            foreach (var item in action)
+                            {
+                                if (IsAllDigits(item.Value))
+                                {
+                                    tempQNoTerminal.Enqueue(new Tuple<string,string>(item.Key,item.Value));
+                                }
+                            }
+                            var firstNoTerminal = tempQNoTerminal.Peek();
+
+                        }
+
+                    }
+                    else
+                    {
+                        //error 
+                    }
+
                 }
 
             }
         }
+
+        private bool IsAllDigits(string s)
+        {
+            foreach (char c in s)
+            {
+                if (!char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
