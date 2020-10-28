@@ -34,6 +34,11 @@ namespace Minic.Análisis_sintactico
             Entrada = tokens_;
             search_symbol(pila.Peek(), tokens_.Peek());
         }
+        /// <summary>
+        /// Method to find the symbols that belonhs to a state
+        /// </summary>
+        /// <param name="state">state of the grammar to find symbols</param>
+        /// <param name="token_">tokens queue to analyze</param>
         private void search_symbol(int state, Tuple<string, string> token_)
         {
 
@@ -49,7 +54,12 @@ namespace Minic.Análisis_sintactico
                 // Error el estado a buscar no existe
             }
         }
-
+        /// <summary>
+        /// Method to find the action that belongs to a symbol
+        /// </summary>
+        /// <param name="symbol_Action">All the action that have the state</param>
+        /// <param name="symbol">The symbol of the tokens to analyze anal</param>
+        /// <param name="line">The ubication line of the token to analyze </param>
         private void search_Accion(Dictionary<string, string> symbol_Action, string symbol, string line)
         {
 
@@ -89,12 +99,39 @@ namespace Minic.Análisis_sintactico
             }
             else
             {
+                //// ERROR el simbolo no coinside con el estado presente
+                //var datos_errores = line.Split(',');
+                //Errores.Add($"Error tocken: {datos_errores[0]} linea: {datos_errores[1]} columna: {datos_errores[2]} ");
+                //Entrada.Dequeue(); // consumir error y seguir analizando desde ultima posicion en pila
+                //search_symbol(pila.Peek(), Entrada.Peek());
 
-                // ERROR el simbolo no coinside con el estado presente
-                var datos_errores = line.Split(',');
-                Errores.Add($"Error tocken: {datos_errores[0]} linea: {datos_errores[1]} columna: {datos_errores[2]} ");
-                Entrada.Dequeue(); // consumir error y seguir analizando desde ultima posicion en pila
-                search_symbol(pila.Peek(), Entrada.Peek());
+                if (symbol_Action.ContainsKey("ε"))
+                {
+                    symbol = "ε" ;
+                    if (symbol_Action[symbol].Contains("s"))
+                    {
+                        var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
+                        pila.Push(Acction);
+                        Simbolo.Push(new Tuple<string, string>(symbol, " "));
+                        search_symbol(pila.Peek(), Entrada.Peek());
+                    }
+                    else if (symbol_Action[symbol].Contains("r"))
+                    {
+                        var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
+                        var num_reducir = grammar[Acction].Item1;
+                        for (int i = 0; i < num_reducir; i++)
+                        {
+                            Simbolo.Pop();
+                            pila.Pop();
+                        }
+                        Simbolo.Push(new Tuple<string, string>(grammar[Acction].Item2, line));
+                        search_symbol(pila.Peek(), Simbolo.Peek());
+                    }
+                }
+                else
+                {
+                    //error
+                }
 
             }
         }
