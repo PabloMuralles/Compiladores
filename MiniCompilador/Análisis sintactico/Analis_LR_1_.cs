@@ -91,12 +91,19 @@ namespace Minic.Análisis_sintactico
                 }
                 else if (symbol_Action[symbol].Contains("acc"))
                 {
+                 
                     if (!Errores.Any())
                     {
-
                         Errores.Add("Success");
                     }
-                    Exit_Analyze();
+                    if (Entrada.Count() == 1)
+                    {
+                     Exit_Analyze();
+                    }
+                    else
+                    {
+                     search_symbol(pila.Peek(), Entrada.Peek());
+                    }
                 }
                 else // num desplazamiento (irA)
                 {
@@ -140,31 +147,11 @@ namespace Minic.Análisis_sintactico
                 else
                 {
                     //error
-                    if (pila.Count > 0)
-                    {
-                        pila.Pop();
-                        for (int i = 0; i < pila.Count; i++)
-                        {
-                            var tempState = pila.Peek();
-                            var tempQNoTerminal = new Queue<Tuple<string, string>>();
-                            var action = tables_dictionary[tempState];
-                            foreach (var item in action)
-                            {
-                                if (IsAllDigits(item.Value))
-                                {
-                                    tempQNoTerminal.Enqueue(new Tuple<string, string>(item.Key, item.Value));
-                                }
-                            }
-                            var firstNoTerminal = tempQNoTerminal.Peek();
-
-                        }
-
-                    }
-                    else
-                    {
-                        //error 
-                    }
-
+                    var datos_errores = line.Split(',');                 
+                    Errores.Add($"Error tocken: {symbol} linea: {datos_errores[0]} columna: {datos_errores[1]} ");
+                    // Reset
+                    string last_line = datos_errores[0];
+                    reset(last_line);
                 }
 
             }
@@ -180,6 +167,20 @@ namespace Minic.Análisis_sintactico
                 }
             }
             return true;
+        }
+        private void reset(string last_line)
+        {
+            Go_back:
+            var date = Entrada.Peek().Item2.Split(',');
+            if(date[0] == last_line)
+            {
+                Entrada.Dequeue();
+                goto Go_back;
+            }
+            pila = new Stack<int>();
+            Simbolo = new Stack<Tuple<string, string>>();
+            pila.Push(0);
+            search_symbol(pila.Peek(),Entrada.Peek());
         }
 
         private void Exit_Analyze()

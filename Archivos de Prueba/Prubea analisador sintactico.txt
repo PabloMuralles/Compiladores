@@ -1,1 +1,6 @@
+class Santiago  }
+double price ;
+class Santiago  }
+double price ;
+class Santiago  }
 double price ;
