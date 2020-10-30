@@ -36,6 +36,8 @@ namespace Minic.Análisis_sintactico
         /// </summary>
         static public void ReadExcelFile()
         {
+            table = new Dictionary<int, Dictionary<string, string>>();
+
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
 
@@ -101,6 +103,8 @@ namespace Minic.Análisis_sintactico
         /// </summary>
         static public void ReadTxtFileGrammar()
         {
+            grammar = new Dictionary<int, Tuple<int, string>>();
+
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
 
@@ -130,6 +134,8 @@ namespace Minic.Análisis_sintactico
 
         static public void ReadTxtFileFollows()
         {
+            follow = new Dictionary<string, List<string>>();
+
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
 
