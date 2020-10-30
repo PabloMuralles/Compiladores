@@ -1,0 +1,16 @@
+Type Main( )
+{
+ int contador;
+ double num;
+ for(int i = 0 ; i >= 7;i++ )
+ {
+  for(int j = 0 ; j >= 5;j++ )
+  {   
+	 num = Read();
+	 if(num > 100)
+          {
+	  num  = 0;
+         }
+  }
+ }
+}

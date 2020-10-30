@@ -91,18 +91,18 @@ namespace Minic.Análisis_sintactico
                 }
                 else if (symbol_Action[symbol].Contains("acc"))
                 {
-                 
+
                     if (!Errores.Any())
                     {
                         Errores.Add("Success");
                     }
                     if (Entrada.Count() == 1)
                     {
-                     Exit_Analyze();
+                        Exit_Analyze();
                     }
                     else
                     {
-                     search_symbol(pila.Peek(), Entrada.Peek());
+                        search_symbol(pila.Peek(), Entrada.Peek());
                     }
                 }
                 else // num desplazamiento (irA)
@@ -115,12 +115,6 @@ namespace Minic.Análisis_sintactico
             }
             else
             {
-                //// ERROR el simbolo no coinside con el estado presente
-                //var datos_errores = line.Split(',');
-                //Errores.Add($"Error tocken: {datos_errores[0]} linea: {datos_errores[1]} columna: {datos_errores[2]} ");
-                //Entrada.Dequeue(); // consumir error y seguir analizando desde ultima posicion en pila
-                //search_symbol(pila.Peek(), Entrada.Peek());
-
                 if (symbol_Action.ContainsKey("ε"))
                 {
                     symbol = "ε";
@@ -147,7 +141,7 @@ namespace Minic.Análisis_sintactico
                 else
                 {
                     //error
-                    var datos_errores = line.Split(',');                 
+                    var datos_errores = line.Split(',');
                     Errores.Add($"Error tocken: {symbol} linea: {datos_errores[0]} columna: {datos_errores[1]} ");
                     // Reset
                     string last_line = datos_errores[0];
@@ -156,23 +150,11 @@ namespace Minic.Análisis_sintactico
 
             }
         }
-
-        private bool IsAllDigits(string s)
-        {
-            foreach (char c in s)
-            {
-                if (!char.IsDigit(c))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
         private void reset(string last_line)
         {
-            Go_back:
+        Go_back:
             var date = Entrada.Peek().Item2.Split(',');
-            if(date[0] == last_line)
+            if (date[0] == last_line)
             {
                 Entrada.Dequeue();
                 goto Go_back;
@@ -180,7 +162,14 @@ namespace Minic.Análisis_sintactico
             pila = new Stack<int>();
             Simbolo = new Stack<Tuple<string, string>>();
             pila.Push(0);
-            search_symbol(pila.Peek(),Entrada.Peek());
+            if (Entrada.Count() == 1)
+            {
+                Exit_Analyze();
+            }
+            else
+            {
+                search_symbol(pila.Peek(), Entrada.Peek());
+            }
         }
 
         private void Exit_Analyze()
@@ -191,32 +180,12 @@ namespace Minic.Análisis_sintactico
                 msg_Analyze += item + " \n ";
             }
             Cargar_Archivo.msg_Analyze_syntactic(msg_Analyze);
+            tables_dictionary = new Dictionary<int, Dictionary<string, string>>();
+            grammar = new Dictionary<int, Tuple<int, string>>();
+            follows = new Dictionary<string, List<string>>();
+            pila = new Stack<int>();
+            Simbolo = new Stack<Tuple<string, string>>();
+            Entrada = new Queue<Tuple<string, string>>();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

@@ -82,8 +82,7 @@ namespace MiniCompilador.GUI
             }
         }
         public void msg_Analyze_lexicon(string mensaje, string direccion)
-        {
-
+        {          
             MessageBox.Show(mensaje + " \n " + $"Mas informacion en {direccion}.out");
         }
         public void msg_Analyze_syntactic(string msg) 

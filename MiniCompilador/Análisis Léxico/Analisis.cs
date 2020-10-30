@@ -30,6 +30,7 @@ namespace MiniCompilador.Análisis_Léxico
            if (validateLexicalAnalysis == true)
             {
                 Analis_LR_1_.table(Pila_Token);
+                Pila_Token = new Queue<Tuple<string, string>>();
             }
         }
         /// <summary>
