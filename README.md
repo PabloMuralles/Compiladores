@@ -4,11 +4,18 @@ Es una implementación pequeña de un compilador para el lenguaje C#
 
 ## Tabla de Contenido 🚀
 
-- [Fase 1](#Fase-1).
+- [Fase 1](#Fase-1)
      - [Requerimientos](#Requerimientos-)
           - [Objetivo](#objetivo)
           - [Estructura Lexicográfica](#Estructura-Lexicográfica)
           - [Funcionamiento](#funcionamiento-%EF%B8%8F)
+- [Fase 2](#fase-2)
+     - [Requerimientos](#requerimientos--1)
+          - [Gramática Implementada](#gramática-implementada--)
+          - [Tabla de Análisis](#tabla-de-análisis--)
+          - [Manejo de Errores](#manejo-de-errores-)
+          - [Ejecutando las pruebas](#ejecutando-las-pruebas-%EF%B8%8F)
+           
 - [Construido con](#construido-con-%EF%B8%8F)
 - [Autores](#autores-%EF%B8%8F)
 - [Licencia](#licencia-)
@@ -141,6 +148,125 @@ A continuación, un pequeño video del funcionamiento de la fase 1
 
 [![VIDEO](https://img.youtube.com/vi/1HR2VJ3BnYc/0.jpg)](https://www.youtube.com/watch?v=1HR2VJ3BnYc)
 
+## Fase 2
+
+### Requerimientos 📋
+
+#### Gramática Implementada  📃 
+
+```
+S' -> Program
+Program -> Decl Program
+Program -> Decl 
+Decl -> Type ident ;
+Decl ->Type ident ( Formals ) StmtBlock
+Decl ->void ident ( Formals ) StmtBlock
+Decl -> class ident Id Id' { Field’ }
+Decl -> interface ident { Prototype’ }
+Decl -> const ConstType ident ; 
+Type -> int
+Type -> double
+Type -> bool
+Type -> string
+Type -> ident
+Type -> Type []
+ConstType -> int
+ConstType -> double
+ConstType -> bool
+ConstType -> string
+Formals -> Type ident , Formals
+Formals -> Type ident
+Id -> : ident
+Id -> ε
+Id' -> , ident Id'
+Id' -> ε
+Field’ -> Field Field’
+Field’ -> ε
+Field -> Type ident ;
+Field -> Type ( Formals ) StmtBlock
+Field -> void ( Formals ) StmtBlock
+Field -> const ConstType ident ;
+Prototype’ ->  Prototype Prototype’
+Prototype’ -> ε
+Prototype -> Type ident ( Formals ) ;
+Prototype -> void ident ( Formals ) ;
+StmtBlock -> { VariableDecl’ ConstDecl’ Stmt’ }
+ConstDecl’ -> const ConstType ident ; ConstDecl’
+ConstDecl’ -> ε
+VariableDecl’ -> Type ident ; VariableDecl’
+VariableDecl’ -> ε
+Stmt’ -> Stmt Stmt’
+Stmt’ -> ε
+Stmt -> Expr ;
+Stmt -> ;
+Stmt ->  if ( Expr ) Stmt IfStmt
+Stmt -> while ( Expr ) Stmt
+Stmt -> for ( Expr ; Expr ; Expr ) Stmt
+Stmt -> break ;
+Stmt -> return Expr ;
+Stmt -> Console . Writeline ( Expr’ , ) ;
+Stmt -> StmtBlock
+IfStmt -> else Stmt
+IfStmt -> ε
+Expr’ -> Expr , Expr’
+Expr’ -> ε
+Expr -> ident = ConditionAnd
+Expr -> ConditionAnd
+ConditionAnd -> Equality ConditionAnd'
+ConditionAnd' ->  && Equality ConditionAnd'
+ConditionAnd' -> ε
+Equality -> Equality == Relational
+Equality -> Relational
+Relational -> Relational < Additive
+Relational -> Relational <= Additive
+Relational -> Additive
+Additive -> Additive + Multiplicative
+Additive -> Multiplicative
+Multiplicative -> Multiplicative * Unary
+Multiplicative ->  Multiplicative % Unary
+Multiplicative -> Unary 
+Unary -> - Primary
+Unary -> ! Primary 
+Unary -> Primary
+Primary ->  Primary . ident
+Primary ->  Primary . ident = Expr
+Primary ->  Terminal
+Terminal -> this
+Terminal -> ( Expr )
+Terminal ->  New ( ident )
+Terminal -> intConstant
+Terminal -> doubleConstant
+Terminal -> boolConstant
+Terminal -> stringConstant
+Terminal -> null
+Terminal -> ident
+```
+
+
+**Documento con la gramática:** [DOC]()
+
+
+#### Tabla de Análisis  📜
+
+El analizador es de tipo SLR
+
+**Documento con la tabla de análisis:** [DOC]()
+
+#### Manejo de Errores ❌
+
+El analizar sintáctico a la hora de encontrar un error consume el token donde marco error, todo lo que resta de esa línea lo ignora y salta de línea. A la hora de saltar de línea el análisis sintáctico empieza de cero.
+
+#### Ejecutando las pruebas ⚙️
+
+El analizador cargar su tabla de análisis y las producciones de la gramática desde archivos de texto que se encuentran en la carpeta Gramática en la solución de la aplicación por lo tanto para poder realizar pruebas es necesario tener en cuenta que esta carpeta exista con sus archivos para que funcione de la manera correcta.
+
+Ruta de los archivos anteriores: 
+
+Ruta Relativa:
+
+"\Gramatica\Gramatica.txt"
+
+"\Gramatica\Tabla_analisis.txt"
 
 ## Construido con 🛠️
 
@@ -150,8 +276,8 @@ A continuación, un pequeño video del funcionamiento de la fase 1
 
 ## Autores ✒️
 
-* **Pablo Muralles**  - Carné:1113818
-* **Santiago Bocel**  - Cerné:1076818
+**Pablo Muralles**  - Carné:1113818
+**Santiago Bocel**  - Cerné:1076818
 
   
 
@@ -159,5 +285,3 @@ A continuación, un pequeño video del funcionamiento de la fase 1
 
 A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code. 
 see more in [LICENSE](https://github.com/PabloMuralles/Compiladores/blob/master/LICENSE) for more details.
-
- 
