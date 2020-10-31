@@ -1,0 +1,7 @@
+Type procedimiento ( double jose )  
+{
+	int publico ;
+	string publico ;
+	bool publico ;	
+}
+

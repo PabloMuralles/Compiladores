@@ -1,0 +1,14 @@
+static int numero ; string palabra ; 
+void inicio ( string palabraRservada ) 
+{ 
+if ( numero = palabra) 
+while ( numero = numero.numero) ; 
+}
+
+class holamundo  {
+int h ;
+}
+int Suma (int numero1 , int numero2 )
+{
+
+}

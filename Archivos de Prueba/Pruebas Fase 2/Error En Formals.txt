@@ -1,0 +1,10 @@
+void ident ( int ident , int sjajaj, )  
+{ 
+}
+
+void hola (int lol, asds) { } 
+
+int hola);
+{
+static string xd ident ;
+}

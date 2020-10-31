@@ -1,0 +1,15 @@
+string str ;
+int[] jose ;
+bool i ;
+bool inmplements;
+bool jose ;
+int zerafina;
+string Zerafina;
+double Zerafina ;
+void procedimiento ( double jose )  
+{
+ if(5==5)
+ {
+  double Zerafina;
+ }
+}
