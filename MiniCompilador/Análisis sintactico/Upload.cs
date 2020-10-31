@@ -7,6 +7,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -47,7 +48,7 @@ namespace Minic.Análisis_sintactico
 
             var listSymbols = new List<string>();
 
-            var table = new Dictionary<int, Dictionary<string, string>>();
+            var tableTemp = new Dictionary<int, Dictionary<string, string>>();
 
             while (line != null)
             {
@@ -77,12 +78,13 @@ namespace Minic.Análisis_sintactico
                         }
 
                     }
-                      table.Add(state, tempDictionary);
+                    tableTemp.Add(state, tempDictionary);
                 }
                 line = sw.ReadLine();
                 countProduction++;
             }
             sw.Close();
+            table = tableTemp;
         }
 
         /// <summary>
