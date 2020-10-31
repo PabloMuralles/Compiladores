@@ -243,14 +243,16 @@ Terminal -> ident
 ```
 
 
-**Documento con la gramática:** [DOC]()
+**Documento con la gramática:** [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Gram%C3%A1tica%20Corregida.pdf)
+**Follows:** [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Follows.pdf)
+
 
 
 #### Tabla de Análisis  📜
 
 El analizador es de tipo SLR
 
-**Documento con la tabla de análisis:** [DOC]()
+**Documento con la tabla de análisis:** [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Tabla%20de%20analisis%20SLR.xlsx)
 
 #### Manejo de Errores ❌
 
