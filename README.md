@@ -280,7 +280,8 @@ Ruta Relativa:
 ## Autores ✒️
 
 **Pablo Muralles**  - Carné:1113818
-**Santiago Bocel**  - Cerné:1076818
+
+**Santiago Bocel**  - Carné:1076818
 
   
 
