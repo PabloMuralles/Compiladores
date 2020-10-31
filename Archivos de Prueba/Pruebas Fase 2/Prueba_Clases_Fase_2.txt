@@ -1,2 +1,4 @@
-class holaMundo : lol , heredar , compresion  {
-}
+class holaMundo(string lol)
+  {
+
+  }
