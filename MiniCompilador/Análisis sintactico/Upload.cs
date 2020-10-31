@@ -36,66 +36,55 @@ namespace Minic.Análisis_sintactico
         /// </summary>
         static public void ReadExcelFile()
         {
-            table = new Dictionary<int, Dictionary<string, string>>();
-
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
 
-             var path = Path.Combine(projectPath, "Gramatica","Tabla_de_analisis_LR0.xlsx");
+             var path = Path.Combine(projectPath, "Gramatica", "Tabla_analisis.txt");
 
-            _Application excel = new Excel.Application();
-            Workbook wb = excel.Workbooks.Open(path);
-            Worksheet ws = wb.Worksheets[1];
+            var sw = new StreamReader(path);
 
-            Excel.Range range;
+            var line = sw.ReadLine();
 
-            range = ws.UsedRange;
-            var rw = range.Rows.Count;
-            var cl = range.Columns.Count;
+            var countProduction = 0;
 
-            var symbols = new List<string>();
-            var data = new List<string>();
-             
+            var listSymbols = new List<string>();
 
-            var state = 0;
-            for (int i = 1; i < rw; i++)
+            var table = new Dictionary<int, Dictionary<string, string>>();
+
+            while (line != null)
             {
                 var tempDictionary = new Dictionary<string, string>();
-                for (int j = 1; j < cl; j++)
+                var state = 0;
+                if (countProduction == 0)
                 {
-                    if (i == 1)
+                    listSymbols = line.Split('_').ToList();
+                }
+                else
+                {
+                    
+                    var tempLine = line.Split('_');
+
+                    for (int i = 0; i < tempLine.Length; i++)
                     {
-                        symbols.Add((string)(range.Cells[i, j] as Excel.Range).Value2);
-                    }
-                    else
-                    {
-                        if (j == 1)
+                        if (i == 0)
                         {
-                            state = Convert.ToInt32((range.Cells[i, j] as Excel.Range).Value2);
+                            state = Convert.ToInt32(tempLine[i]);
                         }
                         else
                         {
-                            var tempAction = Convert.ToString((range.Cells[i, j] as Excel.Range).Value2);
-
-                            if (tempAction != null)
+                            if (tempLine[i] != " ")
                             {
-                                var tempSymbols = symbols[j - 1];
-                                tempDictionary.Add(tempSymbols, tempAction);
-
+                                tempDictionary.Add(listSymbols[i-1],tempLine[i].ToString());
                             }
-
                         }
-                    }
 
+                    }
+                      table.Add(state, tempDictionary);
                 }
-                if (i != 1)
-                {
-                    table.Add(state, tempDictionary);
-                }
-                
+                line = sw.ReadLine();
+                countProduction++;
             }
-            wb.Close(0);
-            excel.Quit();
+            sw.Close();
         }
 
         /// <summary>
@@ -131,7 +120,9 @@ namespace Minic.Análisis_sintactico
             sw.Close();
 
         }
-
+        /// <summary>
+        /// Read the follows in the text file
+        /// </summary>
         static public void ReadTxtFileFollows()
         {
             follow = new Dictionary<string, List<string>>();
