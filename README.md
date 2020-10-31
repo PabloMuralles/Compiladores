@@ -257,7 +257,7 @@ El analizador es de tipo SLR
 
 #### Manejo de Errores ❌
 
-El analizar sintáctico a la hora de encontrar un error consume el token donde marco error y guarda el error para posteriormente mostrarlo al usuario, todo lo que resta de esa línea lo ignora y salta de línea a la hora de saltar de línea el análisis sintáctico empieza de cero. Si todos los tokens de entrada son consumidos y llega al estado de aceptación indicara que el Código ingresado es correcto de lo contrario mostrara los errores en pantalla.
+El analizar sintáctico a la hora de encontrar un error consume el token donde marco error y guarda el error para posteriormente mostrarlo al usuario, todo lo que resta de esa línea lo ignora y salta de línea, a la hora de saltar de línea el análisis sintáctico empieza de cero. Si todos los tokens de entrada son consumidos y llega al estado de aceptación indicara que el código ingresado es correcto de lo contrario mostrara los errores en pantalla.
 
 #### Ejecutando las pruebas ⚙️
 
