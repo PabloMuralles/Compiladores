@@ -243,9 +243,9 @@ Terminal -> ident
 ```
 
 
-#####**Documento con la gramática:** [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Gram%C3%A1tica%20Corregida.pdf)
+##### Documento con la gramática: [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Gram%C3%A1tica%20Corregida.pdf)
 
-#####**Follows:** [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Follows.pdf)
+##### Follows: [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Follows.pdf)
 
 
 
