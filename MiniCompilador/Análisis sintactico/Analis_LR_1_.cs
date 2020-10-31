@@ -30,7 +30,7 @@ namespace Minic.Análisis_sintactico
             tables_dictionary = Upload.table;
             grammar = Upload.grammar;
 
-            tokens_.Enqueue(new Tuple<string, string>("$", "")); //Fin de linea
+            tokens_.Enqueue(new Tuple<string, string>("$", ",")); //Fin de linea
             pila.Push(0);
             Entrada = tokens_;
             search_symbol(pila.Peek(), tokens_.Peek());

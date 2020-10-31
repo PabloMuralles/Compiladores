@@ -1,4 +1,4 @@
-static int numero ; string palabra ; 
+const int numero ; string palabra ; 
 void inicio ( string palabraRservada ) 
 { 
 if ( numero = palabra) 

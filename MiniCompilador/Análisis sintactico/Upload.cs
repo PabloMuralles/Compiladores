@@ -67,13 +67,14 @@ namespace Minic.Análisis_sintactico
                     {
                         if (i == 0)
                         {
-                            state = Convert.ToInt32(tempLine[i]);
+                            state = Convert.ToInt32(tempLine[i].Trim());
                         }
                         else
                         {
                             if (tempLine[i] != " ")
                             {
-                                tempDictionary.Add(listSymbols[i-1],tempLine[i].ToString());
+                                var temp = listSymbols[i];
+                                tempDictionary.Add(listSymbols[i].Trim(),tempLine[i].Trim());
                             }
                         }
 

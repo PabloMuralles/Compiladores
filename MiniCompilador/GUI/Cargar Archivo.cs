@@ -61,8 +61,8 @@ namespace MiniCompilador.GUI
 
         private void button_Analizar_Click(object sender, EventArgs e)
         {
-            try
-            {
+           // try
+            //{
                 if (!string.IsNullOrEmpty(path.Text))
                 {
                     errorProvider1.Clear();
@@ -74,12 +74,12 @@ namespace MiniCompilador.GUI
                     throw new Exception("No se a cargado archivo");
                 }
 
-            }
-            catch (Exception p)
-            {
-                errorProvider1.Clear();
-                errorProvider1.SetError(path, p.Message);
-            }
+            //}
+            //catch (Exception p)
+            //{
+            //    errorProvider1.Clear();
+            //    errorProvider1.SetError(path, p.Message);
+            //}
         }
         public void msg_Analyze_lexicon(string mensaje, string direccion)
         {          
