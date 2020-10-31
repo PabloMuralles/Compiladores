@@ -26,12 +26,9 @@ namespace Minic.Análisis_sintactico
         {
             Upload.threadTable.Join();
             Upload.ReadTxtFileGrammar();
-            Upload.ReadTxtFileFollows();
 
             tables_dictionary = Upload.table;
             grammar = Upload.grammar;
-            follows = Upload.follow;
-
 
             tokens_.Enqueue(new Tuple<string, string>("$", "")); //Fin de linea
             pila.Push(0);

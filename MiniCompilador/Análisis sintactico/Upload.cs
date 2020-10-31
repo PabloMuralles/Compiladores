@@ -21,8 +21,6 @@ namespace Minic.Análisis_sintactico
 
         public static Dictionary<int, Tuple<int, string>> grammar = new Dictionary<int, Tuple<int, string>>();
 
-        public static Dictionary<string, List<string>> follow = new Dictionary<string, List<string>>();
-
         /// <summary>
         /// Method to create the thread to do de method to read de excel file
         /// </summary>
@@ -117,40 +115,6 @@ namespace Minic.Análisis_sintactico
                 line = sw.ReadLine();
                 countProduction++;
             }
-            sw.Close();
-
-        }
-        /// <summary>
-        /// Read the follows in the text file
-        /// </summary>
-        static public void ReadTxtFileFollows()
-        {
-            follow = new Dictionary<string, List<string>>();
-
-            var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
-
-            var path = Path.Combine(projectPath, "Gramatica", "follows.txt");
-
-            var sw = new StreamReader(path);
-
-            var line = sw.ReadLine();
-
-            var countProduction = 0;
-
-            while (line != null)
-            {
-                string[] stringSeparators = new string[] { "->" };
-                line.Trim();
-                var splitPoduction = line.Split(stringSeparators, StringSplitOptions.None);
-                var splitFollows = splitPoduction[1].Split('☺');
-
-                follow.Add(splitPoduction[0].Trim(), splitFollows.ToList());
-  
-                line = sw.ReadLine();
-                countProduction++;
-            }
-
             sw.Close();
 
         }
