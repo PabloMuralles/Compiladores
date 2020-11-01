@@ -71,8 +71,8 @@ namespace MiniCompilador.Análisis_Léxico
 
             cadenaNulo = new Regex("(\"([^\"\n\0])*\")");
 
-            // se agrego como caracter simple para luego poder identificarlo como caracter doble 
-            caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=|\|)$");
+            // se agrego como caracter simple | y & para luego poder identificarlo como caracter doble 
+            caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=|\||&)$");
 
             caracteresDobles = new Regex(@"^(<=|>=|==|!=|&&|\|\|)$");
 
