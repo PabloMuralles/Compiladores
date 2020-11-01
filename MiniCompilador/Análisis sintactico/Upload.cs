@@ -2,38 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Resources;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Minic.Análisis_sintactico
 {
     class Upload
     {
-        public static Thread threadTable;
-
-        public static Dictionary<int, Dictionary<string, string>> table = new Dictionary<int, Dictionary<string, string>>();
-
-        public static Dictionary<int, Tuple<int, string>> grammar = new Dictionary<int, Tuple<int, string>>();
-
-        /// <summary>
-        /// Method to create the thread to do de method to read de excel file
-        /// </summary>
-        static public void LoadThread()
-        {
-            threadTable = new Thread(new ThreadStart(ReadExcelFile));
-            threadTable.Start();
-        }
         /// <summary>
         /// Method to read de excel file that conteins the analysis table 
         /// </summary>
-        static public void ReadExcelFile()
+        /// <returns>dictionary that contains the analysis table </returns>
+        public Dictionary<int, Dictionary<string, string>> ReadTxtFileAnalysisTable()
         {
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
@@ -85,15 +63,16 @@ namespace Minic.Análisis_sintactico
                 countProduction++;
             }
             sw.Close();
-            table = tableTemp;
+            return tableTemp;
         }
 
         /// <summary>
         /// Method to read the file that have the grammar in folder of the proyect inside of the folder grammar 
         /// </summary>
-        static public void ReadTxtFileGrammar()
+        /// <returns>a dictionary that contains the productions of the grammar</returns>
+        public Dictionary<int, Tuple<int, string>> ReadTxtFileGrammar()
         {
-            grammar = new Dictionary<int, Tuple<int, string>>();
+           var grammar = new Dictionary<int, Tuple<int, string>>();
 
             var appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectPath = appDirectory.Substring(0, appDirectory.IndexOf("\\MiniCompilador"));
@@ -119,6 +98,8 @@ namespace Minic.Análisis_sintactico
                 countProduction++;
             }
             sw.Close();
+
+            return grammar;
 
         }
 

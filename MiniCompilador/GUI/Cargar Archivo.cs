@@ -15,6 +15,7 @@ namespace MiniCompilador.GUI
             InitializeComponent();
 
         }
+
         /// <summary>
         /// action del boton para cargar archivo
         /// </summary>

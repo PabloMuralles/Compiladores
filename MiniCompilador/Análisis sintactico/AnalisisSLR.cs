@@ -24,11 +24,10 @@ namespace Minic.Análisis_sintactico
         /// <param name="tokens_">Entrada</param>
         public void table(Queue<Tuple<string, string>> tokens_)
         {
-            Upload.threadTable.Join();
-            Upload.ReadTxtFileGrammar();
+            var objUpload = new Upload();
 
-            tables_dictionary = Upload.table;
-            grammar = Upload.grammar;
+            tables_dictionary = objUpload.ReadTxtFileAnalysisTable();
+            grammar = objUpload.ReadTxtFileGrammar();
 
             tokens_.Enqueue(new Tuple<string, string>("$", ",")); //Fin de linea
             pila.Push(0);
