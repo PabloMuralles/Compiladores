@@ -183,8 +183,8 @@ Id' -> ε
 Field’ -> Field Field’
 Field’ -> ε
 Field -> Type ident ;
-Field -> Type ( Formals ) StmtBlock
-Field -> void ( Formals ) StmtBlock
+Field -> Type ident ( Formals ) StmtBlock
+Field -> void ident ( Formals ) StmtBlock
 Field -> const ConstType ident ;
 Prototype’ ->  Prototype Prototype’
 Prototype’ -> ε
