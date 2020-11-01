@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Linq.Expressions;
+using System.CodeDom.Compiler;
 
 namespace MiniCompilador.Análisis_Léxico
 {
@@ -374,20 +376,55 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 if (comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false)
                                 {
+                                    // como son caracteres simples no puede ir mas de dos por lo que si dato es mayor a 1 hay que separarlos 
                                     //verificar que pasa cuando empieza con un caracter simple
                                     if (dato.Length > 1)
                                     {
-                                        var cadenaAux = dato.Remove(dato.Length - 1, 1);
-                                        dato = dato.Remove(0, dato.Length - 1);
-                                        lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
-                                        dato = string.Empty;
+                                        //existe el caso donde el dato antes tenga un caracter que lo vuelva un caracter doble por lo que no se deberia de serar sino solo guardar así 
+                                        // entonces se va almacenar aca debido a que en donde se validan los caracteres dobles nunca van a entrar ya que entrara a este if antes
+                                        if (objExpreciones.caracteresDobles_.IsMatch(dato))
+                                        {
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                            dato = string.Empty;
+                                        }
+                                        else
+                                        {
+                                            var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                            dato = dato.Remove(0, dato.Length - 1);
+                                            lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                            dato = string.Empty;
+                                        }
 
                                     }
                                     else
                                     {
-                                        lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
-                                        dato = string.Empty;
+                                        //este else espara para guardar todo lo que no case con caracteres simbples
+                                        //pero esto causaba que los caracteres dobles se separaran por lo que se valido que 
+                                        // si un caracter double viene no se guarde y que lo guarde el ultimo else
+                                        if (dato == ">" || dato == "<" || dato == "=" || dato == "!" || dato == "&" || dato == "|")
+                                        {
+                                            if (i + 1 < listaCaracteres.Count())
+                                            {
+                                                if (listaCaracteres[i+1].ToString() != "=" && listaCaracteres[i + 1].ToString() != "&" && listaCaracteres[i + 1].ToString() != "|")
+                                                {
+                                                    lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                                    dato = string.Empty;
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                                dato = string.Empty;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
+                                            dato = string.Empty;
+                                        }
+                                     
                                     }
                                 }
                             }
@@ -502,7 +539,7 @@ namespace MiniCompilador.Análisis_Léxico
                         {
                             if (i + 1 < listaCaracteres.Count())
                             {
-
+                                //los caracteres dobles nunca van a entrar aca ya que de primero entrar a caracteres simples
                                 if ((objExpreciones.caracteresDobles_.IsMatch(listaCaracteres[i + 1].ToString()) || listaCaracteres[i + 1].ToString() == " " ||
                                     listaCaracteres[i + 1].ToString() == "\t" || (objExpreciones.llavesSimples_.IsMatch(listaCaracteres[i + 1].ToString())))
                                 && stringEncontrado == false && comentarioMultiple == false)
@@ -510,7 +547,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     lexemas_.Add(new Tuple<string, string>(dato, $"{(i + 1) - (dato.Length - 1)}-{i + 1}, {contadorLinea}"));
                                     dato = string.Empty;
                                 }
-                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
+                                else if (!objExpreciones.letras_.IsMatch(listaCaracteres[i].ToString()) && stringEncontrado == false && comentarioMultiple == false && comentarioLinea == false  && notacionCientifica == false && !objExpreciones.caracteres_.IsMatch(listaCaracteres[i].ToString()) && !char.IsDigit(listaCaracteres[i]) && listaCaracteres[i] != '_')
                                 {
                                     // Este if sirve para validar cualquier caracter que no sea conocido en nuestra gramatica funciona si y solo si no es el ultimo caracter de la gramatica
                                     if (dato.Length > 1)
@@ -531,6 +568,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     }
 
                                 }
+                              
 
                             }
                             else if (stringEncontrado == false && comentarioLinea == false && comentarioMultiple == false)

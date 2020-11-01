@@ -71,11 +71,12 @@ namespace MiniCompilador.Análisis_Léxico
 
             cadenaNulo = new Regex("(\"([^\"\n\0])*\")");
 
-            caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=)$");
+            // se agrego como caracter simple para luego poder identificarlo como caracter doble 
+            caracteresSimples = new Regex(@"^(\+|-|\*|/|%|<|>|=|\|)$");
 
             caracteresDobles = new Regex(@"^(<=|>=|==|!=|&&|\|\|)$");
 
-            signosPuntuacion = new Regex(@"^(!|;|,|\.)$");
+            signosPuntuacion = new Regex(@"^(!|;|,|\.|:)$");
 
             llavesSimples = new Regex(@"^(\[|\]|\(|\)|{|})$");
 
@@ -85,8 +86,8 @@ namespace MiniCompilador.Análisis_Léxico
 
             letras = new Regex(@"^([a-z]|[A-Z])$");
 
-            caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
-            
+            caracteres = new Regex(@"^(\+|-|\*|/|%|<|<=|>|>=|=|==|!=|&&|\|\||!|:|;|,|\.|\[|\]|\(|\)|{|}|\[\]|\(\)|{})$");
+
         }
     }
 

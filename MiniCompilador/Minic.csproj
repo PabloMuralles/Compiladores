@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Análisis Léxico\Analisis.cs" />
-    <Compile Include="Análisis sintactico\Analis_LR_1_.cs" />
+    <Compile Include="Análisis sintactico\AnalisisSLR.cs" />
     <Compile Include="Análisis sintactico\Upload.cs" />
     <Compile Include="GUI\Cargar Archivo.cs">
       <SubType>Form</SubType>
