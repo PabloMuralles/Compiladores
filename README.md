@@ -204,7 +204,7 @@ Stmt -> while ( Expr ) Stmt
 Stmt -> for ( Expr ; Expr ; Expr ) Stmt
 Stmt -> break ;
 Stmt -> return Expr ;
-Stmt -> Console . Writeline ( Expr’ , ) ;
+Stmt -> Console . WriteLine ( Expr’ , ) ;
 Stmt -> StmtBlock
 IfStmt -> else Stmt
 IfStmt -> ε
