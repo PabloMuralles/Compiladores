@@ -389,11 +389,37 @@ namespace MiniCompilador.Análisis_Léxico
                                         }
                                         else
                                         {
-                                            var cadenaAux = dato.Remove(dato.Length - 1, 1);
-                                            dato = dato.Remove(0, dato.Length - 1);
-                                            lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
-                                            lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
-                                            dato = string.Empty;
+                                            //se valida que se pueda validar la siguiente posicion si no significa que se puede separar porque no va ser un caracter doble
+                                            //pero puede pasar el caso que venga a<b o a<=b que significa que se puede validar la siguiente posicion y se entra al if
+                                            // despues se valida que no venga algun caracter simple despues para poder poder separar y guardar los dos lexemas que seia el siguiente if despues
+                                            //si la siguiente posicion hay un signo para hacer un caracter doble se va separar lo que exista antes del caracter simple y se deja el caracter simple en datos
+                                            //para que cuando vuelva a entrar se pueda guardar como doble y sino 
+                                            if (i + 1 < listaCaracteres.Count() )
+                                            {
+                                                if (listaCaracteres[i + 1].ToString() != "=" && listaCaracteres[i + 1].ToString() != "&" && listaCaracteres[i + 1].ToString() != "|")
+                                                {
+                                                    var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                                    dato = dato.Remove(0, dato.Length - 1);
+                                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                                    lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                                    dato = string.Empty;
+
+                                                }
+                                                else
+                                                {
+                                                    var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                                    dato = dato.Remove(0, dato.Length - 1);
+                                                    lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                                }
+                                            }
+                                            else
+                                            {
+                                                var cadenaAux = dato.Remove(dato.Length - 1, 1);
+                                                dato = dato.Remove(0, dato.Length - 1);
+                                                lexemas_.Add(new Tuple<string, string>(cadenaAux, $"{(i) - (cadenaAux.Length - 1)}-{i},{contadorLinea}"));
+                                                lexemas_.Add(new Tuple<string, string>(dato, $"{i + 1}-{i + dato.Length},{contadorLinea}"));
+                                                dato = string.Empty;
+                                            }
                                         }
 
                                     }
@@ -789,7 +815,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
-                return ("stringConstant,stringConstant");
+                return ("boolConstant,boolConstant");
             }
             else if (objExpreciones_.identificador_.IsMatch(cadena))
             {
@@ -806,7 +832,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return ($"stringConstant (Valor ={cadena})" + ",stringConstant");
+                return ($"intConstant (Valor ={cadena})" + ",intConstant");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
@@ -814,7 +840,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.doubles_.IsMatch(cadena))
             {
-                return ($"stringConstant (Valor ={cadena})" + ",stringConstant");
+                return ($"doubleConstant (Valor ={cadena})" + ",doubleConstant");
             }
             else if (objExpreciones_.cadena_.IsMatch(cadena))
             {
