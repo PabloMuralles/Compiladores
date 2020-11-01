@@ -789,7 +789,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
-                return ("booleana,boolena");
+                return ("stringConstant,stringConstant");
             }
             else if (objExpreciones_.identificador_.IsMatch(cadena))
             {
@@ -806,7 +806,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return ($"entero (Valor ={cadena})" + ",entero");
+                return ($"stringConstant (Valor ={cadena})" + ",stringConstant");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
@@ -814,7 +814,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.doubles_.IsMatch(cadena))
             {
-                return ($"doubles (Valor ={cadena})" + ",doubles");
+                return ($"stringConstant (Valor ={cadena})" + ",stringConstant");
             }
             else if (objExpreciones_.cadena_.IsMatch(cadena))
             {
@@ -824,7 +824,7 @@ namespace MiniCompilador.Análisis_Léxico
                 }
                 else
                 {
-                    return ("cadena,cadena");
+                    return ("stringConstant,stringConstant");
                 }
 
             }
