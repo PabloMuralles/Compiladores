@@ -427,6 +427,7 @@ namespace MiniCompilador.Análisis_Léxico
                                     {
                                         //este else espara para guardar todo lo que no case con caracteres simbples
                                         //pero esto causaba que los caracteres dobles se separaran por lo que se valido que 
+
                                         // si un caracter double viene no se guarde y que lo guarde el ultimo else
                                         if (dato == ">" || dato == "<" || dato == "=" || dato == "!" || dato == "&" || dato == "|")
                                         {
