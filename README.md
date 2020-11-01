@@ -204,12 +204,12 @@ Stmt -> while ( Expr ) Stmt
 Stmt -> for ( Expr ; Expr ; Expr ) Stmt
 Stmt -> break ;
 Stmt -> return Expr ;
-Stmt -> Console . Writeline ( Expr’ , ) ;
+Stmt -> Console . WriteLine ( Expr’ ) ;
 Stmt -> StmtBlock
 IfStmt -> else Stmt
 IfStmt -> ε
 Expr’ -> Expr , Expr’
-Expr’ -> ε
+Expr’ -> Expr 
 Expr -> ident = ConditionAnd
 Expr -> ConditionAnd
 ConditionAnd -> Equality ConditionAnd'
