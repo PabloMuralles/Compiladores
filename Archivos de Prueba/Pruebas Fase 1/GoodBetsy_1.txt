@@ -1,0 +1,44 @@
+/* This is just 
+a simple program 
+with objects */
+
+class Animal {
+  int height; // attribute
+  double weight;
+   void Eat() { weight = weight * 2.0;}
+}
+
+class Cow : Animal {
+  string name;
+  void Moo() { // single comment }
+}
+
+int a____________; // id
+
+void main() {
+   int b;
+   int a;
+   int d;
+   int INT; // reserved word and ID
+   bool TRUE = false;  // A bool
+   d = .12; // Not a double but dot int
+   a = .12E+2; // Not a double but dot int id + int
+   INT = 12.E2  // A double 
+   b = 1.12E+-2; // A double id plus minus int
+   b = 000003.000003; // A double
+   c = ( ) + 2 // single parenthesis plus int
+   a = 0X00A1 +d-b; // Another hexadecimal plus id minus id
+}
+
+/*    /* an almost-nested comment */
+void main() {
+  class Cow betsy;
+  variable_whose_name_is_too_much_long="Go, Betsy!"; // ONLY ERROR FOUND
+  betsy = New(Cow);
+  betsy.height = 0xa2 + 0XFa4; // two hexadecimals
+  betsy.weight = 1.456;
+  besty.name = "Betsy";
+  betsy.Moo(); // Go, Betsy!
+}
+
+

@@ -1,0 +1,40 @@
+/* This is just 
+a simple program 
+with objects */
+
+class Animal {
+  int height; // attribute
+  double weight;
+   void Eat() { weight = weight * 2.0;}
+}
+
+class Cat extends Animal {
+  string name;
+  void Meow() { // single comment }
+}
+
+int $$$$$$34$$$$?; // ERROR-1 unknown char
+
+void main() {
+   int b;
+   int a;
+   int d;
+  */ // ERROR-2 Unmatched end of comment not single * and /
+   d = a+b;
+
+
+}
+
+/*    /* an almost-nested comment */
+void main() {
+  class Cat kitty;
+  variable="No, kitty! Go,  // ERROR-3 string without ending
+              kitty = "! Go, Kitty! // id and ERROR-4 string without ending
+  kitty = New(Cat);
+  kitty.height = 000003.000003; // A double
+  kitty.weight = 1.12E-000002 // A valid double
+  besty.name = "Kitty";
+  kitty.Meow(); /* Go, Kitty!
+}
+
+ERROR-5 EOF in multiline comment! should NOT scan this line!
