@@ -253,7 +253,7 @@ Terminal -> ident
 
 El analizador es de tipo SLR
 
-##### Documento con la tabla de análisis: [DOC](https://github.com/PabloMuralles/Compiladores/blob/Analizador_sint%C3%A1ctico/Documentacion/Tabla%20de%20analisis%20SLR.xlsx)
+##### Documento con la tabla de análisis: [DOC](https://github.com/PabloMuralles/Compiladores/blob/fase3/Documentacion/Tabla%20de%20Analisis.xlsx)
 
 #### Manejo de Errores ❌
 
