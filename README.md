@@ -91,17 +91,17 @@ que no es ni una palabra ni un identificador.
      -Los de base 16 deben de empezar con ```0``` seguido de ```x``` o ```X ```    
 
 ```
-     Correcto:
-     4
-     50
-     0487
-     0xFf217
-     0XA41E1
+Correcto:
+4
+50
+0487
+0xFf217
+0XA41E1
 
-     Incorrecto:
-     FF217
-     5.2
-     .5
+Incorrecto:
+FF217
+5.2
+.5
  ```
 -Doubles: Es una secuencia de digitos, un punto, segudio de una secuencia de digitos o nada. Tambien después del puntos puede venir un numero o nada seguido de una notación científica que puede o no tener el signo del exponente si no lo tiene se asume que es un ``+``
 
