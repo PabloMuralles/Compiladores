@@ -37,7 +37,7 @@ namespace Minic.Análisis_sintactico
         /// <param name="state">state of the grammar to find symbols</param>
         /// <param name="token_">tokens queue to analyze</param>
         private void search_symbol(int state, Tuple<string, string> token_)
-        {
+         {
 
             if (tables_dictionary.ContainsKey(state))
             {
@@ -62,7 +62,37 @@ namespace Minic.Análisis_sintactico
 
             if (symbol_Action.ContainsKey(symbol))
             {
-                if (symbol_Action[symbol].Contains("s"))
+                // solo existe un conflicto que es con el . por lo que este if solo va funcionar para este conflicto
+                if (symbol_Action[symbol].Contains("/"))
+                {
+                    var element1 = Entrada.ElementAt(1);
+                    var element2 = Entrada.ElementAt(2);
+                    var action = symbol_Action[symbol];
+                    var splitAction = action.Split('/');
+
+                    if (element1.Item1 == "ident" && element2.Item1 == "")
+                    {
+                        var Acction = Convert.ToInt32(splitAction[1].Trim().Substring(1));
+                        pila.Push(Acction);
+                        Simbolo.Push(new Tuple<string, string>(symbol, line));
+                        Entrada.Dequeue();
+                        search_symbol(pila.Peek(), Entrada.Peek()); // Avanzar al siguiente token en la entrada
+                    }
+                    else
+                    {
+                        var Acction = Convert.ToInt32(splitAction[1].Trim().Substring(1));
+                        var num_reducir = grammar[Acction].Item1;
+                        for (int i = 0; i < num_reducir; i++)
+                        {
+                            Simbolo.Pop();
+                            pila.Pop();
+                        }
+                        Simbolo.Push(new Tuple<string, string>(grammar[Acction].Item2, line));
+                        search_symbol(pila.Peek(), Simbolo.Peek());
+                    }
+
+                }
+                else if (symbol_Action[symbol].Contains("s"))
                 {
                     var Acction = Convert.ToInt32(symbol_Action[symbol].Substring(1));
                     pila.Push(Acction);
