@@ -49,6 +49,11 @@ Stmt -> break ;
 Stmt -> return Expr ;
 Stmt -> Console . WriteLine ( Expr’ ) ;
 Stmt -> StmtBlock
+Stmt -> CallStmt
+CallStmt -> ident ( Actuals )
+CallStmt -> ident . ident ( Actuals )
+Actuals -> Expr , Actuals
+Actuals -> Expr 
 IfStmt -> else Stmt
 IfStmt -> ε
 Expr’ -> Expr , Expr’
