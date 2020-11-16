@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Análisis Léxico\Analisis.cs" />
+    <Compile Include="Análisis Semantico\Analysis.cs" />
+    <Compile Include="Análisis Semantico\TableElement.cs" />
     <Compile Include="Análisis sintactico\AnalisisSLR.cs" />
     <Compile Include="Análisis sintactico\Upload.cs" />
     <Compile Include="GUI\Cargar Archivo.cs">

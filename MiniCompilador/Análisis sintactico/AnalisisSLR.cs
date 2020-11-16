@@ -30,6 +30,9 @@ namespace Minic.Análisis_sintactico
             pila.Push(0);
             Entrada = tokens_;
             search_symbol(pila.Peek(), tokens_.Peek());
+
+            var objAnalysis = new Análisis_Semantico.Analysis(tokens_);
+
         }
         /// <summary>
         /// Method to find the symbols that belonhs to a state
