@@ -32,8 +32,8 @@ namespace Minic.Análisis_Semantico
                 positionList++;
             }
        
-            
         }
+
         private void ClassifyIdent()
         {
             var dataListNext = listTokens[positionList + 1];
@@ -57,7 +57,8 @@ namespace Minic.Análisis_Semantico
             {
 
             }
-            else if (true)
+            //creacion de una funcion o precedimiento
+            else if (dataListNext.Item1 == "(")
             {
 
             }
