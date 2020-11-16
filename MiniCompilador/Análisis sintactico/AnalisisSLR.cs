@@ -21,6 +21,7 @@ namespace Minic.Análisis_sintactico
         /// <param name="tokens_">Entrada</param>
         public void table(Queue<Tuple<string, string>> tokens_)
         {
+            var tempListTokens = tokens_.ToList();
             var objUpload = new Upload();
 
             tables_dictionary = objUpload.ReadTxtFileAnalysisTable();
@@ -31,7 +32,7 @@ namespace Minic.Análisis_sintactico
             Entrada = tokens_;
             search_symbol(pila.Peek(), tokens_.Peek());
 
-            var objAnalysis = new Análisis_Semantico.Analysis(tokens_);
+            var objAnalysis = new Análisis_Semantico.Analysis(tempListTokens);
 
         }
         /// <summary>
