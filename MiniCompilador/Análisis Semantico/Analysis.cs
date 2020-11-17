@@ -171,7 +171,7 @@ namespace Minic.Análisis_Semantico
         {
            
             var resultado_int = 0;
-            var rsultado_string = "";
+            var resultado_string = "";
             var resultado = "";
             while (listTokens[position].Item1 != ";")
             {
@@ -185,15 +185,22 @@ namespace Minic.Análisis_Semantico
                         }
                          
                         break;
+                    case "string":
+                        resultado_string = date_value;
+                        break;
                     default:
                         break;
                 }
 
                 position++;
             }
-            if (Type== "int")
+            if (Type == "int")
             {
                 resultado = Convert.ToString(resultado_int);
+            }
+            else if (Type == "string")
+            {
+                resultado = resultado_string; 
             }
             return resultado;
         }

@@ -4,4 +4,5 @@ class Parser
 
     string f1;
     a1 = 1+2;
+    f1 = "dato";
 }

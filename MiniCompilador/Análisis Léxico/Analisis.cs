@@ -858,7 +858,7 @@ namespace MiniCompilador.Análisis_Léxico
                 }
                 else
                 {
-                    return ("stringConstant,stringConstant");
+                    return ($"{cadena},stringConstant");
                 }
 
             }
