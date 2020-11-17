@@ -63,7 +63,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{dataListActual.Item1} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad");
                 }
             }
             //validar si es una clase
@@ -76,7 +76,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{dataListActual.Item1} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad");
                 }
             }
             //asignacion de una variable
@@ -94,7 +94,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{dataListActual.Item1} no fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} no fue definida con anterioridad");
                 }
             }
             //creacion de una funcion o precedimiento
@@ -107,7 +107,8 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la Funcion :{dataListActual.Item1} ya fue declarada con anterioridad");
+                if (!ExistInTable(Split_Name(name)))
+                    mistakes.Add($"Error la Funcion :{name} ya fue declarada con anterioridad");
                 }
 
             }
