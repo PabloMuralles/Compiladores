@@ -3,8 +3,5 @@ class Parser
     int a1;
 
     string f1;
- void main (string temp )
-{ 
     a1 = 1;
- }
 }

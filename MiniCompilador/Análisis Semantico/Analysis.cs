@@ -56,9 +56,10 @@ namespace Minic.Análisis_Semantico
             if (dataListNext.Item1 == ";")
             {
                 //llamar a la funcion que hace el split return nombre
-                if (!ExistInTable(dataListActions.Item1))
+                var Name = Split_Name(dataListActions.Item2);
+                if (!ExistInTable(Name))
                 {
-
+                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = "1", isClass = true, isFunction = false });
                 }
                 else
                 {
@@ -68,6 +69,7 @@ namespace Minic.Análisis_Semantico
             //validar si es una clase
             else if (dataListpreviously.Item1 == "class")
             {
+                var Name = Split_Name(dataListActions.Item2);
                 if (!ExistInTable(dataListActions.Item1))
                 {
 
@@ -102,6 +104,12 @@ namespace Minic.Análisis_Semantico
 
         }
 
+        private string Split_Name(string Name)
+        {
+            var Name_ = Name.Split(',');
+            return Name_[2];
+        }
+        
         private bool ExistInTable(string name)
         {
             foreach (var item in SimbolsTable)
