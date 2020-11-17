@@ -1,7 +1,10 @@
-Type procedimiento ( double jose )  
+class Parser
 {
-	int publico ;
-	string publico ;
-	bool publico ;	
-}
+    int a1;
 
+    string f1;
+ void main (string temp )
+{ 
+    a1 = 1;
+ }
+}
