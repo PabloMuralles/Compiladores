@@ -49,9 +49,13 @@ namespace Minic.Análisis_Semantico
             var dataListpreviously = listTokens[positionList - 1];
             var dataListActions = listTokens[positionList];
 
+            //si no esta declara 
+            // declarar: tipo, nombre
+
             //declarcion de variaable
             if (dataListNext.Item1 == ";")
             {
+                //llamar a la funcion que hace el split return nombre
                 if (!ExistInTable(dataListActions.Item1))
                 {
 
