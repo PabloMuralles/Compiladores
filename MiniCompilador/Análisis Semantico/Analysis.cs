@@ -17,7 +17,7 @@ namespace Minic.Análisis_Semantico
 
         private List<string> mistakes = new List<string>();
 
-        private int positionList = 0; 
+        private int positionList = 0;
         public Analysis(List<Tuple<string, string>> tokens_)
         {
             listTokens = tokens_;
@@ -26,10 +26,9 @@ namespace Minic.Análisis_Semantico
 
         private void IdentifyIdent()
         {
-            SimbolsTable.Add(new TableElement {name = "Parse",value = null, type = "class",ambit = "1", isClass = true, isFunction = false });
             foreach (var token in listTokens)
             {
- 
+
                 if (token.Item1 == "ident")
                 {
                     ClassifyIdent();
@@ -37,7 +36,7 @@ namespace Minic.Análisis_Semantico
                 else if (comparations.IsMatch(token.Item2))
                 {
                     ValidateType();
- 
+
                 }
                 positionList++;
             }
@@ -47,7 +46,7 @@ namespace Minic.Análisis_Semantico
         {
             var dataListNext = listTokens[positionList + 1];
             var dataListpreviously = listTokens[positionList - 1];
-            var dataListActions = listTokens[positionList];
+            var dataListActual = listTokens[positionList];
 
             //si no esta declara 
             // declarar: tipo, nombre
@@ -56,39 +55,44 @@ namespace Minic.Análisis_Semantico
             if (dataListNext.Item1 == ";")
             {
                 //llamar a la funcion que hace el split return nombre
-                var Name = Split_Name(dataListActions.Item2);
+                var Name = Split_Name(dataListActual.Item2);
                 if (!ExistInTable(Name))
                 {
-                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = "1", isClass = true, isFunction = false });
+                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = false });
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{dataListActions.Item1} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{dataListActual.Item1} ya fue definida con anterioridad");
                 }
             }
             //validar si es una clase
             else if (dataListpreviously.Item1 == "class")
             {
-                var Name = Split_Name(dataListActions.Item2);
-                if (!ExistInTable(dataListActions.Item1))
+                var Name = Split_Name(dataListActual.Item2);
+                if (!ExistInTable(dataListActual.Item1))
                 {
-
+                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = true, isFunction = false });
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{dataListActions.Item1} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{dataListActual.Item1} ya fue definida con anterioridad");
                 }
             }
             //asignacion de una variable
             else if (dataListNext.Item1 == "=")
             {
-                if (ExistInTable(dataListActions.Item1))
+                var Name = Split_Name(dataListActual.Item2);
+                if (ExistInTable(Name))
                 {
+                    // obtener el valor del dato
+                    var value_ = defination_value(positionList + 2);
+                    var index = SimbolsTable.FindIndex(c => c.name == Name);
+                    SimbolsTable[index] = new TableElement { name = Name, value = value_, type = dataListpreviously.Item1, ambit = null, isClass = true, isFunction = false };
 
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{dataListActions.Item1} no fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{dataListActual.Item1} no fue definida con anterioridad");
                 }
             }
             //creacion de una funcion o precedimiento
@@ -109,7 +113,32 @@ namespace Minic.Análisis_Semantico
             var Name_ = Name.Split(',');
             return Name_[2];
         }
-        
+
+        private string defination_value(int position)
+        {
+            var resultado = "";
+            while (listTokens[position].Item1 != ";")
+            {
+                var date_value = split_value(listTokens[position].Item2);
+                if (date_value == "+")
+                {
+
+                }
+                else
+                {
+                    resultado += date_value;
+                }
+                position++;
+            }
+            return resultado;
+        }
+
+        private string split_value(string value)
+        {
+            var value_ = value.Split(',');
+            return value_[2];
+        }
+
         private bool ExistInTable(string name)
         {
             foreach (var item in SimbolsTable)
@@ -124,5 +153,5 @@ namespace Minic.Análisis_Semantico
 
     }
 
-     
+
 }
