@@ -25,9 +25,9 @@ namespace Minic.Análisis_Semantico
             SimbolsTable.Add(new TableElement {name = "Parse",value = null, type = "class",ambit = "1", isClass = true, isFunction = false });
             foreach (var item in listTokens)
             {
-                if (item.Item1 == "ident")
+                if (item.Item1 == "ident") // int dato ;
                 {
-
+                    ClassifyIdent();
                 }
                 positionList++;
             }

@@ -19,9 +19,9 @@ namespace Minic.Análisis_sintactico
         /// Validar la entrada de cada tocken
         /// </summary>
         /// <param name="tokens_">Entrada</param>
-        public void table(Queue<Tuple<string, string>> tokens_)
+        public void table(Queue<Tuple<string, string>> tokens_ , List<Tuple<string,string>> listTokens )
         {
-            var tempListTokens = tokens_.ToList();
+            var tempListTokens = listTokens;
             var objUpload = new Upload();
 
             tables_dictionary = objUpload.ReadTxtFileAnalysisTable();

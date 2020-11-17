@@ -13,6 +13,7 @@ namespace MiniCompilador.Análisis_Léxico
         private string Nombre_Archivo = string.Empty;
         Minic.Análisis_sintactico.Analis_LR_1_ Analis_LR_1_ = new Minic.Análisis_sintactico.Analis_LR_1_();
         Queue<Tuple<string, string>> Pila_Token = new Queue<Tuple<string, string>>();
+        List<Tuple<string, string>> lista_semantica = new List<Tuple<string, string>>();
         private bool validateLexicalAnalysis = false;
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace MiniCompilador.Análisis_Léxico
             archivo.Close();
            if (validateLexicalAnalysis == true)
             {
-                Analis_LR_1_.table(Pila_Token);
+                Analis_LR_1_.table(Pila_Token, lista_semantica);
                 Pila_Token = new Queue<Tuple<string, string>>();
             }
         }
@@ -711,9 +712,11 @@ namespace MiniCompilador.Análisis_Léxico
                                     var Mostrar_Scategoria = Scategiria.Split(',');
                                     write.Write(" \n ");
                                     Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Ncategoria[1],LC[1] + "," + dato_separado[1]));
+                                    lista_semantica.Add(new Tuple<string, string>(Mostrar_Ncategoria[1], LC[1] + "," + dato_separado[1]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Mostrar_Ncategoria[0]);
                                     write.Write(" \n ");
                                     Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Scategoria[1], LC[1] + "," + dato_separado[3]));
+                                    lista_semantica.Add(new Tuple<string, string>(Mostrar_Scategoria[1], LC[1] + "," + dato_separado[3]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Mostrar_Scategoria[0]);
                                 }
                                 else
@@ -724,9 +727,11 @@ namespace MiniCompilador.Análisis_Léxico
                                     var Mostrar_Scategoria = Scategiria.Split(',');
                                     write.Write(" \n ");
                                     Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Scategoria[1], LC[1] + "," + dato_separado[3]));
+                                    lista_semantica.Add(new Tuple<string, string>(Mostrar_Scategoria[1], LC[1] + "," + dato_separado[3]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[0], LC[1], dato_separado[3], Mostrar_Scategoria[0]);
                                     write.Write(" \n ");
                                     Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Ncategoria[1], LC[1] + "," + dato_separado[1]));
+                                    lista_semantica.Add(new Tuple<string, string>(Mostrar_Ncategoria[1], LC[1] + "," + dato_separado[1]));
                                     write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", dato_separado[2], LC[1], dato_separado[1], Mostrar_Ncategoria[0]);
                                 }
                             }
@@ -765,6 +770,7 @@ namespace MiniCompilador.Análisis_Léxico
                                 Errores.Add($"Error {Mostrar_Categoria[0]} Linea {LC[1]}");
                                 write.Write(" \n ");
                                 Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1], LC[1] + "," + LC[0]));
+                                lista_semantica.Add(new Tuple<string, string>(Mostrar_Categoria[1], LC[1] + "," + LC[0]));
                                 write.Write("{0}  Línea: {1} , columna: {2}  {3} \n", Nueva_cadena, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                             else if (Categoria == "Error cadena contiene caracter nulo")
@@ -777,6 +783,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 write.Write(" \n ");
                                 Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), LC[1] + "," + LC[0]));
+                                lista_semantica.Add(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), LC[1] + "," + LC[0] + Mostrar_Categoria[0]));
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                         }
@@ -823,7 +830,7 @@ namespace MiniCompilador.Análisis_Léxico
                 int Cantidad = Cantidad_identificador(cadena);
                 if (Cantidad < 32)
                 {
-                    return ("ident,ident");
+                    return ($"{cadena},ident");
                 }
                 else
                 {
@@ -833,7 +840,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.entero_.IsMatch(cadena))
             {
-                return ($"intConstant (Valor ={cadena})" + ",intConstant");
+                return ($"{cadena}" + ",intConstant");
             }
             else if (objExpreciones_.hexadecimal_.IsMatch(cadena))
             {
