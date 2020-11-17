@@ -26,6 +26,7 @@ namespace Minic.Análisis_Semantico
 
         private void IdentifyIdent()
         {
+
             foreach (var token in listTokens)
             {
 
@@ -47,7 +48,6 @@ namespace Minic.Análisis_Semantico
             var dataListNext = listTokens[positionList + 1];
             var dataListpreviously = listTokens[positionList - 1];
             var dataListActual = listTokens[positionList];
-
             //si no esta declara 
             // declarar: tipo, nombre
 
@@ -55,6 +55,7 @@ namespace Minic.Análisis_Semantico
             if (dataListNext.Item1 == ";")
             {
                 //llamar a la funcion que hace el split return nombre
+
                 var Name = Split_Name(dataListActual.Item2);
                 if (!ExistInTable(Name))
                 {
@@ -98,16 +99,66 @@ namespace Minic.Análisis_Semantico
             //creacion de una funcion o precedimiento
             else if (dataListNext.Item1 == "(")
             {
+                var name = dataListActual.Item1;
+                if (!ExistInTable(Split_Name(name)))
+                {
+                    SimbolsTable.Add(new TableElement { name = name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
+                }
+                else
+                {
+                    mistakes.Add($"Error la Funcion :{dataListActual.Item1} ya fue declarada con anterioridad");
+                }
 
+            }
+            else if (dataListNext.Item1 == ")" || dataListNext.Item1 == ",")
+            {
 
             }
         }
 
         private void ValidateType()
         {
+            var dataListNext = listTokens[positionList + 1];
+            var dataListpreviously = listTokens[positionList - 1];
+            var dataListActuals = listTokens[positionList];
+
+            var nameVariable1 = Split_Name(dataListpreviously.Item2);
+            var nameVariable2 = Split_Name(dataListpreviously.Item2);
+            var variable1 = SearchInTable(nameVariable1);
+            var variable2 = SearchInTable(Split_Name(nameVariable2));
+
+
+            if (ExistInTable(nameVariable1) && ExistInTable(Split_Name(nameVariable1)))
+            {
+                if (!(variable1.type == variable2.type))
+                {
+                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
+                }
+            }
+            else
+            {
+                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
+            }
 
         }
 
+        private TableElement SearchInTable(string name)
+        {
+            foreach (var item in SimbolsTable)
+            {
+                if (item.name == name)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// function no know what is the name of the ident
+        /// </summary>
+        /// <param name="Name">Data data have de name, line and columns</param>
+        /// <returns>The name of the indent</returns>
         private string Split_Name(string Name)
         {
             var Name_ = Name.Split(',');
@@ -139,6 +190,12 @@ namespace Minic.Análisis_Semantico
             return value_[2];
         }
 
+        /// <summary>
+        /// function to verify is the ident already exist in the table
+        /// </summary>
+        /// <param name="name">the name of the ident to search in the list of the table</param>
+        /// <returns>true if exist and false if not</returns>
+
         private bool ExistInTable(string name)
         {
             foreach (var item in SimbolsTable)
@@ -150,7 +207,6 @@ namespace Minic.Análisis_Semantico
             }
             return false;
         }
-
     }
 
 
