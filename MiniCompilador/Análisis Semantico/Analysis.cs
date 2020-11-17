@@ -62,6 +62,10 @@ namespace Minic.Análisis_Semantico
             {
 
             }
+            else if (dataListpreviously.Item1 == "int")
+            {
+
+            }
         }
     }
 

@@ -783,7 +783,7 @@ namespace MiniCompilador.Análisis_Léxico
                             {
                                 write.Write(" \n ");
                                 Pila_Token.Enqueue(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), LC[1] + "," + LC[0]));
-                                lista_semantica.Add(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), LC[1] + "," + LC[0] + Mostrar_Categoria[0]));
+                                lista_semantica.Add(new Tuple<string, string>(Mostrar_Categoria[1].Replace('"', ','), LC[1] + "," + LC[0] + "," +Mostrar_Categoria[0]));
                                 write.Write("{0}  Línea: {1} , columna: {2}  Categoria:  {3} \n", item.Item1, LC[1], LC[0], Mostrar_Categoria[0]);
                             }
                         }
