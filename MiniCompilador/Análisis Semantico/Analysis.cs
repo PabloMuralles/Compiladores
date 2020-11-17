@@ -86,10 +86,11 @@ namespace Minic.Análisis_Semantico
                 if (ExistInTable(Name))
                 {
                     // obtener el valor del dato
-                    var value_ = defination_value(positionList + 2);
                     var index = SimbolsTable.FindIndex(c => c.name == Name);
-                    SimbolsTable[index] = new TableElement { name = Name, value = value_, type = dataListpreviously.Item1, ambit = null, isClass = true, isFunction = false };
-
+                    var Type = SimbolsTable[index].type;
+                    var value_ = defination_value(positionList + 2, Type);
+                    SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = null, isClass = true, isFunction = false };
+     
                 }
                 else
                 {
@@ -165,21 +166,33 @@ namespace Minic.Análisis_Semantico
             return Name_[2];
         }
 
-        private string defination_value(int position)
+        private string defination_value(int position, string Type)
         {
+           
+            var resultado_int = 0;
+            var rsultado_string = "";
             var resultado = "";
             while (listTokens[position].Item1 != ";")
             {
                 var date_value = split_value(listTokens[position].Item2);
-                if (date_value == "+")
+                switch (Type)
                 {
+                    case "int":
+                        if (date_value != "\"+\"")
+                        {
+                            resultado_int += Convert.ToInt32(date_value);
+                        }
+                         
+                        break;
+                    default:
+                        break;
+                }
 
-                }
-                else
-                {
-                    resultado += date_value;
-                }
                 position++;
+            }
+            if (Type== "int")
+            {
+                resultado = Convert.ToString(resultado_int);
             }
             return resultado;
         }

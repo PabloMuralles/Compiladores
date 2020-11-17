@@ -1,1 +1,2 @@
-int carro = 5;
+int carro;
+carro = 5 +1;

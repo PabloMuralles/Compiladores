@@ -3,5 +3,5 @@ class Parser
     int a1;
 
     string f1;
-    a1 = 1;
+    a1 = 1+2;
 }
