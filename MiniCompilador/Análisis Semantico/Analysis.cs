@@ -91,7 +91,7 @@ namespace Minic.Análisis_Semantico
                     var value_ = defination_value(positionList + 2, Type);
                     if (value_ != "")
                     {
-                     SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = null, isClass = true, isFunction = false };
+                        SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = null, isClass = true, isFunction = false };
                     }
                 }
                 else
@@ -188,11 +188,35 @@ namespace Minic.Análisis_Semantico
                             resultado = date_value;
                             return resultado;
                         }
-                        else if (date_value != "\"+\"")
+                        else
                         {
-                            if (!date_value.Contains("\""))
+                            if (!listTokens[position].Item1.Contains("stringConstant"))
                             {
-                                resultado_int += Convert.ToInt32(date_value);
+                               
+                                if (date_value == "\"+\"")
+                                {
+                                    resultado_int += Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else if (date_value == "\"%\"")
+                                {
+                                    resultado_int %= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else if (date_value == "\"*\"")
+                                {
+                                    resultado_int *= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else if (date_value == "\"-\"")
+                                {
+                                    resultado_int -= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else
+                                {
+                                    resultado_int = Convert.ToInt32(date_value);
+                                }
                             }
                             else
                             {
@@ -254,7 +278,7 @@ namespace Minic.Análisis_Semantico
             }
             return resultado;
         }
-
+      
         private string split_value(string value)
         {
             var value_ = value.Split(',');
