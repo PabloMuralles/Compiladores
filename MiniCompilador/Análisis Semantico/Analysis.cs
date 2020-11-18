@@ -100,15 +100,15 @@ namespace Minic.Análisis_Semantico
             //creacion de una funcion o precedimiento
             else if (dataListNext.Item1 == "(")
             {
-                var name = dataListActual.Item1;
-                if (!ExistInTable(Split_Name(name)))
+                var Name = Split_Name(dataListActual.Item2);
+                if (!ExistInTable(Name))
                 {
-                    SimbolsTable.Add(new TableElement { name = name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
+                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
                 }
                 else
                 {
-                if (!ExistInTable(Split_Name(name)))
-                    mistakes.Add($"Error la Funcion :{name} ya fue declarada con anterioridad");
+                if (!ExistInTable(Split_Name(Name)))
+                    mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad");
                 }
 
             }
@@ -168,10 +168,10 @@ namespace Minic.Análisis_Semantico
         }
 
         private string defination_value(int position, string Type)
-        {
-           
+        {           
             var resultado_int = 0;
             var resultado_string = "";
+            var resultado_bool = true;
             var resultado = "";
             while (listTokens[position].Item1 != ";")
             {
@@ -188,6 +188,9 @@ namespace Minic.Análisis_Semantico
                     case "string":
                         resultado_string = date_value;
                         break;
+                    case "bool":
+                        resultado_bool = Convert.ToBoolean(date_value);
+                        break;
                     default:
                         break;
                 }
@@ -200,7 +203,11 @@ namespace Minic.Análisis_Semantico
             }
             else if (Type == "string")
             {
-                resultado = resultado_string; 
+                resultado = resultado_string;
+            }
+            else if (Type == "bool")
+            {
+                resultado = Convert.ToString(resultado_bool);
             }
             return resultado;
         }
