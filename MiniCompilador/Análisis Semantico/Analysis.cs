@@ -89,8 +89,10 @@ namespace Minic.Análisis_Semantico
                     var index = SimbolsTable.FindIndex(c => c.name == Name);
                     var Type = SimbolsTable[index].type;
                     var value_ = defination_value(positionList + 2, Type);
-                    SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = null, isClass = true, isFunction = false };
-     
+                    if (value_ != "")
+                    {
+                     SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = null, isClass = true, isFunction = false };
+                    }
                 }
                 else
                 {
@@ -107,8 +109,8 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                if (!ExistInTable(Split_Name(Name)))
-                    mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad");
+                    if (!ExistInTable(Split_Name(Name)))
+                        mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad");
                 }
 
             }
@@ -168,9 +170,11 @@ namespace Minic.Análisis_Semantico
         }
 
         private string defination_value(int position, string Type)
-        {           
+        {
             var resultado_int = 0;
+            var resultado_double = 0.0;
             var resultado_string = "";
+            var resultado_ident = "";
             var resultado_bool = true;
             var resultado = "";
             while (listTokens[position].Item1 != ";")
@@ -179,17 +183,52 @@ namespace Minic.Análisis_Semantico
                 switch (Type)
                 {
                     case "int":
-                        if (date_value != "\"+\"")
+                        if (date_value == "New")
                         {
-                            resultado_int += Convert.ToInt32(date_value);
+                            resultado = date_value;
+                            return resultado;
                         }
-                         
+                        else if (date_value != "\"+\"")
+                        {
+                            if (!date_value.Contains("\""))
+                            {
+                                resultado_int += Convert.ToInt32(date_value);
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}");
+                                return "";
+                            }
+                        }
+
                         break;
                     case "string":
+                        if (date_value == "New")
+                        {
+                            resultado = date_value;
+                        }
                         resultado_string = date_value;
                         break;
                     case "bool":
+                        if (date_value == "New")
+                        {
+                            resultado = date_value;
+                        }
                         resultado_bool = Convert.ToBoolean(date_value);
+                        break;
+                    case "double":
+                        if (date_value == "New")
+                        {
+                            resultado = date_value;
+                        }
+                        resultado_double += Convert.ToDouble(date_value);
+                        break;
+                    case "ident":
+                        if (date_value == "New")
+                        {
+                            resultado = date_value;
+                        }
+                        resultado_ident = date_value;
                         break;
                     default:
                         break;
@@ -209,13 +248,24 @@ namespace Minic.Análisis_Semantico
             {
                 resultado = Convert.ToString(resultado_bool);
             }
+            else if (Type == "double")
+            {
+                resultado = Convert.ToString(resultado_double);
+            }
             return resultado;
         }
 
         private string split_value(string value)
         {
             var value_ = value.Split(',');
-            return value_[2];
+            if (value_[2] == "Palabra_Reservada ->\"New\"")
+            {
+                return "New";
+            }
+            else
+            {
+                return value_[2];
+            }
         }
 
         /// <summary>
