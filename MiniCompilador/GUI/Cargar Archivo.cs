@@ -90,6 +90,10 @@ namespace MiniCompilador.GUI
         {
             MessageBox.Show(msg + " \n ");
         }
+        public void msg_Analyze_semantic(string msg)
+        {
+            MessageBox.Show(msg + " \n ");
+        }
         private void Cargar_Archivo_Load(object sender, EventArgs e)
         {
 

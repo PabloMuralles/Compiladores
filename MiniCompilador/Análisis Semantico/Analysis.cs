@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MiniCompilador.GUI;
 
 namespace Minic.Análisis_Semantico
 {
@@ -19,10 +20,12 @@ namespace Minic.Análisis_Semantico
         private List<string> mistakes = new List<string>();
 
         private int positionList = 0;
+        Cargar_Archivo Cargar_Archivo = new Cargar_Archivo();
         public Analysis(List<Tuple<string, string>> tokens_)
         {
             listTokens = tokens_;
             IdentifyIdent();
+            Exit_Analyze();
         }
 
         private void IdentifyIdent()
@@ -362,12 +365,22 @@ namespace Minic.Análisis_Semantico
                 {
                     foreach (var item in SimbolsTable)
                     {
-                        write.Write("Type: "+ item.type + "Name:  "+ item.name  +  "Value:  "+ item.value );
+                        write.Write("Type: "+ item.type + " " + "Name:" + item.name + " " +  "Value:  "+ item.value );
                         write.Write(" \n ");
                     }
                     write.Close();
                 }
             }
+        }
+
+        private void Exit_Analyze()
+        {
+            string msg_Analyze = string.Empty;
+            foreach (var item in mistakes)
+            {
+                msg_Analyze += item + " \n ";
+            }
+            Cargar_Archivo.msg_Analyze_semantic(msg_Analyze);
         }
     }
 }
