@@ -222,9 +222,19 @@ namespace Minic.Análisis_Semantico
                                     {
                                         var index = SimbolsTable.FindIndex(c => c.name == date_value);
                                         var date_value_ = SimbolsTable[index].value;
+                                        var date_type_ = SimbolsTable[index].type;
                                         if (date_value_ != null)
                                         {
                                             resultado_int = Convert.ToInt32(date_value_);
+                                        }
+                                        if (Type != date_type_)
+                                        {
+                                            mistakes.Add($"No coinciden en terminos");
+                                            return "";
+                                        }
+                                        else
+                                        {
+                                            return "";
                                         }
                                     }
                                     else
