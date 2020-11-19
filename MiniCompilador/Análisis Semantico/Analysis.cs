@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -41,6 +42,7 @@ namespace Minic.Análisis_Semantico
                 }
                 positionList++;
             }
+            Metodo_escritura();
         }
 
         private void ClassifyIdent()
@@ -192,7 +194,7 @@ namespace Minic.Análisis_Semantico
                         {
                             if (!listTokens[position].Item1.Contains("stringConstant"))
                             {
-                               
+
                                 if (date_value == "\"+\"")
                                 {
                                     resultado_int += Convert.ToInt32(split_value(listTokens[position + 1].Item2));
@@ -215,7 +217,20 @@ namespace Minic.Análisis_Semantico
                                 }
                                 else
                                 {
-                                    resultado_int = Convert.ToInt32(date_value);
+                                    // validar si el valor esta contenido en otro lado
+                                    if (ExistInTable(date_value))
+                                    {
+                                        var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                        var date_value_ = SimbolsTable[index].value;
+                                        if (date_value_ != null)
+                                        {
+                                            resultado_int = Convert.ToInt32(date_value_);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        resultado_int = Convert.ToInt32(date_value);
+                                    }
                                 }
                             }
                             else
@@ -238,7 +253,15 @@ namespace Minic.Análisis_Semantico
                         {
                             resultado = date_value;
                         }
-                        resultado_bool = Convert.ToBoolean(date_value);
+                        else if (date_value.Contains("("))
+                        {
+                            resultado_bool = Convert.ToBoolean(true);
+                            return Convert.ToString(resultado_bool);
+                        }
+                        else
+                        {
+                            resultado_bool = Convert.ToBoolean(date_value);
+                        }
                         break;
                     case "double":
                         if (date_value == "New")
@@ -278,7 +301,7 @@ namespace Minic.Análisis_Semantico
             }
             return resultado;
         }
-      
+
         private string split_value(string value)
         {
             var value_ = value.Split(',');
@@ -297,7 +320,6 @@ namespace Minic.Análisis_Semantico
         /// </summary>
         /// <param name="name">the name of the ident to search in the list of the table</param>
         /// <returns>true if exist and false if not</returns>
-
         private bool ExistInTable(string name)
         {
             foreach (var item in SimbolsTable)
@@ -309,7 +331,33 @@ namespace Minic.Análisis_Semantico
             }
             return false;
         }
+
+        public void Metodo_escritura()
+        {
+            string CarpetaOut = Environment.CurrentDirectory;
+            if (!Directory.Exists(Path.Combine(CarpetaOut, "Salida")))
+            {
+                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
+            }
+            else
+            {
+                if (File.Exists(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out")))
+                {
+                    File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out"), string.Empty);
+                }
+            }
+            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out"), FileMode.OpenOrCreate))
+            {
+                using (var write = new StreamWriter(writeStream))
+                {
+                    foreach (var item in SimbolsTable)
+                    {
+                        write.Write("Type: "+ item.type + "Name:  "+ item.name  +  "Value:  "+ item.value );
+                        write.Write(" \n ");
+                    }
+                    write.Close();
+                }
+            }
+        }
     }
-
-
 }
