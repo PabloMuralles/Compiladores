@@ -1,0 +1,24 @@
+class Parser : analyzer , lexical, syntactical
+{
+	 
+
+	void proc1(double y,int x,int c , string h)
+	{
+		// empty void
+		int a1;
+		a1 = 2 + 2;
+
+		a1 = 3;
+
+		a2=0;
+
+		a1 = "hola";
+
+	}
+
+	 
+}
+
+ 
+
+ 

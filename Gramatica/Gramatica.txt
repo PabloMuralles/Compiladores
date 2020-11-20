@@ -33,13 +33,14 @@ Prototype’ ->  Prototype Prototype’
 Prototype’ -> ε
 Prototype -> Type ident ( Formals ) ;
 Prototype -> void ident ( Formals ) ;
-StmtBlock -> { VariableDecl’ ConstDecl’ Stmt’ }
-ConstDecl’ -> const ConstType ident ; ConstDecl’
-ConstDecl’ -> ε
-VariableDecl’ -> Type ident ; VariableDecl’
-VariableDecl’ -> ε
-Stmt’ -> Stmt Stmt’
-Stmt’ -> ε
+StmtBlock -> { Declare }
+Declare -> VariableDecl Declare
+Declare -> ConstDecl Declare
+Declare -> Stmt’ Declare
+Declare -> ε
+ConstDecl-> const ConstType ident ;
+VariableDecl -> Type ident ;
+Stmt’ -> Stmt
 Stmt -> Expr ;
 Stmt -> ;
 Stmt ->  if ( Expr ) Stmt IfStmt
@@ -49,9 +50,8 @@ Stmt -> break ;
 Stmt -> return Expr ;
 Stmt -> Console . WriteLine ( Expr’ ) ;
 Stmt -> StmtBlock
-Stmt -> CallStmt
-CallStmt -> ident ( Actuals )
-CallStmt -> ident . ident ( Actuals )
+Stmt -> ident ( Actuals )
+Stmt -> ident . ident ( Actuals )
 Actuals -> Expr , Actuals
 Actuals -> Expr 
 IfStmt -> else Stmt
@@ -61,7 +61,7 @@ Expr’ -> Expr
 Expr -> ident = ConditionAnd
 Expr -> ConditionAnd
 ConditionAnd -> Equality ConditionAnd'
-ConditionAnd' ->  && Equality ConditionAnd'
+ConditionAnd' -> && Equality ConditionAnd'
 ConditionAnd' -> ε
 Equality -> Equality == Relational
 Equality -> Relational
@@ -71,17 +71,17 @@ Relational -> Additive
 Additive -> Additive + Multiplicative
 Additive -> Multiplicative
 Multiplicative -> Multiplicative * Unary
-Multiplicative ->  Multiplicative % Unary
+Multiplicative -> Multiplicative % Unary
 Multiplicative -> Unary 
 Unary -> - Primary
 Unary -> ! Primary 
 Unary -> Primary
-Primary ->  Primary . ident
-Primary ->  Primary . ident = Expr
-Primary ->  Terminal
+Primary -> Primary . ident = Expr
+Primary -> Primary . ident  
+Primary -> Terminal
 Terminal -> this
 Terminal -> ( Expr )
-Terminal ->  New ( ident )
+Terminal -> New ( ident )
 Terminal -> intConstant
 Terminal -> doubleConstant
 Terminal -> boolConstant
