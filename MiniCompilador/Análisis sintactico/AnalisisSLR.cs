@@ -32,7 +32,10 @@ namespace Minic.Análisis_sintactico
             Entrada = tokens_;
             search_symbol(pila.Peek(), tokens_.Peek());
 
-            var objAnalysis = new Análisis_Semantico.Analysis(tempListTokens);
+            if (Errores[0].Contains("Success"))
+            {
+             var objAnalysis = new Análisis_Semantico.Analysis(tempListTokens);
+            }
 
         }
         /// <summary>

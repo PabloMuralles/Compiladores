@@ -442,24 +442,24 @@ namespace Minic.Análisis_Semantico
         public void Metodo_escritura()
         {
             string CarpetaOut = Environment.CurrentDirectory;
-            if (!Directory.Exists(Path.Combine(CarpetaOut, "Salida")))
+            if (!Directory.Exists(Path.Combine(CarpetaOut, "Analisis_semantico")))
             {
-                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
+                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Analisis_semantico"));
             }
             else
             {
-                if (File.Exists(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out")))
+                if (File.Exists(Path.Combine(CarpetaOut, "Analisis_semantico", "Analisis_semantico.out")))
                 {
-                    File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out"), string.Empty);
+                    File.WriteAllText(Path.Combine(CarpetaOut, "Analisis_semantico", "Analisis_semantico.out"), string.Empty);
                 }
             }
-            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out"), FileMode.OpenOrCreate))
+            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Analisis_semantico", "Analisis_semantico.out"), FileMode.OpenOrCreate))
             {
                 using (var write = new StreamWriter(writeStream))
                 {
                     foreach (var item in SimbolsTable)
                     {
-                        write.Write("Type: " + item.type + " " + "Name:" + item.name + " " + "Value:  " + item.value);
+                        write.Write("Type: " + item.type + "\t" + "Name:" + item.name + "\t" + "Value:  " + item.value);
                         write.Write(" \n ");
                     }
                     write.Close();
