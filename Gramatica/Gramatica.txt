@@ -7,13 +7,16 @@ Decl ->void ident ( Formals ) StmtBlock
 Decl -> class ident Id Id' { Field’ }
 Decl -> interface ident { Prototype’ }
 Decl -> const ConstType ident ; 
+Type -> int
+Type -> double
+Type -> bool
+Type -> string
+Type -> ident
+Type -> Type []
 ConstType -> int
 ConstType -> double
 ConstType -> bool
 ConstType -> string
-Type -> ConstType
-Type -> ident
-Type -> Type []
 Formals -> Type ident , Formals
 Formals -> Type ident
 Id -> : ident
