@@ -22,13 +22,19 @@ namespace Minic.Análisis_Semantico
         private string cordenadas;
         private int positionList = 0;
         Cargar_Archivo Cargar_Archivo = new Cargar_Archivo();
+        /// <summary>
+        /// Cosntructor of the clase
+        /// </summary>
+        /// <param name="tokens_">list of the tokens to analysis</param>
         public Analysis(List<Tuple<string, string>> tokens_)
         {
             listTokens = tokens_;
             IdentifyIdent();
             Exit_Analyze();
         }
-
+        /// <summary>
+        /// Method to identify the ident that have the list
+        /// </summary>
         private void IdentifyIdent()
         {
             for (positionList = 0; positionList < listTokens.Count; positionList++)
@@ -48,7 +54,9 @@ namespace Minic.Análisis_Semantico
        
             Metodo_escritura();
         }
-
+        /// <summary>
+        /// Method to classify the indent that hace the list of tokens
+        /// </summary>
         private void ClassifyIdent()
         {
             var dataListNext = listTokens[positionList + 1];
@@ -61,8 +69,6 @@ namespace Minic.Análisis_Semantico
             //declarcion de variaable
             if (dataListNext.Item1 == ";")
             {
-                //llamar a la funcion que hace el split return nombre
-
                 var Name = Split_Name(dataListActual.Item2);
                 if (!ExistInTable(Name))
                 {
@@ -120,7 +126,15 @@ namespace Minic.Análisis_Semantico
                     var tempParameters = string.Empty;
                     while (tempData.Item1 != ")")
                     {
-                        tempParameters += tempData.Item1 + " ";
+                        if (tempData.Item1 == "ident")
+                        {
+                            tempParameters += split_value(tempData.Item2) + " ";
+                        }
+                        else
+                        {
+                            tempParameters += tempData.Item1 + " ";
+                        }
+                        
 
                         positionList++;
                         tempData = listTokens[positionList];
@@ -133,7 +147,7 @@ namespace Minic.Análisis_Semantico
                         var splitParameter = parameter.Trim().Split(' ');
                         if (!ExistInTable(splitParameter[1]))
                         {
-                            SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
+                            SimbolsTable.Add(new TableElement { name = splitParameter[1], value = null, type = splitParameter[0], ambit = null, isClass = false, isFunction = false });
                         }
                     }
 
@@ -149,7 +163,9 @@ namespace Minic.Análisis_Semantico
         }
 
 
-
+        /// <summary>
+        /// Metodo para validar los casos que se hagan comparaciones con operadores logicos se valida que sean ambos del mismo tipo
+        /// </summary>
         private void ValidateType()
         {
             var dataListNext = listTokens[positionList + 1];
@@ -199,6 +215,12 @@ namespace Minic.Análisis_Semantico
             return Name_[2];
         }
 
+        /// <summary>
+        /// Method to validate if the assignments of a variable are correct
+        /// </summary>
+        /// <param name="position">the position after the equal</param>
+        /// <param name="Type">The type of the variable that is being assigned </param>
+        /// <returns>the result of the assigned</returns>
         private string defination_value(int position, string Type)
         {
             var resultado_int = 0;
@@ -223,7 +245,6 @@ namespace Minic.Análisis_Semantico
                             if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant")
                                 && !listTokens[position].Item1.Contains("doubleConstant"))
                             {
-
                                 if (date_value == "\"+\"")
                                 {
                                     resultado_int += Convert.ToInt32(split_value(listTokens[position + 1].Item2));
@@ -409,6 +430,11 @@ namespace Minic.Análisis_Semantico
             return resultado;
         }
 
+        /// <summary>
+        /// Method to get the name of the ident of the string
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>the name of the ident</returns>
         private string split_value(string value)
         {
             var value_ = value.Split(',');
@@ -421,7 +447,6 @@ namespace Minic.Análisis_Semantico
                 return value_[2];
             }
         }
-
         /// <summary>
         /// function to verify is the ident already exist in the table
         /// </summary>
@@ -438,7 +463,9 @@ namespace Minic.Análisis_Semantico
             }
             return false;
         }
-
+        /// <summary>
+        /// Method to write the simbols table
+        /// </summary>
         public void Metodo_escritura()
         {
             string CarpetaOut = Environment.CurrentDirectory;
@@ -466,6 +493,7 @@ namespace Minic.Análisis_Semantico
                 }
             }
         }
+
         private string Obtener_linea(string cordenada)
         {
             var resultado = "";
@@ -473,6 +501,10 @@ namespace Minic.Análisis_Semantico
             resultado = $"linea: {dato_[0]} Columna: {dato_[1]}";
             return resultado;
         }
+
+        /// <summary>
+        /// Method to show the errors to the user
+        /// </summary>
         private void Exit_Analyze()
         {
             string msg_Analyze = string.Empty;
