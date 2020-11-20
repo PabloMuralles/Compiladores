@@ -30,10 +30,9 @@ namespace Minic.Análisis_Semantico
 
         private void IdentifyIdent()
         {
-
-            foreach (var token in listTokens)
+            for (positionList = 0; positionList < listTokens.Count; positionList++)
             {
-
+                var token = listTokens[positionList];
                 if (token.Item1 == "ident")
                 {
                     ClassifyIdent();
@@ -43,8 +42,9 @@ namespace Minic.Análisis_Semantico
                     ValidateType();
 
                 }
-                positionList++;
+
             }
+       
             Metodo_escritura();
         }
 
@@ -111,6 +111,30 @@ namespace Minic.Análisis_Semantico
                 if (!ExistInTable(Name))
                 {
                     SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
+
+                    positionList++;
+                    positionList++;
+                    var tempData = listTokens[positionList];
+                    var tempParameters = string.Empty;
+                    while (tempData.Item1 != ")")
+                    {
+                        tempParameters += tempData.Item1 + " ";
+
+                        positionList++;
+                        tempData = listTokens[positionList];
+                    }
+
+                    var tempSplit = tempParameters.Split(',');
+
+                    foreach (var parameter in tempSplit)
+                    {
+                        var splitParameter = parameter.Trim().Split(' ');
+                        if (!ExistInTable(splitParameter[1]))
+                        {
+                            SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
+                        }
+                    }
+
                 }
                 else
                 {
@@ -119,11 +143,10 @@ namespace Minic.Análisis_Semantico
                 }
 
             }
-            else if (dataListNext.Item1 == ")" || dataListNext.Item1 == ",")
-            {
-
-            }
+             
         }
+
+
 
         private void ValidateType()
         {

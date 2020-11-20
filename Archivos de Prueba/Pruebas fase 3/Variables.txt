@@ -2,7 +2,7 @@ class Parser : analyzer , lexical, syntactical
 {
 	 
 
-	void proc1(double y)
+	void proc1(double y,int x,int c , string h)
 	{
 		// empty void
 		int a1;
