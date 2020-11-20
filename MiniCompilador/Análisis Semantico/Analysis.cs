@@ -308,12 +308,48 @@ namespace Minic.Análisis_Semantico
                         }
                         if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
                                 && !listTokens[position].Item1.Contains("intConstant"))
+                        {                         
+                            if (date_value == "\"+\"")
+                            {
+                                resultado_string += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
+                                return resultado_string;
+                            }
+                            else
+                            {
+                                if (ExistInTable(date_value))
+                                {
+                                    var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                    var date_value_ = SimbolsTable[index].value;
+                                    var date_type_ = SimbolsTable[index].type;
+                                    if (date_value_ != null)
+                                    {
+                                        resultado_string = date_value_;
+                                    }
+                                    if (Type != date_type_)
+                                    {
+                                        mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                        return "";
+                                    }
+                                    else
+                                    {
+                                        return "";
+                                    }
+                                }
+                                else 
+                                {                                
+                                    resultado_string = date_value.Replace('"',' ');
+                                }
+
+                            }
+                        }
+                        else
                         {
-                            resultado_ident = date_value;
+                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                            return "";
                         }
                         break;
                     case "bool":
-                        if (date_value.Contains("true") || date_value.Contains("false"))
+                         if (date_value.Contains("true") || date_value.Contains("false"))
                         {
 
                         if (date_value.Contains("("))
@@ -325,6 +361,11 @@ namespace Minic.Análisis_Semantico
                         {
                             resultado_bool = Convert.ToBoolean(date_value);
                         }
+                        }
+                        else
+                        {
+                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                            return "";
                         }
                         break;
                     case "double":
@@ -402,7 +443,21 @@ namespace Minic.Análisis_Semantico
                         if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
                               && !listTokens[position].Item1.Contains("intConstant"))
                         {
-                            resultado_ident = date_value;
+                            if (date_value == "\"+\"")
+                            {
+                                resultado_ident += split_value(listTokens[position + 1].Item2);
+                                return resultado_ident;
+                            }
+                            else
+                            {
+                             resultado_ident = date_value;
+
+                            }
+                        }
+                        else
+                        {
+                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                            return "";
                         }
                         break;
                     default:
@@ -486,7 +541,7 @@ namespace Minic.Análisis_Semantico
                 {
                     foreach (var item in SimbolsTable)
                     {
-                        write.Write("Type: " + item.type + "\t" + "Name:" + item.name + "\t" + "Value:  " + item.value);
+                        write.Write("TYPE:" + item.type + "| " + "NAME:" + item.name + "| " + "VALUE:" + item.value);
                         write.Write(" \n ");
                     }
                     write.Close();

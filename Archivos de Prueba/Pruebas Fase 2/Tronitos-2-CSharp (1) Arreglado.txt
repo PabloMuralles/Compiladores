@@ -4,6 +4,7 @@ class Parser : analyzer , lexical, syntactical
 
 	int f1(int a, int b, int c) {
  	   {
+                       int p1;
 		if (a<b) p1=2; else p1=3;
   
  	   }
@@ -24,8 +25,11 @@ class Program {
                                     string mensaje;
 		Parser MyParser;
 		const int m2;
-		m1= New (MyParser);
-		m1.a1 = 3+5;
+		MyParser= New (MyParser);
+		MyParser.a1 = 3+5;
+                                     m1 = 5;
+                                    bool p;
+                                    p = false;
                                     mensaje = "hola " +"mundo";
 		while (m1<10) {
 			for (m2="3";m2=m2+1;(2)) ;

@@ -823,7 +823,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.booleanas_.IsMatch(cadena))
             {
-                return ("boolConstant,boolConstant");
+                return ($"{cadena},boolConstant");
             }
             else if (objExpreciones_.identificador_.IsMatch(cadena))
             {
