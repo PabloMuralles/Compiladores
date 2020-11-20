@@ -19,6 +19,7 @@ namespace Minic.Análisis_Semantico
 
         private List<string> mistakes = new List<string>();
 
+        private string cordenadas;
         private int positionList = 0;
         Cargar_Archivo Cargar_Archivo = new Cargar_Archivo();
         public Analysis(List<Tuple<string, string>> tokens_)
@@ -53,6 +54,7 @@ namespace Minic.Análisis_Semantico
             var dataListNext = listTokens[positionList + 1];
             var dataListpreviously = listTokens[positionList - 1];
             var dataListActual = listTokens[positionList];
+            cordenadas =  Obtener_linea(dataListActual.Item2);
             //si no esta declara 
             // declarar: tipo, nombre
 
@@ -68,7 +70,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
                 }
             }
             //validar si es una clase
@@ -81,7 +83,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
                 }
             }
             //asignacion de una variable
@@ -101,7 +103,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} no fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} no fue definida con anterioridad  {cordenadas}");
                 }
             }
             //creacion de una funcion o precedimiento
@@ -115,7 +117,7 @@ namespace Minic.Análisis_Semantico
                 else
                 {
                     if (!ExistInTable(Split_Name(Name)))
-                        mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad");
+                        mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad  {cordenadas}");
                 }
 
             }
@@ -141,12 +143,12 @@ namespace Minic.Análisis_Semantico
             {
                 if (!(variable1.type == variable2.type))
                 {
-                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
+                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
                 }
             }
             else
             {
-                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
+                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad {cordenadas}");
             }
 
         }
@@ -190,12 +192,13 @@ namespace Minic.Análisis_Semantico
                     case "int":
                         if (date_value == "New")
                         {
-                            resultado = date_value;
+                            mistakes.Add($"Valor incorrecto declarado tipo New  {cordenadas}");
                             return resultado;
                         }
                         else
                         {
-                            if (!listTokens[position].Item1.Contains("stringConstant"))
+                            if (!listTokens[position].Item1.Contains("stringConstant") || !listTokens[position].Item1.Contains("boolConstant")
+                                || !listTokens[position].Item1.Contains("doubleConstant"))
                             {
 
                                 if (date_value == "\"+\"")
@@ -232,7 +235,7 @@ namespace Minic.Análisis_Semantico
                                         }
                                         if (Type != date_type_)
                                         {
-                                            mistakes.Add($"No coinciden en terminos");
+                                            mistakes.Add($"No coinciden en terminos  {cordenadas}");
                                             return "";
                                         }
                                         else
@@ -248,7 +251,7 @@ namespace Minic.Análisis_Semantico
                             }
                             else
                             {
-                                mistakes.Add($"Valor incorrecto declarado tipo {Type}");
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
                                 return "";
                             }
                         }
@@ -293,7 +296,7 @@ namespace Minic.Análisis_Semantico
                     default:
                         break;
                 }
-
+                
                 position++;
             }
             if (Type == "int")
@@ -372,7 +375,13 @@ namespace Minic.Análisis_Semantico
                 }
             }
         }
-
+        private string Obtener_linea(string cordenada)
+        {
+            var resultado = "";
+            var dato_ = cordenada.Split(',');
+            resultado = $"linea: {dato_[0]} Columna: {dato_[1]}";
+            return resultado;
+        }
         private void Exit_Analyze()
         {
             string msg_Analyze = string.Empty;
