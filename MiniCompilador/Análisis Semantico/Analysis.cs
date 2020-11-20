@@ -54,7 +54,7 @@ namespace Minic.Análisis_Semantico
             var dataListNext = listTokens[positionList + 1];
             var dataListpreviously = listTokens[positionList - 1];
             var dataListActual = listTokens[positionList];
-            cordenadas =  Obtener_linea(dataListActual.Item2);
+            cordenadas = Obtener_linea(dataListActual.Item2);
             //si no esta declara 
             // declarar: tipo, nombre
 
@@ -197,8 +197,8 @@ namespace Minic.Análisis_Semantico
                         }
                         else
                         {
-                            if (!listTokens[position].Item1.Contains("stringConstant") || !listTokens[position].Item1.Contains("boolConstant")
-                                || !listTokens[position].Item1.Contains("doubleConstant"))
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("doubleConstant"))
                             {
 
                                 if (date_value == "\"+\"")
@@ -262,14 +262,17 @@ namespace Minic.Análisis_Semantico
                         {
                             resultado = date_value;
                         }
-                        resultado_string = date_value;
+                        if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("intConstant"))
+                        {
+                            resultado_ident = date_value;
+                        }
                         break;
                     case "bool":
-                        if (date_value == "New")
+                        if (date_value.Contains("true") || date_value.Contains("false"))
                         {
-                            resultado = date_value;
-                        }
-                        else if (date_value.Contains("("))
+
+                        if (date_value.Contains("("))
                         {
                             resultado_bool = Convert.ToBoolean(true);
                             return Convert.ToString(resultado_bool);
@@ -278,25 +281,90 @@ namespace Minic.Análisis_Semantico
                         {
                             resultado_bool = Convert.ToBoolean(date_value);
                         }
+                        }
                         break;
                     case "double":
                         if (date_value == "New")
                         {
-                            resultado = date_value;
+                            mistakes.Add($"Valor incorrecto declarado tipo New  {cordenadas}");
+                            return resultado;
                         }
-                        resultado_double += Convert.ToDouble(date_value);
+                        else
+                        {
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("intConstant"))
+                            {
+
+                                if (date_value == "\"+\"")
+                                {
+                                    resultado_double += Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"%\"")
+                                {
+                                    resultado_double %= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"*\"")
+                                {
+                                    resultado_double *= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"-\"")
+                                {
+                                    resultado_double -= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else
+                                {
+                                    // validar si el valor esta contenido en otro lado
+                                    if (ExistInTable(date_value))
+                                    {
+                                        var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                        var date_value_ = SimbolsTable[index].value;
+                                        var date_type_ = SimbolsTable[index].type;
+                                        if (date_value_ != null)
+                                        {
+                                            resultado_double = Convert.ToDouble(date_value_);
+                                        }
+                                        if (Type != date_type_)
+                                        {
+                                            mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                            return "";
+                                        }
+                                        else
+                                        {
+                                            return "";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        resultado_double = Convert.ToDouble(date_value);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
+                        }
                         break;
                     case "ident":
                         if (date_value == "New")
                         {
                             resultado = date_value;
                         }
-                        resultado_ident = date_value;
+                        if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                              && !listTokens[position].Item1.Contains("intConstant"))
+                        {
+                            resultado_ident = date_value;
+                        }
                         break;
                     default:
                         break;
                 }
-                
+
                 position++;
             }
             if (Type == "int")
@@ -368,7 +436,7 @@ namespace Minic.Análisis_Semantico
                 {
                     foreach (var item in SimbolsTable)
                     {
-                        write.Write("Type: "+ item.type + " " + "Name:" + item.name + " " +  "Value:  "+ item.value );
+                        write.Write("Type: " + item.type + " " + "Name:" + item.name + " " + "Value:  " + item.value);
                         write.Write(" \n ");
                     }
                     write.Close();
