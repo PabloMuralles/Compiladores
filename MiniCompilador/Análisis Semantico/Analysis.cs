@@ -51,7 +51,7 @@ namespace Minic.Análisis_Semantico
                 }
 
             }
-       
+
             Metodo_escritura();
         }
         /// <summary>
@@ -134,7 +134,7 @@ namespace Minic.Análisis_Semantico
                         {
                             tempParameters += tempData.Item1 + " ";
                         }
-                        
+
 
                         positionList++;
                         tempData = listTokens[positionList];
@@ -159,7 +159,7 @@ namespace Minic.Análisis_Semantico
                 }
 
             }
-             
+
         }
 
 
@@ -308,7 +308,7 @@ namespace Minic.Análisis_Semantico
                         }
                         if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
                                 && !listTokens[position].Item1.Contains("intConstant"))
-                        {                         
+                        {
                             if (date_value == "\"+\"")
                             {
                                 resultado_string += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
@@ -323,7 +323,7 @@ namespace Minic.Análisis_Semantico
                                     var date_type_ = SimbolsTable[index].type;
                                     if (date_value_ != null)
                                     {
-                                        resultado_string = date_value_;
+                                        resultado_string = date_value_.Replace('"', ' ');
                                     }
                                     if (Type != date_type_)
                                     {
@@ -335,9 +335,9 @@ namespace Minic.Análisis_Semantico
                                         return "";
                                     }
                                 }
-                                else 
-                                {                                
-                                    resultado_string = date_value.Replace('"',' ');
+                                else
+                                {
+                                    resultado_string = date_value.Replace('"', ' ');
                                 }
 
                             }
@@ -349,18 +349,36 @@ namespace Minic.Análisis_Semantico
                         }
                         break;
                     case "bool":
-                         if (date_value.Contains("true") || date_value.Contains("false"))
-                        {
-
                         if (date_value.Contains("("))
                         {
                             resultado_bool = Convert.ToBoolean(true);
                             return Convert.ToString(resultado_bool);
                         }
-                        else
+                        else if (date_value.Contains("true") || date_value.Contains("false"))
                         {
-                            resultado_bool = Convert.ToBoolean(date_value);
-                        }
+                            if (ExistInTable(date_value))
+                            {
+                                var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                var date_value_ = SimbolsTable[index].value;
+                                var date_type_ = SimbolsTable[index].type;
+                                if (date_value_ != null)
+                                {
+                                    resultado_bool = Convert.ToBoolean(date_value_);
+                                }
+                                if (Type != date_type_)
+                                {
+                                    mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                    return "";
+                                }
+                                else
+                                {
+                                    return "";
+                                }
+                            }
+                            else
+                            {
+                                resultado_bool = Convert.ToBoolean(date_value);
+                            }
                         }
                         else
                         {
@@ -436,28 +454,45 @@ namespace Minic.Análisis_Semantico
                         }
                         break;
                     case "ident":
+
                         if (date_value == "New")
                         {
                             resultado = date_value;
                         }
                         if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
-                              && !listTokens[position].Item1.Contains("intConstant"))
+                                && !listTokens[position].Item1.Contains("intConstant"))
                         {
                             if (date_value == "\"+\"")
                             {
-                                resultado_ident += split_value(listTokens[position + 1].Item2);
+                                resultado_ident += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
                                 return resultado_ident;
                             }
                             else
                             {
-                             resultado_ident = date_value;
-
+                                if (ExistInTable(date_value))
+                                {
+                                    var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                    var date_value_ = SimbolsTable[index].value;
+                                    var date_type_ = SimbolsTable[index].type;
+                                    if (date_value_ != null)
+                                    {
+                                        resultado_ident = date_value_.Replace('"', ' ');
+                                    }
+                                    if (Type != date_type_)
+                                    {
+                                        mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                        return "";
+                                    }
+                                    else
+                                    {
+                                        return "";
+                                    }
+                                }
+                                else
+                                {
+                                    resultado_ident = date_value.Replace('"', ' ');
+                                }
                             }
-                        }
-                        else
-                        {
-                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
-                            return "";
                         }
                         break;
                     default:
