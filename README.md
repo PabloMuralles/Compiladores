@@ -15,7 +15,7 @@ Es una implementación pequeña de un compilador para el lenguaje C#
           - [Tabla de Análisis](#tabla-de-análisis--)
           - [Manejo de Errores](#manejo-de-errores-)
           - [Ejecutando las pruebas](#ejecutando-las-pruebas-%EF%B8%8F)
- - [Fase 2](#fase-3)
+ - [Fase 3](#fase-3)
      - [Requerimientos](#requerimientos--2)
           - [Objetivo](#objetivo-1)
           - [Estructura de la Tabla de Símbolos](#estructura-de-la-tabla-de-símbolos)
