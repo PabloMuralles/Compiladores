@@ -19,6 +19,8 @@ namespace Minic.Análisis_Semantico
 
         private List<string> mistakes = new List<string>();
 
+        private string cordenadas;
+
         private int positionList = 0;
 
         Cargar_Archivo Cargar_Archivo = new Cargar_Archivo();
@@ -82,6 +84,7 @@ namespace Minic.Análisis_Semantico
             var dataListNext = listTokens[positionList + 1];
             var dataListpreviously = listTokens[positionList - 1];
             var dataListActual = listTokens[positionList];
+            cordenadas = Obtener_linea(dataListActual.Item2);
             //si no esta declara 
             // declarar: tipo, nombre
 
@@ -95,7 +98,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
                 }
             }
             //validar si es una clase
@@ -110,7 +113,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
                 }
             }
             //asignacion de una variable
@@ -130,7 +133,7 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} no fue definida con anterioridad");
+                    mistakes.Add($"Error la variable :{Name} no fue definida con anterioridad  {cordenadas}");
                 }
             }
             //creacion de una funcion o precedimiento
@@ -179,8 +182,10 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    if (!ExistInTable(Split_Name(Name), ambit.Peek()))
-                        mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad");
+ 
+                    if (!ExistInTable(Split_Name(Name),ambit.Peek()))
+                        mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad  {cordenadas}");
+ 
                 }
 
             }
@@ -231,12 +236,12 @@ namespace Minic.Análisis_Semantico
             {
                 if (!(variable1.type == variable2.type))
                 {
-                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
+                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
                 }
             }
             else
             {
-                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
+                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad {cordenadas}");
             }
         }
 
@@ -285,12 +290,13 @@ namespace Minic.Análisis_Semantico
                     case "int":
                         if (date_value == "New")
                         {
-                            resultado = date_value;
+                            mistakes.Add($"Valor incorrecto declarado tipo New  {cordenadas}");
                             return resultado;
                         }
                         else
                         {
-                            if (!listTokens[position].Item1.Contains("stringConstant"))
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("doubleConstant"))
                             {
                                 if (date_value == "\"+\"")
                                 {
@@ -326,7 +332,7 @@ namespace Minic.Análisis_Semantico
                                         }
                                         if (Type != date_type_)
                                         {
-                                            mistakes.Add($"No coinciden en terminos");
+                                            mistakes.Add($"No coinciden en terminos  {cordenadas}");
                                             return "";
                                         }
                                         else
@@ -342,7 +348,7 @@ namespace Minic.Análisis_Semantico
                             }
                             else
                             {
-                                mistakes.Add($"Valor incorrecto declarado tipo {Type}");
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
                                 return "";
                             }
                         }
@@ -353,36 +359,190 @@ namespace Minic.Análisis_Semantico
                         {
                             resultado = date_value;
                         }
-                        resultado_string = date_value;
+                        if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("intConstant"))
+                        {
+                            if (date_value == "\"+\"")
+                            {
+                                resultado_string += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
+                                return resultado_string;
+                            }
+                            else
+                            {
+                                if (ExistInTable(date_value,ambit.Peek()))
+                                {
+                                    var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                    var date_value_ = SimbolsTable[index].value;
+                                    var date_type_ = SimbolsTable[index].type;
+                                    if (date_value_ != null)
+                                    {
+                                        resultado_string = date_value_.Replace('"', ' ');
+                                    }
+                                    if (Type != date_type_)
+                                    {
+                                        mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                        return "";
+                                    }
+                                    else
+                                    {
+                                        return "";
+                                    }
+                                }
+                                else
+                                {
+                                    resultado_string = date_value.Replace('"', ' ');
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                            return "";
+                        }
                         break;
                     case "bool":
-                        if (date_value == "New")
-                        {
-                            resultado = date_value;
-                        }
-                        else if (date_value.Contains("("))
+                        if (date_value.Contains("("))
                         {
                             resultado_bool = Convert.ToBoolean(true);
                             return Convert.ToString(resultado_bool);
                         }
+
+                        else if (ExistInTable(date_value,ambit.Peek()))
+                        {
+                            var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                            var date_value_ = SimbolsTable[index].value;
+                            var date_type_ = SimbolsTable[index].type;
+                            if (date_value_ != null)
+                            {
+                                resultado_bool = Convert.ToBoolean(date_value_);
+                            }
+                            if (Type != date_type_)
+                            {
+                                mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                return "";
+                            }                 
+                        }
                         else
                         {
-                            resultado_bool = Convert.ToBoolean(date_value);
+                            if (date_value.Contains("true") || date_value.Contains("false"))
+                            {
+                                resultado_bool = Convert.ToBoolean(date_value);
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
                         }
                         break;
                     case "double":
                         if (date_value == "New")
                         {
-                            resultado = date_value;
+                            mistakes.Add($"Valor incorrecto declarado tipo New  {cordenadas}");
+                            return resultado;
                         }
-                        resultado_double += Convert.ToDouble(date_value);
+                        else
+                        {
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant"))
+                            {
+
+                                if (date_value == "\"+\"")
+                                {
+                                    resultado_double += Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"%\"")
+                                {
+                                    resultado_double %= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"*\"")
+                                {
+                                    resultado_double *= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"-\"")
+                                {
+                                    resultado_double -= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else
+                                {
+                                    // validar si el valor esta contenido en otro lado
+                                    if (ExistInTable(date_value,ambit.Peek()))
+                                    {
+                                        var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                        var date_value_ = SimbolsTable[index].value;
+                                        var date_type_ = SimbolsTable[index].type;
+                                        if (date_value_ != null)
+                                        {
+                                            resultado_double = Convert.ToDouble(date_value_);
+                                        }
+                                        if (Type != date_type_)
+                                        {
+                                            mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                            return "";
+                                        }
+                                        else
+                                        {
+                                            return "";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        resultado_double = Convert.ToDouble(date_value);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
+                        }
                         break;
                     case "ident":
+
                         if (date_value == "New")
                         {
                             resultado = date_value;
                         }
-                        resultado_ident = date_value;
+                        if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("intConstant"))
+                        {
+                            if (date_value == "\"+\"")
+                            {
+                                resultado_ident += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
+                                return resultado_ident;
+                            }
+                            else
+                            {
+                                if (ExistInTable(date_value,ambit.Peek()))
+                                {
+                                    var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                    var date_value_ = SimbolsTable[index].value;
+                                    var date_type_ = SimbolsTable[index].type;
+                                    if (date_value_ != null)
+                                    {
+                                        resultado_ident = date_value_.Replace('"', ' ');
+                                    }
+                                    if (Type != date_type_)
+                                    {
+                                        mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                        return "";
+                                    }
+                                    else
+                                    {
+                                        return "";
+                                    }
+                                }
+                                else
+                                {
+                                    resultado_ident = date_value.Replace('"', ' ');
+                                }
+                            }
+                        }
                         break;
                     default:
                         break;
@@ -448,30 +608,41 @@ namespace Minic.Análisis_Semantico
         public void Metodo_escritura()
         {
             string CarpetaOut = Environment.CurrentDirectory;
-            if (!Directory.Exists(Path.Combine(CarpetaOut, "Salida")))
+            if (!Directory.Exists(Path.Combine(CarpetaOut, "Analisis_semantico")))
             {
-                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Salida"));
+                Directory.CreateDirectory(Path.Combine(CarpetaOut, "Analisis_semantico"));
             }
             else
             {
-                if (File.Exists(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out")))
+                if (File.Exists(Path.Combine(CarpetaOut, "Analisis_semantico", "Analisis_semantico.out")))
                 {
-                    File.WriteAllText(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out"), string.Empty);
+                    File.WriteAllText(Path.Combine(CarpetaOut, "Analisis_semantico", "Analisis_semantico.out"), string.Empty);
                 }
             }
-            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Salida", "Analisis_semantico.out"), FileMode.OpenOrCreate))
+            using (var writeStream = new FileStream(Path.Combine(CarpetaOut, "Analisis_semantico", "Analisis_semantico.out"), FileMode.OpenOrCreate))
             {
                 using (var write = new StreamWriter(writeStream))
                 {
                     foreach (var item in SimbolsTable)
                     {
-                        write.Write("Type: " + item.type + " " + "Name:" + item.name + " " + "Value:  " + item.value);
+ 
+                        write.Write("TYPE:" + item.type + "| " + "NAME:" + item.name + "| " + "VALUE:" + item.value);
+
                         write.Write(" \n ");
                     }
                     write.Close();
                 }
             }
         }
+
+        private string Obtener_linea(string cordenada)
+        {
+            var resultado = "";
+            var dato_ = cordenada.Split(',');
+            resultado = $"linea: {dato_[0]} Columna: {dato_[1]}";
+            return resultado;
+        }
+
         /// <summary>
         /// Method to show the errors to the user
         /// </summary>
