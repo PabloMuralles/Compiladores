@@ -1,0 +1,22 @@
+class Parser : analyzer , lexical, syntactical
+{
+
+	int f1(int c) {
+ 	   {
+		c = 1;
+  
+ 	   }
+	return (p1) ;
+	}
+ 
+}
+
+class Program {
+	void main(string x){
+		int m1;
+ 
+	}
+}
+
+
+ 

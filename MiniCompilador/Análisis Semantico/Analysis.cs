@@ -65,7 +65,7 @@ namespace Minic.Análisis_Semantico
                 {
                     ClassifyIdent();
                 }
-                else if (comparations.IsMatch(token.Item2))
+                else if (comparations.IsMatch(token.Item1))
                 {
                     ValidateType();
                 }
@@ -75,11 +75,41 @@ namespace Minic.Análisis_Semantico
                     function = false;
                     finishFunction = 0;
                 }
+                else if(token.Item1 == "ident" && function == true)
+                {
+                    ValidateReturn();
+                }
 
             }
 
             Metodo_escritura();
         }
+
+        private void ValidateReturn()
+        {
+            var tempAmbit = ambit.Peek();
+            TableElement temFunction;
+
+            foreach (var item in SimbolsTable)
+            {
+                if (item.ambit == tempAmbit && item.isFunction)
+                {
+                    temFunction = item;
+                    break;
+                }
+            }
+            string tempData = string.Empty;
+            for (int i = positionList + 2 ; i < listTokens.Count(); i++)
+            {
+                var tempElemet = listTokens[positionList];
+                if (tempElemet.Item1 ==")")
+                {
+                    break;
+                }
+                
+            }
+        }
+
         /// <summary>
         /// Method to classify the indent that hace the list of tokens
         /// </summary>
@@ -238,20 +268,45 @@ namespace Minic.Análisis_Semantico
             var dataListActuals = listTokens[positionList];
 
             var nameVariable1 = Split_Name(dataListpreviously.Item2);
-            var nameVariable2 = Split_Name(dataListpreviously.Item2);
-            var variable1 = SearchInTable(nameVariable1);
-            var variable2 = SearchInTable(Split_Name(nameVariable2));
-
-
-            if (ExistInTable(nameVariable1,ambit.Peek()) && ExistInTable(Split_Name(nameVariable1),ambit.Peek()))
+            var nameVariable2 = Split_Name(dataListNext.Item2);
+             
+            if (ExistInTableAssignation(nameVariable1) && ExistInTableAssignation(nameVariable2))
             {
-                if (!(variable1.type == variable2.type))
+                var variable1 = SearchInTable(nameVariable1);
+                var variable2 = SearchInTable(nameVariable2);
+
+                if (dataListActuals.Item1 == "==")
                 {
-                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                    if (!(variable1.type == variable2.type))
+                    {
+                        if ((variable1.type == "string" && (variable2.type == "int"|| variable2.type == "double")) || (variable2.type == "string" && (variable1.type == "int" || variable1.type == "double")))
+                        {
+                             mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                        }
+                        else if ((variable1.type == "bool" && (variable2.type == "int" || variable2.type == "double")) || (variable2.type == "bool" && (variable1.type == "int" || variable1.type == "double")))
+                        {
+                            mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                        }
+                        else if ((variable1.type == "bool" && variable2.type == "string") || (variable2.type == "string" && variable1.type == "bool"))
+                        {
+                            mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                        }
+
+                    }
+                     
                 }
+                else
+                {
+                    if (!((variable1.type == "double" && variable2.type == "int") || (variable2.type == "double" && variable1.type == "int") || (variable1.type == variable2.type)))
+                    {
+                        mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo aceptado {cordenadas}");
+                    }
+                }
+
             }
             else
             {
+                ///valirdar cuando venga alguna coonstantete
                 mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad {cordenadas}");
             }
         }
@@ -621,11 +676,12 @@ namespace Minic.Análisis_Semantico
         /// <returns>true if exist and false if not</returns>
         private bool ExistInTableAssignation(string name)
         {
-            foreach (var ambit in ambitsHistory)
+            var tempStack = ambit;
+            foreach (var ambits in tempStack)
             {
                 foreach (var item in SimbolsTable)
                 {
-                    if (item.name == name && item.ambit == ambit)
+                    if (item.name == name && item.ambit == ambits)
                     {
                         return true;
                     }

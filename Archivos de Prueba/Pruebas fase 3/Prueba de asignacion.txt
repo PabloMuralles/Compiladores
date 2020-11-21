@@ -6,9 +6,9 @@ class Parser : analyzer , lexical, syntactical
 	{
 		// empty void
 		int a1;
-		a1 = 2 + 2;
+		a1 = 2 + 2 + 2 * 6;
 
-		a1 = 3;
+		
 
 		a2=0;
 
