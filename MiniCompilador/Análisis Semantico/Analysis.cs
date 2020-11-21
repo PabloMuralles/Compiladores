@@ -49,7 +49,17 @@ namespace Minic.Análisis_Semantico
         {
             listTokens = tokens_;
             IdentifyIdent();
-            Exit_Analyze();
+            if (!mistakes.Any())
+            {
+                mistakes.Add("Success");
+                Exit_Analyze();
+            }
+            else
+            {
+                Exit_Analyze();
+            }
+          
+
         }
         /// <summary>
         /// Method to identify the ident that have the list
@@ -705,8 +715,12 @@ namespace Minic.Análisis_Semantico
                 {
                     foreach (var item in SimbolsTable)
                     {
- 
-                        write.Write("TYPE:" + item.type + "| " + "NAME:" + item.name + "| " + "VALUE:" + item.value);
+                        var valor = item.value;
+                        if (item.value == null)
+                        {
+                            valor = "NULL";
+                        }
+                        write.Write("TYPE:" + item.type + "| " + "NAME:" + item.name + "| " + "VALUE:" + valor + "|" + item.ambit );
 
                         write.Write(" \n ");
                     }
@@ -728,6 +742,7 @@ namespace Minic.Análisis_Semantico
         /// </summary>
         private void Exit_Analyze()
         {
+          
             string msg_Analyze = string.Empty;
             foreach (var item in mistakes)
             {
