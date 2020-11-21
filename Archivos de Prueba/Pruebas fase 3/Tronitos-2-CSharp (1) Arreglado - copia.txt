@@ -1,7 +1,7 @@
 class Parser : analyzer , lexical, syntactical
 {
 
-	int f1(int c) {
+	bool f1(int c) {
  	   {
 		c = 1;
   

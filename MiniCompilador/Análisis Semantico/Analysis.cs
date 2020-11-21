@@ -173,7 +173,7 @@ namespace Minic.Análisis_Semantico
                 }
             }
             //creacion de una funcion o precedimiento, pueda entrar a1.f1()
-            else if (dataListNext.Item1 == "(" /* && (dataListpreviously.Item1 == "")*/)
+            else if (dataListNext.Item1 == "(" && (dataListpreviously.Item1 == "void" || dataListpreviously.Item1 == "int" || dataListpreviously.Item1 == "double" || dataListpreviously.Item1 == "bool" || dataListpreviously.Item1 == "string"))
             {
                 var Name = Split_Name(dataListActual.Item2);
                 function = true;
@@ -811,18 +811,28 @@ namespace Minic.Análisis_Semantico
                                 }
                                 else if (date_value == "\"%\"")
                                 {
-                                    resultado_int %= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_int);
+                                    if (isNumeric2 == true)
+                                    {
+                                        resultado_int %= Convert.ToInt32(tempData);
+                                        return Convert.ToString(tempData);
+                                    }
+                                     
                                 }
                                 else if (date_value == "\"*\"")
                                 {
-                                    resultado_int *= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_int);
+                                    if (isNumeric2 == true)
+                                    {
+                                        resultado_int *= Convert.ToInt32(tempData);
+                                        return Convert.ToString(tempData);
+                                    }
                                 }
                                 else if (date_value == "\"-\"")
                                 {
-                                    resultado_int -= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_int);
+                                    if (isNumeric2 == true)
+                                    {
+                                        resultado_int -= Convert.ToInt32(tempData);
+                                        return Convert.ToString(tempData);
+                                    }
                                 }
                                 else
                                 {
@@ -927,7 +937,15 @@ namespace Minic.Análisis_Semantico
                             var date_type_ = SimbolsTable[index].type;
                             if (date_value_ != null)
                             {
-                                resultado_bool = Convert.ToBoolean(date_value_);
+                                try
+                                {
+                                    resultado_bool = Convert.ToBoolean(date_value_);
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                
                             }
                             if (Type != date_type_)
                             {
@@ -961,23 +979,51 @@ namespace Minic.Análisis_Semantico
 
                                 if (date_value == "\"+\"")
                                 {
-                                    resultado_double += Convert.ToDouble(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_double);
+                                    try
+                                    {
+                                        resultado_double += Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                        return Convert.ToString(resultado_double);
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
                                 }
                                 else if (date_value == "\"%\"")
                                 {
-                                    resultado_double %= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_double);
+                                    try
+                                    {
+                                        resultado_double %= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                        return Convert.ToString(resultado_double);
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
                                 }
                                 else if (date_value == "\"*\"")
                                 {
-                                    resultado_double *= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_double);
+                                    try
+                                    {
+                                        resultado_double *= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                        return Convert.ToString(resultado_double);
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
                                 }
                                 else if (date_value == "\"-\"")
                                 {
-                                    resultado_double -= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
-                                    return Convert.ToString(resultado_double);
+                                    try
+                                    {
+                                        resultado_double -= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                        return Convert.ToString(resultado_double);
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
                                 }
                                 else
                                 {
