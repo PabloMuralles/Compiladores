@@ -81,9 +81,7 @@ namespace MiniCompilador.Análisis_Léxico
                         {
                             dato += listaCaracteres[i].ToString();
                         }
-
                     }
-
                     else
                     {
                         dato += listaCaracteres[i].ToString();
