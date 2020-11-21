@@ -20,7 +20,23 @@ namespace Minic.Análisis_Semantico
         private List<string> mistakes = new List<string>();
 
         private int positionList = 0;
+
         Cargar_Archivo Cargar_Archivo = new Cargar_Archivo();
+
+        private Stack<string> ambit = new Stack<string>();
+
+        private bool function = false;
+
+        private bool classe = false;
+
+        private bool general = true;
+
+        private int finishClass = 0;
+
+        private int finishFunction = 0;
+
+
+
         /// <summary>
         /// Cosntructor of the clase
         /// </summary>
@@ -36,6 +52,7 @@ namespace Minic.Análisis_Semantico
         /// </summary>
         private void IdentifyIdent()
         {
+            ambit.Push("general");
             for (positionList = 0; positionList < listTokens.Count; positionList++)
             {
                 var token = listTokens[positionList];
@@ -46,11 +63,15 @@ namespace Minic.Análisis_Semantico
                 else if (comparations.IsMatch(token.Item2))
                 {
                     ValidateType();
-
+                }
+                else if (positionList == finishFunction && function == true)
+                {
+                    ambit.Pop();
+                    function = false;
                 }
 
             }
-       
+
             Metodo_escritura();
         }
         /// <summary>
@@ -68,9 +89,9 @@ namespace Minic.Análisis_Semantico
             if (dataListNext.Item1 == ";")
             {
                 var Name = Split_Name(dataListActual.Item2);
-                if (!ExistInTable(Name))
+                if (!ExistInTable(Name, ambit.Peek()))
                 {
-                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = false });
+                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = ambit.Peek(), isClass = false, isFunction = false });
                 }
                 else
                 {
@@ -80,8 +101,10 @@ namespace Minic.Análisis_Semantico
             //validar si es una clase
             else if (dataListpreviously.Item1 == "class")
             {
+
                 var Name = Split_Name(dataListActual.Item2);
-                if (!ExistInTable(dataListActual.Item1))
+                ambit.Push(Name);
+                if (!ExistInTable(dataListActual.Item1, ambit.Peek()))
                 {
                     SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = true, isFunction = false });
                 }
@@ -94,7 +117,7 @@ namespace Minic.Análisis_Semantico
             else if (dataListNext.Item1 == "=")
             {
                 var Name = Split_Name(dataListActual.Item2);
-                if (ExistInTable(Name))
+                if (ExistInTable(Name, ambit.Peek()))
                 {
                     // obtener el valor del dato
                     var index = SimbolsTable.FindIndex(c => c.name == Name);
@@ -102,7 +125,7 @@ namespace Minic.Análisis_Semantico
                     var value_ = defination_value(positionList + 2, Type);
                     if (value_ != "")
                     {
-                        SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = null, isClass = true, isFunction = false };
+                        SimbolsTable[index] = new TableElement { name = Name, value = value_, type = Type, ambit = ambit.Peek(), isClass = true, isFunction = false };
                     }
                 }
                 else
@@ -114,9 +137,13 @@ namespace Minic.Análisis_Semantico
             else if (dataListNext.Item1 == "(")
             {
                 var Name = Split_Name(dataListActual.Item2);
-                if (!ExistInTable(Name))
+                function = true;
+                var tempAmbit = ambit.Peek() + Name;
+                ambit.Push(tempAmbit);
+                SearchEndFunction();
+                if (!ExistInTable(Name, ambit.Peek()))
                 {
-                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = false, isFunction = true });
+                    SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = ambit.Peek(), isClass = false, isFunction = true });
 
                     positionList++;
                     positionList++;
@@ -132,7 +159,7 @@ namespace Minic.Análisis_Semantico
                         {
                             tempParameters += tempData.Item1 + " ";
                         }
-                        
+
 
                         positionList++;
                         tempData = listTokens[positionList];
@@ -143,50 +170,74 @@ namespace Minic.Análisis_Semantico
                     foreach (var parameter in tempSplit)
                     {
                         var splitParameter = parameter.Trim().Split(' ');
-                        if (!ExistInTable(splitParameter[1]))
+                        if (!ExistInTable(splitParameter[1], ambit.Peek()))
                         {
-                            SimbolsTable.Add(new TableElement { name = splitParameter[1], value = null, type = splitParameter[0], ambit = null, isClass = false, isFunction = false });
+                            SimbolsTable.Add(new TableElement { name = splitParameter[1], value = null, type = splitParameter[0], ambit = ambit.Peek(), isClass = false, isFunction = false });
                         }
                     }
 
                 }
                 else
                 {
-                    if (!ExistInTable(Split_Name(Name)))
+                    if (!ExistInTable(Split_Name(Name), ambit.Peek()))
                         mistakes.Add($"Error la Funcion :{Name} ya fue declarada con anterioridad");
                 }
 
             }
-             
+
         }
 
+        /// <summary>
+        /// method to find the position when the funciton or void declaration finish
+        /// </summary>
+        private void SearchEndFunction()
+        {
+            int i = 0;
+            int count = 0;
+            for (i = positionList; i < listTokens.Count(); i++)
+            {
+                var tempData = listTokens[i];
+                if (tempData.Item1 == "{")
+                {
+                    count++;
+                }
+                if (tempData.Item1 == "}")
+                {
+                    count++;
+                    if (count % 2 == 0)
+                    {
+                        finishFunction = i;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Metodo para validar los casos que se hagan comparaciones con operadores logicos se valida que sean ambos del mismo tipo
         /// </summary>
         private void ValidateType()
         {
-            var dataListNext = listTokens[positionList + 1];
-            var dataListpreviously = listTokens[positionList - 1];
-            var dataListActuals = listTokens[positionList];
+            //var dataListNext = listTokens[positionList + 1];
+            //var dataListpreviously = listTokens[positionList - 1];
+            //var dataListActuals = listTokens[positionList];
 
-            var nameVariable1 = Split_Name(dataListpreviously.Item2);
-            var nameVariable2 = Split_Name(dataListpreviously.Item2);
-            var variable1 = SearchInTable(nameVariable1);
-            var variable2 = SearchInTable(Split_Name(nameVariable2));
+            //var nameVariable1 = Split_Name(dataListpreviously.Item2);
+            //var nameVariable2 = Split_Name(dataListpreviously.Item2);
+            //var variable1 = SearchInTable(nameVariable1);
+            //var variable2 = SearchInTable(Split_Name(nameVariable2));
 
 
-            if (ExistInTable(nameVariable1) && ExistInTable(Split_Name(nameVariable1)))
-            {
-                if (!(variable1.type == variable2.type))
-                {
-                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
-                }
-            }
-            else
-            {
-                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
-            }
+            //if (ExistInTable(nameVariable1) && ExistInTable(Split_Name(nameVariable1)))
+            //{
+            //    if (!(variable1.type == variable2.type))
+            //    {
+            //        mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
+            //    }
+            //}
+            //else
+            //{
+            //    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
+            //}
 
         }
 
@@ -265,7 +316,7 @@ namespace Minic.Análisis_Semantico
                                 else
                                 {
                                     // validar si el valor esta contenido en otro lado
-                                    if (ExistInTable(date_value))
+                                    if (ExistInTable(date_value, ambit.Peek()))
                                     {
                                         var index = SimbolsTable.FindIndex(c => c.name == date_value);
                                         var date_value_ = SimbolsTable[index].value;
@@ -381,11 +432,11 @@ namespace Minic.Análisis_Semantico
         /// </summary>
         /// <param name="name">the name of the ident to search in the list of the table</param>
         /// <returns>true if exist and false if not</returns>
-        private bool ExistInTable(string name)
+        private bool ExistInTable(string name, string ambit)
         {
             foreach (var item in SimbolsTable)
             {
-                if (item.name == name)
+                if (item.name == name && item.ambit == ambit)
                 {
                     return true;
                 }
@@ -415,7 +466,7 @@ namespace Minic.Análisis_Semantico
                 {
                     foreach (var item in SimbolsTable)
                     {
-                        write.Write("Type: "+ item.type + " " + "Name:" + item.name + " " +  "Value:  "+ item.value );
+                        write.Write("Type: " + item.type + " " + "Name:" + item.name + " " + "Value:  " + item.value);
                         write.Write(" \n ");
                     }
                     write.Close();
