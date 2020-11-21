@@ -717,7 +717,12 @@ namespace Minic.Análisis_Semantico
                         {
                             valor = "NULL";
                         }
-                        write.Write("TYPE:" + item.type + "| " + "NAME:" + item.name + "| " + "VALUE:" + valor + "|" + item.ambit );
+                        var ambito = item.ambit;
+                        if (item.ambit == null)
+                        {
+                            ambito = "NULL";
+                        }
+                        write.Write("TYPE:" + item.type + "| " + "NAME:" + item.name + "| " + "VALUE:" + valor + "|" + "AMBIT:"  + ambito);
 
                         write.Write(" \n ");
                     }
