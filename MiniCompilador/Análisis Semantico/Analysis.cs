@@ -15,7 +15,7 @@ namespace Minic.Análisis_Semantico
 
         private List<Tuple<string, string>> listTokens = new List<Tuple<string, string>>();
 
-        private Regex comparations = new Regex(@"^(<=|>=|==|!=)$");
+        private Regex comparations = new Regex(@"^(>|<|<=|>=|==|!=)$");
 
         private List<string> mistakes = new List<string>();
 
@@ -217,28 +217,27 @@ namespace Minic.Análisis_Semantico
         /// </summary>
         private void ValidateType()
         {
-            //var dataListNext = listTokens[positionList + 1];
-            //var dataListpreviously = listTokens[positionList - 1];
-            //var dataListActuals = listTokens[positionList];
+            var dataListNext = listTokens[positionList + 1];
+            var dataListpreviously = listTokens[positionList - 1];
+            var dataListActuals = listTokens[positionList];
 
-            //var nameVariable1 = Split_Name(dataListpreviously.Item2);
-            //var nameVariable2 = Split_Name(dataListpreviously.Item2);
-            //var variable1 = SearchInTable(nameVariable1);
-            //var variable2 = SearchInTable(Split_Name(nameVariable2));
+            var nameVariable1 = Split_Name(dataListpreviously.Item2);
+            var nameVariable2 = Split_Name(dataListpreviously.Item2);
+            var variable1 = SearchInTable(nameVariable1);
+            var variable2 = SearchInTable(Split_Name(nameVariable2));
 
 
-            //if (ExistInTable(nameVariable1) && ExistInTable(Split_Name(nameVariable1)))
-            //{
-            //    if (!(variable1.type == variable2.type))
-            //    {
-            //        mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
-            //    }
-            //}
-            //else
-            //{
-            //    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
-            //}
-
+            if (ExistInTable(nameVariable1,ambit.Peek()) && ExistInTable(Split_Name(nameVariable1),))
+            {
+                if (!(variable1.type == variable2.type))
+                {
+                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo");
+                }
+            }
+            else
+            {
+                mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad");
+            }
         }
 
         private TableElement SearchInTable(string name)
