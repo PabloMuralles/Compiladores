@@ -16,7 +16,12 @@ Es una implementación pequeña de un compilador para el lenguaje C#
           - [Manejo de Errores](#manejo-de-errores-)
           - [Ejecutando las pruebas](#ejecutando-las-pruebas-%EF%B8%8F)
  - [Fase 2](#fase-3)
-     - [Requerimientos](#requerimientos--1)
+     - [Requerimientos](#requerimientos--2)
+          - [Objetivo](#objetivo-1)
+          - [Estructura de la Tabla de Símbolos](#estructura-de-la-tabla-de-símbolos)
+          - [Mantenimiento de la Símbolos](#mantenimiento-de-la-símbolos)
+          - [Manejo de Errores](#manejo-de-errores--1)
+          
            
 - [Construido con](#construido-con-%EF%B8%8F)
 - [Autores](#autores-%EF%B8%8F)
@@ -317,8 +322,8 @@ La tabla de símbolos se le da mantenimiento cada vez que se defina una variable
 
 #### Manejo de Errores ❌
 
+Los errores se manejaron consumiendo el tocken que contiene el error y almacenando en una lista de errore la definicion del error con su linea y columna. Esto sucede  si se realiza una operación o una asignación que no sean del mismo tipo, si no se encuentra ningun error se almacena en la tabla de simbolos.
  
-
 ## Construido con 🛠️
 
 * [.NET](https://dotnet.microsoft.com/download/dotnet-framework/net472) - Framework usado
