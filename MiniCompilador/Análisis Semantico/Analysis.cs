@@ -354,36 +354,33 @@ namespace Minic.Análisis_Semantico
                             resultado_bool = Convert.ToBoolean(true);
                             return Convert.ToString(resultado_bool);
                         }
-                        else if (date_value.Contains("true") || date_value.Contains("false"))
+
+                        else if (ExistInTable(date_value))
                         {
-                            if (ExistInTable(date_value))
+                            var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                            var date_value_ = SimbolsTable[index].value;
+                            var date_type_ = SimbolsTable[index].type;
+                            if (date_value_ != null)
                             {
-                                var index = SimbolsTable.FindIndex(c => c.name == date_value);
-                                var date_value_ = SimbolsTable[index].value;
-                                var date_type_ = SimbolsTable[index].type;
-                                if (date_value_ != null)
-                                {
-                                    resultado_bool = Convert.ToBoolean(date_value_);
-                                }
-                                if (Type != date_type_)
-                                {
-                                    mistakes.Add($"No coinciden en terminos  {cordenadas}");
-                                    return "";
-                                }
-                                else
-                                {
-                                    return "";
-                                }
+                                resultado_bool = Convert.ToBoolean(date_value_);
                             }
-                            else
+                            if (Type != date_type_)
                             {
-                                resultado_bool = Convert.ToBoolean(date_value);
-                            }
+                                mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                return "";
+                            }                 
                         }
                         else
                         {
-                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
-                            return "";
+                            if (date_value.Contains("true") || date_value.Contains("false"))
+                            {
+                                resultado_bool = Convert.ToBoolean(date_value);
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
                         }
                         break;
                     case "double":
@@ -394,8 +391,7 @@ namespace Minic.Análisis_Semantico
                         }
                         else
                         {
-                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant")
-                                && !listTokens[position].Item1.Contains("intConstant"))
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant"))
                             {
 
                                 if (date_value == "\"+\"")

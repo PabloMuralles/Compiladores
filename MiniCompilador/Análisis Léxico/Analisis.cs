@@ -848,7 +848,7 @@ namespace MiniCompilador.Análisis_Léxico
             }
             else if (objExpreciones_.doubles_.IsMatch(cadena))
             {
-                return ($"doubleConstant (Valor ={cadena})" + ",doubleConstant");
+                return ($"{cadena}" + ",doubleConstant");
             }
             else if (objExpreciones_.cadena_.IsMatch(cadena))
             {
