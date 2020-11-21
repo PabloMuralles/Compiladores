@@ -382,11 +382,7 @@ namespace Minic.Análisis_Semantico
                                     {
                                         mistakes.Add($"No coinciden en terminos  {cordenadas}");
                                         return "";
-                                    }
-                                    else
-                                    {
-                                        return "";
-                                    }
+                                    }                               
                                 }
                                 else
                                 {
@@ -483,11 +479,7 @@ namespace Minic.Análisis_Semantico
                                         {
                                             mistakes.Add($"No coinciden en terminos  {cordenadas}");
                                             return "";
-                                        }
-                                        else
-                                        {
-                                            return "";
-                                        }
+                                        }                                                                             
                                     }
                                     else
                                     {
