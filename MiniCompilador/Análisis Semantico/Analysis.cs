@@ -27,6 +27,8 @@ namespace Minic.Análisis_Semantico
 
         private Stack<string> ambit = new Stack<string>();
 
+        private List<string> ambitsHistory = new List<string>();
+
         private bool function = false;
 
         private bool classe = false;
@@ -55,6 +57,7 @@ namespace Minic.Análisis_Semantico
         private void IdentifyIdent()
         {
             ambit.Push("general");
+            ambitsHistory.Add("general");
             for (positionList = 0; positionList < listTokens.Count; positionList++)
             {
                 var token = listTokens[positionList];
@@ -70,6 +73,7 @@ namespace Minic.Análisis_Semantico
                 {
                     ambit.Pop();
                     function = false;
+                    finishFunction = 0;
                 }
 
             }
@@ -98,7 +102,11 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
+                    // revisar que pasa cuando viene un error
+                    if (dataListpreviously.Item1 == "int" || dataListpreviously.Item1 == "bool" || dataListpreviously.Item1 == "string" || dataListpreviously.Item1 == "double")
+                    {
+                        mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
+                    }
                 }
             }
             //validar si es una clase
@@ -107,6 +115,7 @@ namespace Minic.Análisis_Semantico
 
                 var Name = Split_Name(dataListActual.Item2);
                 ambit.Push(Name);
+                ambitsHistory.Add(Name);
                 if (!ExistInTable(dataListActual.Item1, ambit.Peek()))
                 {
                     SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = true, isFunction = false });
@@ -120,7 +129,7 @@ namespace Minic.Análisis_Semantico
             else if (dataListNext.Item1 == "=")
             {
                 var Name = Split_Name(dataListActual.Item2);
-                if (ExistInTable(Name, ambit.Peek()))
+                if (ExistInTableAssignation(Name))
                 {
                     // obtener el valor del dato
                     var index = SimbolsTable.FindIndex(c => c.name == Name);
@@ -143,6 +152,7 @@ namespace Minic.Análisis_Semantico
                 function = true;
                 var tempAmbit = ambit.Peek() + Name;
                 ambit.Push(tempAmbit);
+                ambitsHistory.Add(tempAmbit);
                 SearchEndFunction();
                 if (!ExistInTable(Name, ambit.Peek()))
                 {
@@ -212,6 +222,7 @@ namespace Minic.Análisis_Semantico
                     if (count % 2 == 0)
                     {
                         finishFunction = i;
+                        break;
                     }
                 }
             }
@@ -587,10 +598,11 @@ namespace Minic.Análisis_Semantico
             }
         }
         /// <summary>
-        /// function to verify is the ident already exist in the table
+        /// function to verify is the ident already exist in the table 
         /// </summary>
         /// <param name="name">the name of the ident to search in the list of the table</param>
-        /// <returns>true if exist and false if not</returns>
+        /// <param name="ambit">the actual ambit</param>
+        /// <returns></returns>
         private bool ExistInTable(string name, string ambit)
         {
             foreach (var item in SimbolsTable)
@@ -600,6 +612,26 @@ namespace Minic.Análisis_Semantico
                     return true;
                 }
             }
+            return false;
+        }
+        /// <summary>
+        /// function to verify is the ident already exist in the table and in all ambits
+        /// </summary>
+        /// <param name="name">the name of the ident to search in the list of the table</param>
+        /// <returns>true if exist and false if not</returns>
+        private bool ExistInTableAssignation(string name)
+        {
+            foreach (var ambit in ambitsHistory)
+            {
+                foreach (var item in SimbolsTable)
+                {
+                    if (item.name == name && item.ambit == ambit)
+                    {
+                        return true;
+                    }
+                }
+            }
+             
             return false;
         }
         /// <summary>
