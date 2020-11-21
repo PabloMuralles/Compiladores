@@ -15,6 +15,8 @@ Es una implementación pequeña de un compilador para el lenguaje C#
           - [Tabla de Análisis](#tabla-de-análisis--)
           - [Manejo de Errores](#manejo-de-errores-)
           - [Ejecutando las pruebas](#ejecutando-las-pruebas-%EF%B8%8F)
+ - [Fase 2](#fase-3)
+     - [Requerimientos](#requerimientos--1)
            
 - [Construido con](#construido-con-%EF%B8%8F)
 - [Autores](#autores-%EF%B8%8F)
@@ -190,13 +192,14 @@ Prototype’ ->  Prototype Prototype’
 Prototype’ -> ε
 Prototype -> Type ident ( Formals ) ;
 Prototype -> void ident ( Formals ) ;
-StmtBlock -> { VariableDecl’ ConstDecl’ Stmt’ }
-ConstDecl’ -> const ConstType ident ; ConstDecl’
-ConstDecl’ -> ε
-VariableDecl’ -> Type ident ; VariableDecl’
-VariableDecl’ -> ε
-Stmt’ -> Stmt Stmt’
-Stmt’ -> ε
+StmtBlock -> { Declare }
+Declare -> VariableDecl Declare
+Declare -> ConstDecl Declare
+Declare -> Stmt’ Declare
+Declare -> ε
+ConstDecl-> const ConstType ident ;
+VariableDecl -> Type ident ;
+Stmt’ -> Stmt
 Stmt -> Expr ;
 Stmt -> ;
 Stmt ->  if ( Expr ) Stmt IfStmt
@@ -206,6 +209,10 @@ Stmt -> break ;
 Stmt -> return Expr ;
 Stmt -> Console . WriteLine ( Expr’ ) ;
 Stmt -> StmtBlock
+Stmt -> ident ( Actuals )
+Stmt -> ident . ident ( Actuals )
+Actuals -> Expr , Actuals
+Actuals -> Expr 
 IfStmt -> else Stmt
 IfStmt -> ε
 Expr’ -> Expr , Expr’
@@ -213,7 +220,7 @@ Expr’ -> Expr
 Expr -> ident = ConditionAnd
 Expr -> ConditionAnd
 ConditionAnd -> Equality ConditionAnd'
-ConditionAnd' ->  && Equality ConditionAnd'
+ConditionAnd' -> && Equality ConditionAnd'
 ConditionAnd' -> ε
 Equality -> Equality == Relational
 Equality -> Relational
@@ -223,17 +230,17 @@ Relational -> Additive
 Additive -> Additive + Multiplicative
 Additive -> Multiplicative
 Multiplicative -> Multiplicative * Unary
-Multiplicative ->  Multiplicative % Unary
+Multiplicative -> Multiplicative % Unary
 Multiplicative -> Unary 
 Unary -> - Primary
 Unary -> ! Primary 
 Unary -> Primary
-Primary ->  Primary . ident
-Primary ->  Primary . ident = Expr
-Primary ->  Terminal
+Primary -> Primary . ident = Expr
+Primary -> Primary . ident  
+Primary -> Terminal
 Terminal -> this
 Terminal -> ( Expr )
-Terminal ->  New ( ident )
+Terminal -> New ( ident )
 Terminal -> intConstant
 Terminal -> doubleConstant
 Terminal -> boolConstant
@@ -271,19 +278,56 @@ Ruta Relativa:
 
 "\Gramatica\Tabla_analisis.txt"
 
+## Fase 3
+
+### Requerimientos 📋
+     
+#### Objetivo
+
+La tercera fase del proyecto consistirá en generar la tabla de símbolos, realizar la asignación
+de valores a variables y constantes, comprobar los tipos de ciertas expresiones para los
+lenguajes que están trabajando
+
+#### Estructura de la Tabla de Símbolos
+```
+TYPE:class| NAME:Parser| VALUE:NULL|AMBIT:NULL 
+TYPE:int| NAME:a1| VALUE:8|AMBIT:Programmain 
+TYPE:int| NAME:f1| VALUE:3|AMBIT:Parserf1 
+TYPE:int| NAME:a| VALUE:NULL|AMBIT:Parserf1 
+TYPE:int| NAME:b| VALUE:NULL|AMBIT:Parserf1 
+TYPE:int| NAME:c| VALUE:NULL|AMBIT:Parserf1 
+TYPE:int| NAME:p1| VALUE:3|AMBIT:Parserf1 
+TYPE:void| NAME:proc1| VALUE:NULL|AMBIT:Parserproc1 
+TYPE:double| NAME:y| VALUE:NULL|AMBIT:Parserproc1 
+TYPE:class| NAME:Program| VALUE:NULL|AMBIT:NULL 
+TYPE:void| NAME:main| VALUE:NULL|AMBIT:Programmain 
+TYPE:string| NAME:x| VALUE:NULL|AMBIT:Programmain 
+TYPE:double| NAME:m1| VALUE:7.5|AMBIT:Programmain 
+TYPE:int| NAME:m3| VALUE:NULL|AMBIT:Programmain 
+TYPE:bool| NAME:t| VALUE:NULL|AMBIT:Programmain 
+TYPE:string| NAME:mensaje| VALUE: hola   mundo |AMBIT:Programmain 
+TYPE:ident| NAME:MyParser| VALUE:NULL|AMBIT:Programmain 
+TYPE:int| NAME:m2| VALUE:NULL|AMBIT:Programmain 
+TYPE:bool| NAME:p| VALUE:False|AMBIT:Programmain 
+TYPE:=| NAME:t| VALUE:NULL|AMBIT:Program 
+```
+#### Mantenimiento de la Símbolos
+
+La tabla de símbolos se le da mantenimiento cada vez que se defina una variable, clase, procedimiento o función. Se verifica que ya exista y sino existe se agrega a la tabla de símbolos, también cuando se realiza una asignación o un return se actualiza el valor del elemento de la tabla de símbolos al que se le esta asignando.
+
+#### Manejo de Errores ❌
+
+ 
+
 ## Construido con 🛠️
 
 * [.NET](https://dotnet.microsoft.com/download/dotnet-framework/net472) - Framework usado
- 
-
 
 ## Autores ✒️
 
 **Pablo Muralles**  - Carné:1113818
 
 **Santiago Bocel**  - Carné:1076818
-
-  
 
 ## Licencia 📄
 
