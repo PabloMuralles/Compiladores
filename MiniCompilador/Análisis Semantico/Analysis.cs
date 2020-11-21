@@ -27,6 +27,8 @@ namespace Minic.Análisis_Semantico
 
         private Stack<string> ambit = new Stack<string>();
 
+        private List<string> ambitsHistory = new List<string>();
+
         private bool function = false;
 
         private bool classe = false;
@@ -55,6 +57,7 @@ namespace Minic.Análisis_Semantico
         private void IdentifyIdent()
         {
             ambit.Push("general");
+            ambitsHistory.Add("general");
             for (positionList = 0; positionList < listTokens.Count; positionList++)
             {
                 var token = listTokens[positionList];
@@ -62,7 +65,7 @@ namespace Minic.Análisis_Semantico
                 {
                     ClassifyIdent();
                 }
-                else if (comparations.IsMatch(token.Item2))
+                else if (comparations.IsMatch(token.Item1))
                 {
                     ValidateType();
                 }
@@ -70,12 +73,43 @@ namespace Minic.Análisis_Semantico
                 {
                     ambit.Pop();
                     function = false;
+                    finishFunction = 0;
+                }
+                else if(token.Item1 == "ident" && function == true)
+                {
+                    ValidateReturn();
                 }
 
             }
 
             Metodo_escritura();
         }
+
+        private void ValidateReturn()
+        {
+            var tempAmbit = ambit.Peek();
+            TableElement temFunction;
+
+            foreach (var item in SimbolsTable)
+            {
+                if (item.ambit == tempAmbit && item.isFunction)
+                {
+                    temFunction = item;
+                    break;
+                }
+            }
+            string tempData = string.Empty;
+            for (int i = positionList + 2 ; i < listTokens.Count(); i++)
+            {
+                var tempElemet = listTokens[positionList];
+                if (tempElemet.Item1 ==")")
+                {
+                    break;
+                }
+                
+            }
+        }
+
         /// <summary>
         /// Method to classify the indent that hace the list of tokens
         /// </summary>
@@ -98,7 +132,11 @@ namespace Minic.Análisis_Semantico
                 }
                 else
                 {
-                    mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
+                    // revisar que pasa cuando viene un error
+                    if (dataListpreviously.Item1 == "int" || dataListpreviously.Item1 == "bool" || dataListpreviously.Item1 == "string" || dataListpreviously.Item1 == "double")
+                    {
+                        mistakes.Add($"Error la variable :{Name} ya fue definida con anterioridad  {cordenadas}");
+                    }
                 }
             }
             //validar si es una clase
@@ -107,6 +145,7 @@ namespace Minic.Análisis_Semantico
 
                 var Name = Split_Name(dataListActual.Item2);
                 ambit.Push(Name);
+                ambitsHistory.Add(Name);
                 if (!ExistInTable(dataListActual.Item1, ambit.Peek()))
                 {
                     SimbolsTable.Add(new TableElement { name = Name, value = null, type = dataListpreviously.Item1, ambit = null, isClass = true, isFunction = false });
@@ -120,7 +159,7 @@ namespace Minic.Análisis_Semantico
             else if (dataListNext.Item1 == "=")
             {
                 var Name = Split_Name(dataListActual.Item2);
-                if (ExistInTable(Name, ambit.Peek()))
+                if (ExistInTableAssignation(Name))
                 {
                     // obtener el valor del dato
                     var index = SimbolsTable.FindIndex(c => c.name == Name);
@@ -143,6 +182,7 @@ namespace Minic.Análisis_Semantico
                 function = true;
                 var tempAmbit = ambit.Peek() + Name;
                 ambit.Push(tempAmbit);
+                ambitsHistory.Add(tempAmbit);
                 SearchEndFunction();
                 if (!ExistInTable(Name, ambit.Peek()))
                 {
@@ -212,6 +252,7 @@ namespace Minic.Análisis_Semantico
                     if (count % 2 == 0)
                     {
                         finishFunction = i;
+                        break;
                     }
                 }
             }
@@ -227,20 +268,45 @@ namespace Minic.Análisis_Semantico
             var dataListActuals = listTokens[positionList];
 
             var nameVariable1 = Split_Name(dataListpreviously.Item2);
-            var nameVariable2 = Split_Name(dataListpreviously.Item2);
-            var variable1 = SearchInTable(nameVariable1);
-            var variable2 = SearchInTable(Split_Name(nameVariable2));
-
-
-            if (ExistInTable(nameVariable1,ambit.Peek()) && ExistInTable(Split_Name(nameVariable1),ambit.Peek()))
+            var nameVariable2 = Split_Name(dataListNext.Item2);
+             
+            if (ExistInTableAssignation(nameVariable1) && ExistInTableAssignation(nameVariable2))
             {
-                if (!(variable1.type == variable2.type))
+                var variable1 = SearchInTable(nameVariable1);
+                var variable2 = SearchInTable(nameVariable2);
+
+                if (dataListActuals.Item1 == "==")
                 {
-                    mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                    if (!(variable1.type == variable2.type))
+                    {
+                        if ((variable1.type == "string" && (variable2.type == "int"|| variable2.type == "double")) || (variable2.type == "string" && (variable1.type == "int" || variable1.type == "double")))
+                        {
+                             mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                        }
+                        else if ((variable1.type == "bool" && (variable2.type == "int" || variable2.type == "double")) || (variable2.type == "bool" && (variable1.type == "int" || variable1.type == "double")))
+                        {
+                            mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                        }
+                        else if ((variable1.type == "bool" && variable2.type == "string") || (variable2.type == "string" && variable1.type == "bool"))
+                        {
+                            mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo  {cordenadas}");
+                        }
+
+                    }
+                     
                 }
+                else
+                {
+                    if (!((variable1.type == "double" && variable2.type == "int") || (variable2.type == "double" && variable1.type == "int") || (variable1.type == variable2.type)))
+                    {
+                        mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no son del mismo tipo aceptado {cordenadas}");
+                    }
+                }
+
             }
             else
             {
+                ///valirdar cuando venga alguna coonstantete
                 mistakes.Add($"No se puede realziar la comparacion logica:{nameVariable1} y {nameVariable1} no estan definidas con anterioridad {cordenadas}");
             }
         }
@@ -579,10 +645,11 @@ namespace Minic.Análisis_Semantico
             }
         }
         /// <summary>
-        /// function to verify is the ident already exist in the table
+        /// function to verify is the ident already exist in the table 
         /// </summary>
         /// <param name="name">the name of the ident to search in the list of the table</param>
-        /// <returns>true if exist and false if not</returns>
+        /// <param name="ambit">the actual ambit</param>
+        /// <returns></returns>
         private bool ExistInTable(string name, string ambit)
         {
             foreach (var item in SimbolsTable)
@@ -592,6 +659,27 @@ namespace Minic.Análisis_Semantico
                     return true;
                 }
             }
+            return false;
+        }
+        /// <summary>
+        /// function to verify is the ident already exist in the table and in all ambits
+        /// </summary>
+        /// <param name="name">the name of the ident to search in the list of the table</param>
+        /// <returns>true if exist and false if not</returns>
+        private bool ExistInTableAssignation(string name)
+        {
+            var tempStack = ambit;
+            foreach (var ambits in tempStack)
+            {
+                foreach (var item in SimbolsTable)
+                {
+                    if (item.name == name && item.ambit == ambits)
+                    {
+                        return true;
+                    }
+                }
+            }
+             
             return false;
         }
         /// <summary>
