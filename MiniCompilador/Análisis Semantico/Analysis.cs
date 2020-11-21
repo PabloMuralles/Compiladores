@@ -232,7 +232,7 @@ namespace Minic.Análisis_Semantico
             var variable2 = SearchInTable(Split_Name(nameVariable2));
 
 
-            if (ExistInTable(nameVariable1,ambit.Peek()) && ExistInTable(Split_Name(nameVariable1),))
+            if (ExistInTable(nameVariable1,ambit.Peek()) && ExistInTable(Split_Name(nameVariable1),ambit.Peek()))
             {
                 if (!(variable1.type == variable2.type))
                 {
