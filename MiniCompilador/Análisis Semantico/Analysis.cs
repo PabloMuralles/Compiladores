@@ -75,7 +75,7 @@ namespace Minic.Análisis_Semantico
                     function = false;
                     finishFunction = 0;
                 }
-                else if(token.Item1 == "ident" && function == true)
+                else if(token.Item1 == "return" && function == true)
                 {
                     ValidateReturn();
                 }
@@ -95,18 +95,15 @@ namespace Minic.Análisis_Semantico
                 if (item.ambit == tempAmbit && item.isFunction)
                 {
                     temFunction = item;
+                    var index = SimbolsTable.FindIndex(c => c.name == item.name);
+                    var Type = SimbolsTable[index].type;
+                    var value = ReturnValue(positionList + 2, temFunction.type);
+                    if (value != "")
+                    {
+                        SimbolsTable[index] = new TableElement { name = item.name, value = value, type = Type, ambit = ambit.Peek(), isClass = true, isFunction = false };
+                    }
                     break;
                 }
-            }
-            string tempData = string.Empty;
-            for (int i = positionList + 2 ; i < listTokens.Count(); i++)
-            {
-                var tempElemet = listTokens[positionList];
-                if (tempElemet.Item1 ==")")
-                {
-                    break;
-                }
-                
             }
         }
 
@@ -175,8 +172,8 @@ namespace Minic.Análisis_Semantico
                     mistakes.Add($"Error la variable :{Name} no fue definida con anterioridad  {cordenadas}");
                 }
             }
-            //creacion de una funcion o precedimiento
-            else if (dataListNext.Item1 == "(")
+            //creacion de una funcion o precedimiento, pueda entrar a1.f1()
+            else if (dataListNext.Item1 == "(" /* && (dataListpreviously.Item1 == "")*/)
             {
                 var Name = Split_Name(dataListActual.Item2);
                 function = true;
@@ -743,5 +740,347 @@ namespace Minic.Análisis_Semantico
             }
             Cargar_Archivo.msg_Analyze_semantic(msg_Analyze);
         }
+
+        /// <summary>
+        /// Method to validate if the assignments of a variable are correct
+        /// </summary>
+        /// <param name="position">the position after the equal</param>
+        /// <param name="Type">The type of the variable that is being assigned </param>
+        /// <returns>the result of the assigned</returns>
+        private string ReturnValue(int position, string Type)
+        {
+            var resultado_int = 0;
+            var resultado_double = 0.0;
+            var resultado_string = "";
+            var resultado_ident = "";
+            var resultado_bool = true;
+            var resultado = "";
+            while (listTokens[position].Item1 != ")")
+            {
+                
+                var date_value = split_value(listTokens[position].Item2);
+                switch (Type)
+                {
+                    case "int":
+                        if (date_value == "New")
+                        {
+                            mistakes.Add($"Valor incorrecto declarado tipo New  {cordenadas}");
+                            return resultado;
+                        }
+                        else
+                        {
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("doubleConstant"))
+                            {
+                                var tempData = split_value(listTokens[position + 1].Item2);
+                                int n2;
+                                bool isNumeric2 = int.TryParse(tempData, out n2);
+
+                                if (date_value == "\"+\"")
+                                {
+                                    if (isNumeric2 == true)
+                                    {
+                                        resultado_int += Convert.ToInt32(tempData);
+                                        return Convert.ToString(resultado_int);
+                                    }
+                                    else
+                                    {
+                                        if (ExistInTable(tempData, ambit.Peek()))
+                                        {
+                                            var index = SimbolsTable.FindIndex(c => c.name == tempData);
+                                            var date_value_ = SimbolsTable[index].value;
+                                            var date_type_ = SimbolsTable[index].type;
+                                            if (date_value_ != null)
+                                            {
+                                                resultado_int += Convert.ToInt32(date_value_);
+                                                // return Convert.ToString(resultado_int);
+                                                position++;
+                                            }
+                                            if (Type != date_type_)
+                                            {
+                                                mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                                return "";
+                                            }
+                                        }
+                                        else
+                                        {
+                                                mistakes.Add($"No esta definida la variable  {cordenadas}");
+                                                return "";
+                                        }
+                                    }
+                                }
+                                else if (date_value == "\"%\"")
+                                {
+                                    resultado_int %= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else if (date_value == "\"*\"")
+                                {
+                                    resultado_int *= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else if (date_value == "\"-\"")
+                                {
+                                    resultado_int -= Convert.ToInt32(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_int);
+                                }
+                                else
+                                {
+                                    // validar si el valor esta contenido en otro lado
+                                    if (ExistInTable(date_value, ambit.Peek()))
+                                    {
+                                        var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                        var date_value_ = SimbolsTable[index].value;
+                                        var date_type_ = SimbolsTable[index].type;
+                                        if (date_value_ != null)
+                                        {
+                                            resultado_int = Convert.ToInt32(date_value_);
+                                        }
+                                        if (Type != date_type_)
+                                        {
+                                            mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                            return "";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        int n;
+                                        bool isNumeric = int.TryParse(date_value,out n);
+                                        if (isNumeric == true)
+                                        {
+                                            resultado_int = Convert.ToInt32(date_value);
+                                        }
+                                        else
+                                        {
+                                            mistakes.Add($"No existe la variable que desea retornar  {cordenadas}");
+                                            return "";
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
+                        }
+
+                        break;
+                    case "string":
+                        if (date_value == "New")
+                        {
+                            resultado = date_value;
+                        }
+                        if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("intConstant"))
+                        {
+                            if (date_value == "\"+\"")
+                            {
+                                resultado_string += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
+                                return resultado_string;
+                            }
+                            else
+                            {
+                                if (ExistInTable(date_value, ambit.Peek()))
+                                {
+                                    var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                    var date_value_ = SimbolsTable[index].value;
+                                    var date_type_ = SimbolsTable[index].type;
+                                    if (date_value_ != null)
+                                    {
+                                        resultado_string = date_value_.Replace('"', ' ');
+                                    }
+                                    if (Type != date_type_)
+                                    {
+                                        mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                        return "";
+                                    }
+                                    else
+                                    {
+                                        return "";
+                                    }
+                                }
+                                else
+                                {
+                                    resultado_string = date_value.Replace('"', ' ');
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                            return "";
+                        }
+                        break;
+                    case "bool":
+                        if (date_value.Contains("("))
+                        {
+                            resultado_bool = Convert.ToBoolean(true);
+                            return Convert.ToString(resultado_bool);
+                        }
+
+                        else if (ExistInTable(date_value, ambit.Peek()))
+                        {
+                            var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                            var date_value_ = SimbolsTable[index].value;
+                            var date_type_ = SimbolsTable[index].type;
+                            if (date_value_ != null)
+                            {
+                                resultado_bool = Convert.ToBoolean(date_value_);
+                            }
+                            if (Type != date_type_)
+                            {
+                                mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                return "";
+                            }
+                        }
+                        else
+                        {
+                            if (date_value.Contains("true") || date_value.Contains("false"))
+                            {
+                                resultado_bool = Convert.ToBoolean(date_value);
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
+                        }
+                        break;
+                    case "double":
+                        if (date_value == "New")
+                        {
+                            mistakes.Add($"Valor incorrecto declarado tipo New  {cordenadas}");
+                            return resultado;
+                        }
+                        else
+                        {
+                            if (!listTokens[position].Item1.Contains("stringConstant") && !listTokens[position].Item1.Contains("boolConstant"))
+                            {
+
+                                if (date_value == "\"+\"")
+                                {
+                                    resultado_double += Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"%\"")
+                                {
+                                    resultado_double %= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"*\"")
+                                {
+                                    resultado_double *= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else if (date_value == "\"-\"")
+                                {
+                                    resultado_double -= Convert.ToDouble(split_value(listTokens[position + 1].Item2));
+                                    return Convert.ToString(resultado_double);
+                                }
+                                else
+                                {
+                                    // validar si el valor esta contenido en otro lado
+                                    if (ExistInTable(date_value, ambit.Peek()))
+                                    {
+                                        var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                        var date_value_ = SimbolsTable[index].value;
+                                        var date_type_ = SimbolsTable[index].type;
+                                        if (date_value_ != null)
+                                        {
+                                            resultado_double = Convert.ToDouble(date_value_);
+                                        }
+                                        if (Type != date_type_)
+                                        {
+                                            mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                            return "";
+                                        }
+                                        else
+                                        {
+                                            return "";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        resultado_double = Convert.ToDouble(date_value);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                mistakes.Add($"Valor incorrecto declarado tipo {Type}  {cordenadas}");
+                                return "";
+                            }
+                        }
+                        break;
+                    case "ident":
+
+                        if (date_value == "New")
+                        {
+                            resultado = date_value;
+                        }
+                        if (!listTokens[position].Item1.Contains("doubleConstant") && !listTokens[position].Item1.Contains("boolConstant")
+                                && !listTokens[position].Item1.Contains("intConstant"))
+                        {
+                            if (date_value == "\"+\"")
+                            {
+                                resultado_ident += split_value(listTokens[position + 1].Item2).Replace('"', ' ');
+                                return resultado_ident;
+                            }
+                            else
+                            {
+                                if (ExistInTable(date_value, ambit.Peek()))
+                                {
+                                    var index = SimbolsTable.FindIndex(c => c.name == date_value);
+                                    var date_value_ = SimbolsTable[index].value;
+                                    var date_type_ = SimbolsTable[index].type;
+                                    if (date_value_ != null)
+                                    {
+                                        resultado_ident = date_value_.Replace('"', ' ');
+                                    }
+                                    if (Type != date_type_)
+                                    {
+                                        mistakes.Add($"No coinciden en terminos  {cordenadas}");
+                                        return "";
+                                    }
+                                    else
+                                    {
+                                        return "";
+                                    }
+                                }
+                                else
+                                {
+                                    resultado_ident = date_value.Replace('"', ' ');
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                position++;
+            }
+            if (Type == "int")
+            {
+                resultado = Convert.ToString(resultado_int);
+            }
+            else if (Type == "string")
+            {
+                resultado = resultado_string;
+            }
+            else if (Type == "bool")
+            {
+                resultado = Convert.ToString(resultado_bool);
+            }
+            else if (Type == "double")
+            {
+                resultado = Convert.ToString(resultado_double);
+            }
+            return resultado;
+        }
+
+
     }
 }
